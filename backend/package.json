@@ -17,6 +17,7 @@
     "seed": "medusa exec ./src/scripts/seed.ts",
     "start": "medusa start",
     "dev": "medusa develop",
+    "deploy": "cd .medusa/server && npm install && npm run start",
     "predeploy": "medusa db:migrate",
     "build:admin": "medusa-admin build",
     "setup:google-auth": "bun setup-google-auth.ts",
