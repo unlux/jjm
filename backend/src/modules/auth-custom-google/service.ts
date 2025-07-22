@@ -12,7 +12,7 @@ import {
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { createCustomerAccountWorkflow } from "@medusajs/medusa/core-flows";
 import { container } from "@medusajs/framework";
-import { setAuthAppMetadataWorkflow } from "src/workflows/auth-custom-google/workflows";
+import { setAuthAppMetadataWorkflow } from "../../workflows/auth-custom-google/workflows";
 
 type InjectedDependencies = {
   logger: Logger;
