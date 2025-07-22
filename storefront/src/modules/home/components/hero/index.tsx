@@ -6,7 +6,6 @@ import CategoriesAndAges from "./CategoriesAndAges"
 import FeatureStrip from "./FeatureStrip"
 // import Footer from "./Footer";
 import HeroSlider from "./HeroSlider"
-// import Marquee from "./Marquee";
 // import Navbar from "./Navbar";
 import PopularProducts from "./PopularProducts"
 import Testimonials from "./TestimonialSection"
@@ -15,8 +14,8 @@ import WhatsAppButton from "./WhatsAppButton"
 const Hero = () => {
   return (
     <main className="w-full">
-      {/* <Marquee />
-            <Navbar /> */}
+      {/* <Marquee /> */}
+      {/* <Navbar /> */}
       <HeroSlider />
       <CategoriesAndAges />
       <AboutSection />
