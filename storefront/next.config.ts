@@ -1,7 +1,7 @@
-import type { NextConfig } from "next";
-const checkEnvVariables = require("./check-env-variables");
+import type { NextConfig } from "next"
+const checkEnvVariables = require("./check-env-variables")
 
-checkEnvVariables();
+checkEnvVariables()
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -37,10 +37,14 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "qipgbcfplwabixzlbdcd.supabase.co",
+      },
+      {
+        protocol: "https",
         hostname: "vunurggmxxqphafcqfvq.supabase.co",
       },
     ],
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig

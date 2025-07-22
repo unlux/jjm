@@ -1,156 +1,186 @@
-import { listCategories } from "@lib/data/categories"
-import { listCollections } from "@lib/data/collections"
-import { Text, clx } from "@medusajs/ui"
-
+import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import MedusaCTA from "@modules/layout/components/medusa-cta"
+import Link from "next/link"
 
-export default async function Footer() {
-  const { collections } = await listCollections({
-    fields: "*products",
-  })
-  const productCategories = await listCategories()
-
+export default function Footer() {
   return (
-    <footer className="border-t border-ui-border-base w-full">
-      <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
-          <div>
-            <LocalizedClientLink
-              href="/"
-              className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
-            >
-              The Joy Junction
-            </LocalizedClientLink>
-          </div>
-          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
-            {productCategories && productCategories?.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Categories
-                </span>
-                <ul
-                  className="grid grid-cols-1 gap-2"
-                  data-testid="footer-categories"
-                >
-                  {productCategories?.slice(0, 6).map((c) => {
-                    if (c.parent_category) {
-                      return
-                    }
+    <footer className="bg-[#1e2554] text-white py-16 px-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-10">
+        {/* Logo */}
+        <div className="col-span-1 md:col-span-1 flex flex-col items-center md:items-start">
+          <Image
+            src="/logo.png"
+            alt="The Joy Junction"
+            width={160}
+            height={60}
+          />
+        </div>
 
-                    const children =
-                      c.category_children?.map((child) => ({
-                        name: child.name,
-                        handle: child.handle,
-                        id: child.id,
-                      })) || null
+        {/* Address */}
+        <div>
+          <h4 className="text-white font-semibold mb-2">Address</h4>
+          <p className="text-gray-300">Jaipur, Rajasthan</p>
+        </div>
 
-                    return (
-                      <li
-                        className="flex flex-col gap-2 text-ui-fg-subtle txt-small"
-                        key={c.id}
-                      >
-                        <LocalizedClientLink
-                          className={clx(
-                            "hover:text-ui-fg-base",
-                            children && "txt-small-plus"
-                          )}
-                          href={`/categories/${c.handle}`}
-                          data-testid="category-link"
-                        >
-                          {c.name}
-                        </LocalizedClientLink>
-                        {children && (
-                          <ul className="grid grid-cols-1 ml-3 gap-2">
-                            {children &&
-                              children.map((child) => (
-                                <li key={child.id}>
-                                  <LocalizedClientLink
-                                    className="hover:text-ui-fg-base"
-                                    href={`/categories/${child.handle}`}
-                                    data-testid="category-link"
-                                  >
-                                    {child.name}
-                                  </LocalizedClientLink>
-                                </li>
-                              ))}
-                          </ul>
-                        )}
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            )}
-            {collections && collections.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Collections
-                </span>
-                <ul
-                  className={clx(
-                    "grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small",
-                    {
-                      "grid-cols-2": (collections?.length || 0) > 3,
-                    }
-                  )}
+        {/* Useful links */}
+        <div>
+          <h4 className="text-white font-semibold mb-2">Useful Links</h4>
+          <ul className="space-y-2 text-gray-300">
+            <li>
+              <LocalizedClientLink href="/">Home</LocalizedClientLink>
+            </li>
+            <li>
+              <LocalizedClientLink href="/store">
+                Shop by Age →
+              </LocalizedClientLink>
+            </li>
+            <li>
+              <LocalizedClientLink href="/store">
+                Shop by Categories →
+              </LocalizedClientLink>
+            </li>
+            <li>
+              <LocalizedClientLink href="/customkit">
+                Custom Kit
+              </LocalizedClientLink>
+            </li>
+            <li>
+              <LocalizedClientLink href="/contact">
+                Contact Us
+              </LocalizedClientLink>
+            </li>
+          </ul>
+        </div>
+
+        {/* Other links */}
+        <div>
+          <h4 className="text-white font-semibold mb-2">Other Links</h4>
+          <ul className="space-y-2 text-gray-300">
+            <li>
+              <LocalizedClientLink href="/privacy-policy">
+                Privacy Policy
+              </LocalizedClientLink>
+            </li>
+            <li>
+              <LocalizedClientLink href="/refund">
+                Refund and Returns Policy
+              </LocalizedClientLink>
+            </li>
+            <li>
+              <LocalizedClientLink href="/tnc">
+                Terms and Condition
+              </LocalizedClientLink>
+            </li>
+          </ul>
+        </div>
+
+        {/* Newsletter & Socials */}
+        <div className="space-y-4">
+          <h4 className="text-white font-semibold mb-2">
+            Subscribe to our newsletter
+          </h4>
+          <p className="text-gray-300 text-sm leading-5">
+            for learning tips, product news and exclusive offers!
+          </p>
+
+          {/* Input */}
+          <form className="flex flex-col space-y-4">
+            <div className="relative">
+              <div className="absolute left-0 top-[50%] transform -translate-y-1/2 text-gray-400">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  {collections?.slice(0, 6).map((c) => (
-                    <li key={c.id}>
-                      <LocalizedClientLink
-                        className="hover:text-ui-fg-base"
-                        href={`/collections/${c.handle}`}
-                      >
-                        {c.title}
-                      </LocalizedClientLink>
-                    </li>
-                  ))}
-                </ul>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
               </div>
-            )}
-            <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">Medusa</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
-                <li>
-                  <a
-                    href="https://github.com/medusajs"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    GitHub
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://docs.medusajs.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    Documentation
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/medusajs/nextjs-starter-medusa"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    Source code
-                  </a>
-                </li>
-              </ul>
+              <input
+                type="email"
+                placeholder="Enter Your Email Address"
+                className="w-full bg-transparent border-b border-gray-400 text-white placeholder-gray-400 py-2 pl-7 pr-10 focus:outline-none focus:border-white transition-colors"
+              />
+              <button
+                type="submit"
+                className="absolute right-0 top-[50%] transform -translate-y-1/2 text-white h-8 w-8 flex items-center justify-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </button>
             </div>
+
+            <label className="text-sm text-gray-300 flex items-start gap-2 cursor-pointer">
+              <div className="relative flex items-center mt-1">
+                <input
+                  type="checkbox"
+                  id="privacy-checkbox"
+                  className="appearance-none w-4 h-4 border border-gray-400 rounded-sm bg-transparent checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition-colors"
+                />
+                <svg
+                  className="absolute w-3 h-3 text-white pointer-events-none opacity-0 peer-checked:opacity-100 left-0.5 top-0.5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <span>
+                I agree to the{" "}
+                <LocalizedClientLink
+                  href="/privacy-policy"
+                  className="text-white hover:text-blue-300 underline transition"
+                >
+                  Privacy Policy
+                </LocalizedClientLink>
+              </span>
+            </label>
+          </form>
+
+          {/* Social Icons */}
+          <div className="flex items-center space-x-4 mt-4">
+            <Link href="https://facebook.com" target="_blank">
+              <i className="fab fa-facebook text-xl" />
+            </Link>
+            <Link href="https://youtube.com" target="_blank">
+              <i className="fab fa-youtube text-xl" />
+            </Link>
+            <Link href="https://instagram.com" target="_blank">
+              <i className="fab fa-instagram text-xl" />
+            </Link>
+            <Link href="https://linkedin.com" target="_blank">
+              <i className="fab fa-linkedin text-xl" />
+            </Link>
           </div>
         </div>
-        <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
-          <Text className="txt-compact-small">
-            © {new Date().getFullYear()} The Joy Junction. All rights reserved.
-          </Text>
-          <MedusaCTA />
-        </div>
+      </div>
+
+      {/* Bottom line */}
+      <div className="mt-12 text-center text-sm text-gray-400">
+        © 2024 The Joy Junction | A Venture of VYOM COMMERCE | Made with ♥
       </div>
     </footer>
   )
