@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
-    "@medusajs/types": "^2.8.8-snapshot-20250714090316",
+    "@medusajs/types": "^2.8.8",
     "@medusajs/ui-preset": "latest",
     "@types/lodash": "^4.14.195",
     "@types/node": "17.0.21",
