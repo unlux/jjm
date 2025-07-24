@@ -33,21 +33,21 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
 
   const [loginMessage, loginAction] = useActionState(login, null)
   const [signupMessage, signupAction] = useActionState(signup, null)
-  
+
   // Initialize form data state for registration
   const [formData, setFormData] = useState({
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone: '',
-    password: ''
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+    password: "",
   })
-  
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }))
   }
 
@@ -193,8 +193,6 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
 
                 {isLogin ? (
                   <form action={loginAction}>
-                    <input type="hidden" name="email" value={formData.email} />
-                    <input type="hidden" name="password" value={formData.password} />
                     <div className="space-y-5">
                       <div>
                         <label
@@ -211,10 +209,10 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             type="email"
                             name="email"
                             id="email"
-                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-colors"
-                            label="Email"
-                            autoComplete="email"
                             required
+                            className="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-colors"
+                            label=""
+                            autoComplete="email"
                             data-testid="email-input"
                           />
                         </div>
@@ -228,12 +226,12 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                           >
                             Password
                           </label>
-                          <Link
+                          {/* <Link
                             href="/account/reset-password"
                             className="text-xs text-[#262b5f] hover:underline"
                           >
                             Forgot password?
-                          </Link>
+                          </Link> */}
                         </div>
                         <div className="relative">
                           <div className="absolute left-0 inset-y-0 flex items-center pl-3 pointer-events-none text-gray-400">
@@ -243,10 +241,12 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             type={showPassword ? "text" : "password"}
                             name="password"
                             id="password"
-                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-colors"
-                            label="Password"
-                            autoComplete="current-password"
                             required
+                            className="pl-10 pr-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-colors"
+                            label=""
+                            autoComplete={
+                              isLogin ? "current-password" : "new-password"
+                            }
                             data-testid="password-input"
                           />
                           <div
@@ -262,20 +262,6 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                         </div>
                       </div>
 
-                      <div className="flex items-center">
-                        <Checkbox
-                          id="remember-me"
-                          name="remember_me"
-                          className="h-4 w-4 text-[#262b5f] focus:ring-[#262b5f] border-gray-300 rounded"
-                          data-testid="remember-me-checkbox"
-                        />
-                        <label
-                          htmlFor="remember-me"
-                          className="ml-2 block text-sm text-gray-700"
-                        >
-                          Remember me
-                        </label>
-                      </div>
                       <ErrorMessage
                         error={loginMessage}
                         data-testid="login-error-message"
@@ -287,11 +273,23 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                   </form>
                 ) : (
                   <form action={signupAction}>
-                    <input type="hidden" name="first_name" value={formData.first_name} />
-                    <input type="hidden" name="last_name" value={formData.last_name} />
+                    <input
+                      type="hidden"
+                      name="first_name"
+                      value={formData.first_name}
+                    />
+                    <input
+                      type="hidden"
+                      name="last_name"
+                      value={formData.last_name}
+                    />
                     <input type="hidden" name="email" value={formData.email} />
                     <input type="hidden" name="phone" value={formData.phone} />
-                    <input type="hidden" name="password" value={formData.password} />
+                    <input
+                      type="hidden"
+                      name="password"
+                      value={formData.password}
+                    />
                     <div className="space-y-5">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
@@ -311,8 +309,8 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                               id="first_name"
                               value={formData.first_name}
                               onChange={handleInputChange}
-                              className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-colors"
-                              label="First Name"
+                              className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-all duration-200"
+                              label=""
                               autoComplete="given-name"
                               required
                               data-testid="first-name-input"
@@ -334,8 +332,8 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                               id="last_name"
                               value={formData.last_name}
                               onChange={handleInputChange}
-                              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-colors"
-                              label="Last Name"
+                              className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-all duration-200"
+                              label=""
                               autoComplete="family-name"
                               required
                               data-testid="last-name-input"
@@ -361,8 +359,8 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             id="signup-email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-colors"
-                            label="Email Address"
+                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-all duration-200"
+                            label=""
                             autoComplete="email"
                             required
                             data-testid="email-input"
@@ -387,8 +385,8 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             id="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-colors"
-                            label="Phone Number"
+                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-all duration-200"
+                            label=""
                             autoComplete="tel"
                             data-testid="phone-input"
                           />
@@ -412,8 +410,8 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             id="signup-password"
                             value={formData.password}
                             onChange={handleInputChange}
-                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-colors"
-                            label="Password"
+                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-all duration-200"
+                            label=""
                             autoComplete="new-password"
                             required
                             data-testid="password-input"
@@ -430,38 +428,29 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                           </div>
                         </div>
                         <p className="mt-1 text-xs text-gray-500">
-                          Must be at least 8 characters with 1 uppercase, 1
-                          number, and 1 special character.
+                          Please set a strong password.
                         </p>
                       </div>
 
-                      <div className="flex items-center">
-                        <Checkbox
-                          id="terms"
-                          name="terms"
-                          className="h-4 w-4 text-[#262b5f] focus:ring-[#262b5f] border-gray-300 rounded"
-                          required
-                        />
-                        <label
-                          htmlFor="terms"
-                          className="ml-2 block text-xs text-gray-700"
-                        >
-                          I agree to The Joy Junction&apos;s{" "}
+                      <div className="text-center">
+                        <p className="text-xs text-gray-700">
+                          By creating an account, you agree to Joy
+                          Junction&apos;s{" "}
                           <LocalizedClientLink
-                            href="/content/terms-of-use"
+                            href="/tnc"
                             className="text-[#262b5f] hover:underline"
                           >
-                            Terms of Service
+                            Terms of Use
                           </LocalizedClientLink>{" "}
                           and{" "}
                           <LocalizedClientLink
-                            href="/content/privacy-policy"
+                            href="/privacy-policy"
                             className="text-[#262b5f] hover:underline"
                           >
                             Privacy Policy
                           </LocalizedClientLink>
                           .
-                        </label>
+                        </p>
                       </div>
                       <ErrorMessage
                         error={signupMessage}
@@ -486,30 +475,14 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                     </div>
                   </div>
 
-                  <div className="mt-6 grid grid-cols-2 gap-3">
+                  <div className="mt-6">
                     <button
                       type="button"
                       onClick={loginWithGoogle}
                       className="w-full py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#262b5f] flex items-center justify-center gap-2"
                     >
                       <Google />
-                      Google
-                    </button>
-
-                    <button
-                      type="button"
-                      className="w-full py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#262b5f] flex items-center justify-center gap-2"
-                      disabled
-                    >
-                      <svg
-                        width="20"
-                        height="20"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M13.397 20.997v-8.196h2.765l.411-3.209h-3.176V7.548c0-.926.258-1.56 1.587-1.56h1.684V3.127A22.336 22.336 0 0 0 14.201 3c-2.444 0-4.122 1.492-4.122 4.231v2.355H7.332v3.209h2.753v8.202h3.312z"></path>
-                      </svg>
-                      Facebook
+                      Continue with Google
                     </button>
                   </div>
                 </div>
