@@ -2,12 +2,15 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   products as allProducts,
   Product,
 } from "../../../../apna-data/products"
 import { useCart } from "../../../../apna-context/CartContext"
+import { useWishlist } from "../../../../apna-context/WishlistContext"
+import { Heart } from "lucide-react"
+import { toast } from "react-hot-toast"
 
 // Select 8 popular products
 const popularProducts = allProducts
@@ -17,9 +20,16 @@ const popularProducts = allProducts
 
 export default function PopularProducts() {
   const { addToCart } = useCart()
+  const { addToWishlist, removeFromWishlist, isInWishlist, wishlistItems } =
+    useWishlist()
   const [addedProducts, setAddedProducts] = useState<Record<number, boolean>>(
     {}
   )
+
+  // Debug: Log wishlist items when component mounts or wishlist changes
+  useEffect(() => {
+    console.log("Wishlist items:", wishlistItems)
+  }, [wishlistItems])
 
   const handleAddToCart = (product: Product) => {
     addToCart(product)
@@ -37,6 +47,24 @@ export default function PopularProducts() {
         [product.id]: false,
       }))
     }, 2000)
+  }
+
+  const handleToggleWishlist = (e: React.MouseEvent, product: Product) => {
+    e.stopPropagation()
+    console.log("Toggle wishlist clicked for product:", product.id)
+
+    const isCurrentlyInWishlist = isInWishlist(product.id)
+    console.log("Is product currently in wishlist:", isCurrentlyInWishlist)
+
+    if (isCurrentlyInWishlist) {
+      console.log("Removing from wishlist:", product.id)
+      removeFromWishlist(product.id)
+      toast.success(`${product.name} removed from wishlist!`)
+    } else {
+      console.log("Adding to wishlist:", product.id)
+      addToWishlist(product)
+      toast.success(`${product.name} added to wishlist!`)
+    }
   }
 
   return (
@@ -86,6 +114,7 @@ export default function PopularProducts() {
               product.price * (1 + product.discount / 100)
             )
             const isAdded = addedProducts[product.id] || false
+            const isLiked = isInWishlist(product.id)
 
             return (
               <div
@@ -154,21 +183,21 @@ export default function PopularProducts() {
                         />
                       </svg>
                     </button>
-                    <button className="w-10 h-10 rounded-full bg-white shadow-lg text-gray-700 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all transform hover:scale-110 border border-red-200">
-                      <svg
-                        className="w-5 h-5"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                    <button
+                      className={`w-10 h-10 rounded-full shadow-lg flex items-center justify-center transform hover:scale-110 border transition-all ${
+                        isLiked
+                          ? "bg-red-500 text-white border-red-200"
+                          : "bg-white text-gray-700 border-red-200 hover:bg-red-500 hover:text-white"
+                      }`}
+                      onClick={(e) => handleToggleWishlist(e, product)}
+                      aria-label={
+                        isLiked ? "Remove from wishlist" : "Add to wishlist"
+                      }
+                    >
+                      <Heart
+                        size={18}
+                        fill={isLiked ? "currentColor" : "none"}
+                      />
                     </button>
                     <Link
                       href={`/products/${product.id}`}
