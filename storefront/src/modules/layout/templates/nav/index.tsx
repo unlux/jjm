@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation"
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect } from "react"
 import {
   Menu,
   ShoppingCart,
@@ -17,45 +17,7 @@ import { useCart } from "../../../../apna-context/CartContext"
 import { useWishlist } from "../../../../apna-context/WishlistContext"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Marquee from "./Marquee"
-
-import { Hits, InstantSearch, SearchBox } from "react-instantsearch"
-import { searchClient } from "../../../../lib/config"
-
-const ageGroups = ["2-4", "4-6", "6-8", "8+"]
-const categories = [
-  "Card-Tastic Fun",
-  "Flashcard Fun",
-  "Kid's Development Games",
-  "Wooden Wonders",
-]
-
-type HitProps = {
-  hit: {
-    objectID: string
-    id: string
-    title: string
-    description: string
-    handle: string
-    thumbnail: string
-  }
-}
-
-const Hit = ({ hit }: HitProps) => {
-  return (
-    <div className="flex flex-row gap-x-2 mt-4 relative">
-      <Image src={hit.thumbnail} alt={hit.title} width={100} height={100} />
-      <div className="flex flex-col gap-y-1">
-        <h3>{hit.title}</h3>
-        <p className="text-sm text-gray-500">{hit.description}</p>
-      </div>
-      <LocalizedClientLink
-        href={`/products/${hit.handle}`}
-        className="absolute right-0 top-0 w-full h-full"
-        aria-label={`View Product: ${hit.title}`}
-      />
-    </div>
-  )
-}
+import SearchOverlay from "@modules/search/components/search-overlay"
 
 const Navbar = () => {
   const router = useRouter()
@@ -63,25 +25,6 @@ const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false)
   const { cartCount } = useCart()
   const { wishlistCount } = useWishlist()
-
-  const filterRoute = (type: string, value: string) => {
-    router.push(`/store?${type}=${value}`)
-    setMobileMenuOpen(false) // Close mobile menu when navigating
-  }
-
-  // Close search modal when user clicks escape
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && searchOpen) {
-        setSearchOpen(false)
-      }
-    }
-
-    window.addEventListener("keydown", handleEsc)
-    return () => {
-      window.removeEventListener("keydown", handleEsc)
-    }
-  }, [searchOpen])
 
   // state for mobile search
   const [mobileSearchTerm, setMobileSearchTerm] = useState("")
@@ -177,75 +120,10 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Search Overlay */}
-        {searchOpen && (
-          <div
-            className="fixed inset-0 backdrop-blur-md text-black bg-white/30 z-50 flex items-start justify-center pt-16 md:pt-24"
-            onClick={(e) => {
-              if (e.target === e.currentTarget) {
-                setSearchOpen(false)
-              }
-            }}
-          >
-            <div className="bg-white rounded-xl p-6 w-full max-w-2xl mx-4 animate-slide-down shadow-2xl">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-black">
-                  Search Products
-                </h3>
-                <button
-                  onClick={() => setSearchOpen(false)}
-                  className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-                >
-                  <X size={20} className="text-black" />
-                </button>
-              </div>
-
-              <InstantSearch
-                searchClient={searchClient}
-                indexName={
-                  process.env.NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME || ""
-                }
-              >
-                <SearchBox
-                  placeholder="Search for toys, games, flashcards..."
-                  className="[&_form]:flex [&_form]:gap-2 [&_input]:w-full [&_input]:py-3 [&_input]:px-5 [&_input]:pr-12 [&_input]:bg-gray-100 [&_input]:border-0 [&_input]:rounded-lg [&_input]:focus:ring-2 [&_input]:focus:ring-blue-500 [&_input]:placeholder-gray-500 [&_button]:px-4 [&_button]:py-3 [&_button]:bg-[#262b5f] [&_button]:hover:bg-[#1e2248] [&_button]:text-white [&_button]:font-medium [&_button]:rounded-lg [&_button]:transition-colors"
-                />
-
-                <div className="mt-5">
-                  <Hits hitComponent={Hit} />
-                </div>
-              </InstantSearch>
-
-              <div className="mt-5 flex flex-wrap gap-2">
-                <p className="text-sm text-gray-500 mr-2">Popular searches:</p>
-                {ageGroups.map((age) => (
-                  <span
-                    key={age}
-                    onClick={() => {
-                      filterRoute("age", age)
-                      setSearchOpen(false)
-                    }}
-                    className="px-3 py-1 text-sm bg-blue-50 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 transition-colors"
-                  >
-                    Ages {age}
-                  </span>
-                ))}
-                {categories.map((cat) => (
-                  <span
-                    key={cat}
-                    onClick={() => {
-                      filterRoute("category", cat)
-                      setSearchOpen(false)
-                    }}
-                    className="px-3 py-1 text-sm bg-green-50 text-green-600 rounded-full cursor-pointer hover:bg-green-100 transition-colors"
-                  >
-                    {cat}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+        <SearchOverlay
+          isOpen={searchOpen}
+          onClose={() => setSearchOpen(false)}
+        />
 
         {/* Mobile Menu Overlay */}
         {mobileMenuOpen && (
