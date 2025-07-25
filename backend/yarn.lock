@@ -6807,6 +6807,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rsc-labs/medusa-wishlist@npm:0.0.3":
+  version: 0.0.3
+  resolution: "@rsc-labs/medusa-wishlist@npm:0.0.3"
+  peerDependencies:
+    "@medusajs/admin-sdk": 2.4.0
+    "@medusajs/cli": 2.4.0
+    "@medusajs/framework": 2.4.0
+    "@medusajs/icons": 2.4.0
+    "@medusajs/medusa": 2.4.0
+    "@medusajs/test-utils": 2.4.0
+    "@medusajs/ui": 4.0.3
+    "@mikro-orm/cli": 6.4.3
+    "@mikro-orm/core": 6.4.3
+    "@mikro-orm/knex": 6.4.3
+    "@mikro-orm/migrations": 6.4.3
+    "@mikro-orm/postgresql": 6.4.3
+    awilix: ^8.0.1
+    pg: ^8.13.0
+  checksum: 4bf905043fce5bcde9d54eb4d034ed876fa559ec088ba4af6d2c9b693c1ce889cacd535d76970408e06725e365a9bf0f284603e5ddf84a3d875b5b35ba8e4440
+  languageName: node
+  linkType: hard
+
 "@rushstack/node-core-library@npm:5.13.0":
   version: 5.13.0
   resolution: "@rushstack/node-core-library@npm:5.13.0"
@@ -11863,6 +11885,7 @@ __metadata:
     "@mikro-orm/knex": 6.4.3
     "@mikro-orm/migrations": 6.4.3
     "@mikro-orm/postgresql": 6.4.3
+    "@rsc-labs/medusa-wishlist": 0.0.3
     "@swc/core": 1.5.7
     "@swc/jest": ^0.2.36
     "@types/jest": ^29.5.13
@@ -11872,6 +11895,7 @@ __metadata:
     algoliasearch: ^5.34.1
     awilix: ^8.0.1
     jest: ^29.7.0
+    jsonwebtoken: ^9.0.2
     pg: ^8.13.0
     prop-types: ^15.8.1
     react: ^18.2.0

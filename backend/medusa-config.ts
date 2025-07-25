@@ -29,6 +29,9 @@ module.exports = defineConfig({
   },
   modules: [
     {
+      resolve: "./src/modules/wishlist",
+    },
+    {
       resolve: "./src/modules/algolia",
       options: {
         appId: process.env.ALGOLIA_APP_ID!,
@@ -94,7 +97,7 @@ module.exports = defineConfig({
             },
           },
           {
-            // if module provider is in a plugin, use `plugin-name/providers/my-auth`
+            // If module provider is in a plugin, use `plugin-name/providers/my-auth`
             resolve: "./src/modules/auth-custom-google",
             id: "custom-google",
             dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
@@ -112,6 +115,14 @@ module.exports = defineConfig({
             },
           },
         ],
+      },
+    },
+  ],
+  plugins: [
+    {
+      resolve: "@rsc-labs/medusa-wishlist",
+      options: {
+        jwtSecret: process.env.JWT_SECRET,
       },
     },
   ],
