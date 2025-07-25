@@ -21,10 +21,11 @@ module.exports = defineConfig({
     },
   },
   admin: {
-    vite: (config) => {
-      config.server.allowedHosts = [process.env.NEXT_PUBLIC_PROD_DOMAIN!];
-      return config;
-    },
+    vite: () => ({
+      server: {
+        allowedHosts: process.env.MEDUSA_BACKEND_URL,
+      },
+    }),
   },
   modules: [
     {
