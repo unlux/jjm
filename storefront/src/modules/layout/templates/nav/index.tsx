@@ -1,5 +1,4 @@
 "use client"
-import LocalizedClientLink from "next/link"
 import { useRouter } from "next/navigation"
 import { useState, useRef, useEffect } from "react"
 import {
@@ -16,9 +15,11 @@ import {
 import Image from "next/image"
 import { useCart } from "../../../../apna-context/CartContext"
 import { useWishlist } from "../../../../apna-context/WishlistContext"
-import LocalizedClientLocalizedClientLink from "@modules/common/components/localized-client-link"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Marquee from "./Marquee"
-import SearchModal from "@modules/search/components/modal"
+
+import { Hits, InstantSearch, SearchBox } from "react-instantsearch"
+import { searchClient } from "../../../../lib/config"
 
 const ageGroups = ["2-4", "4-6", "6-8", "8+"]
 const categories = [
@@ -28,12 +29,38 @@ const categories = [
   "Wooden Wonders",
 ]
 
+type HitProps = {
+  hit: {
+    objectID: string
+    id: string
+    title: string
+    description: string
+    handle: string
+    thumbnail: string
+  }
+}
+
+const Hit = ({ hit }: HitProps) => {
+  return (
+    <div className="flex flex-row gap-x-2 mt-4 relative">
+      <Image src={hit.thumbnail} alt={hit.title} width={100} height={100} />
+      <div className="flex flex-col gap-y-1">
+        <h3>{hit.title}</h3>
+        <p className="text-sm text-gray-500">{hit.description}</p>
+      </div>
+      <LocalizedClientLink
+        href={`/products/${hit.handle}`}
+        className="absolute right-0 top-0 w-full h-full"
+        aria-label={`View Product: ${hit.title}`}
+      />
+    </div>
+  )
+}
+
 const Navbar = () => {
   const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
-  const [searchTerm, setSearchTerm] = useState("")
-  const searchInputRef = useRef<HTMLInputElement>(null)
   const { cartCount } = useCart()
   const { wishlistCount } = useWishlist()
 
@@ -41,22 +68,6 @@ const Navbar = () => {
     router.push(`/store?${type}=${value}`)
     setMobileMenuOpen(false) // Close mobile menu when navigating
   }
-
-  const handleSearch = (e?: React.FormEvent) => {
-    e?.preventDefault()
-    if (searchTerm.trim()) {
-      router.push(`/store?search=${encodeURIComponent(searchTerm.trim())}`)
-      setSearchOpen(false)
-      setSearchTerm("")
-    }
-  }
-
-  // Focus search input when search modal opens
-  useEffect(() => {
-    if (searchOpen && searchInputRef.current) {
-      searchInputRef.current.focus()
-    }
-  }, [searchOpen])
 
   // Close search modal when user clicks escape
   useEffect(() => {
@@ -71,6 +82,19 @@ const Navbar = () => {
       window.removeEventListener("keydown", handleEsc)
     }
   }, [searchOpen])
+
+  // state for mobile search
+  const [mobileSearchTerm, setMobileSearchTerm] = useState("")
+  const handleMobileSearch = (e?: React.FormEvent) => {
+    e?.preventDefault()
+    if (mobileSearchTerm.trim()) {
+      router.push(
+        `/store?search=${encodeURIComponent(mobileSearchTerm.trim())}`
+      )
+      setMobileMenuOpen(false)
+      setMobileSearchTerm("")
+    }
+  }
 
   return (
     <>
@@ -133,7 +157,6 @@ const Navbar = () => {
               </span>
             )}
           </LocalizedClientLink>
-          <SearchModal />
           <div
             className="cursor-pointer hover:text-blue-300 transition-colors"
             onClick={() => setSearchOpen(true)}
@@ -177,28 +200,21 @@ const Navbar = () => {
                 </button>
               </div>
 
-              <form onSubmit={handleSearch} className="flex gap-2">
-                <div className="relative flex-1">
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search for toys, games, flashcards..."
-                    className="w-full py-3 px-5 pr-12 bg-gray-100 border-0 rounded-lg focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-                  />
-                  <Search
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    size={20}
-                  />
+              <InstantSearch
+                searchClient={searchClient}
+                indexName={
+                  process.env.NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME || ""
+                }
+              >
+                <SearchBox
+                  placeholder="Search for toys, games, flashcards..."
+                  className="[&_form]:flex [&_form]:gap-2 [&_input]:w-full [&_input]:py-3 [&_input]:px-5 [&_input]:pr-12 [&_input]:bg-gray-100 [&_input]:border-0 [&_input]:rounded-lg [&_input]:focus:ring-2 [&_input]:focus:ring-blue-500 [&_input]:placeholder-gray-500 [&_button]:px-4 [&_button]:py-3 [&_button]:bg-[#262b5f] [&_button]:hover:bg-[#1e2248] [&_button]:text-white [&_button]:font-medium [&_button]:rounded-lg [&_button]:transition-colors"
+                />
+
+                <div className="mt-5">
+                  <Hits hitComponent={Hit} />
                 </div>
-                <button
-                  type="submit"
-                  className="px-4 py-3 bg-[#262b5f] hover:bg-[#1e2248] text-white font-medium rounded-lg transition-colors flex items-center gap-2"
-                >
-                  Search <ArrowRight size={16} />
-                </button>
-              </form>
+              </InstantSearch>
 
               <div className="mt-5 flex flex-wrap gap-2">
                 <p className="text-sm text-gray-500 mr-2">Popular searches:</p>
@@ -257,23 +273,11 @@ const Navbar = () => {
 
               {/* Mobile Search Input */}
               <div className="mb-4">
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    if (searchTerm.trim()) {
-                      router.push(
-                        `/store?search=${encodeURIComponent(searchTerm.trim())}`
-                      )
-                      setMobileMenuOpen(false)
-                      setSearchTerm("")
-                    }
-                  }}
-                  className="relative"
-                >
+                <form onSubmit={handleMobileSearch} className="relative">
                   <input
                     type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    value={mobileSearchTerm}
+                    onChange={(e) => setMobileSearchTerm(e.target.value)}
                     placeholder="Search products..."
                     className="w-full py-2 px-4 pl-10 bg-gray-100 border-0 rounded-lg focus:ring-2 focus:ring-blue-500"
                   />
