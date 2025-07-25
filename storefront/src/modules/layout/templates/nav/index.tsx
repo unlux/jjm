@@ -18,6 +18,7 @@ import { useCart } from "../../../../apna-context/CartContext"
 import { useWishlist } from "../../../../apna-context/WishlistContext"
 import LocalizedClientLocalizedClientLink from "@modules/common/components/localized-client-link"
 import Marquee from "./Marquee"
+import SearchModal from "@modules/search/components/modal"
 
 const ageGroups = ["2-4", "4-6", "6-8", "8+"]
 const categories = [
@@ -132,6 +133,7 @@ const Navbar = () => {
               </span>
             )}
           </LocalizedClientLink>
+          <SearchModal />
           <div
             className="cursor-pointer hover:text-blue-300 transition-colors"
             onClick={() => setSearchOpen(true)}
