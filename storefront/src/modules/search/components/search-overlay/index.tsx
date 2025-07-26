@@ -2,11 +2,11 @@
 
 import { Hits, InstantSearch, useSearchBox } from "react-instantsearch"
 import { searchClient } from "../../../../lib/config"
-import Link from "next/link"
 import Image from "next/image"
 import { X } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type HitProps = {
   hit: {
