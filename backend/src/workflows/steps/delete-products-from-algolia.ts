@@ -1,41 +1,35 @@
-import {
-  createStep,
-  StepResponse,
-} from "@medusajs/framework/workflows-sdk"
-import { ALGOLIA_MODULE } from "../../modules/algolia"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
+import { ALGOLIA_MODULE } from "../../modules/algolia";
+import { ModuleServiceTypes } from "@medusajs/framework/utils";
 
 export type DeleteProductsFromAlgoliaWorkflow = {
-  ids: string[]
-}
+  ids: string[];
+};
 
 export const deleteProductsFromAlgoliaStep = createStep(
   "delete-products-from-algolia-step",
-  async (
-    { ids }: DeleteProductsFromAlgoliaWorkflow,
-    { container }
-  ) => {
-    const algoliaModuleService = container.resolve(ALGOLIA_MODULE)
-    
+  async ({ ids }: DeleteProductsFromAlgoliaWorkflow, { container }) => {
+    const algoliaModuleService =
+      container.resolve<ModuleServiceTypes["algolia"]>(ALGOLIA_MODULE);
+
     const existingRecords = await algoliaModuleService.retrieveFromIndex(
-      ids, 
-      "product"
-    )
-    await algoliaModuleService.deleteFromIndex(
       ids,
       "product"
-    )
+    );
+    await algoliaModuleService.deleteFromIndex(ids, "product");
 
-    return new StepResponse(undefined, existingRecords)
+    return new StepResponse(undefined, existingRecords);
   },
   async (existingRecords, { container }) => {
     if (!existingRecords) {
-      return
+      return;
     }
-    const algoliaModuleService = container.resolve(ALGOLIA_MODULE)
-    
+    const algoliaModuleService =
+      container.resolve<ModuleServiceTypes["algolia"]>(ALGOLIA_MODULE);
+
     await algoliaModuleService.indexData(
       existingRecords as unknown as Record<string, unknown>[],
       "product"
-    )
+    );
   }
-)
+);
