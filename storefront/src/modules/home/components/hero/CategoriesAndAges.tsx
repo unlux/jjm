@@ -113,20 +113,20 @@ export default function CategoriesAndAges() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
                 {shopByAge.map((item, i) => (
                     <div
                         key={i}
-                        className="rounded-xl overflow-hidden shadow-md hover:shadow-lg transition relative group cursor-pointer"
+                        className="relative group overflow-hidden rounded-xl shadow-md hover:shadow-lg transition cursor-pointer"
                         onClick={() => handleAgeClick(item.slug)}
                     >
                         <div className="overflow-hidden">
                             <Image
                                 src={item.image}
                                 alt={item.age}
-                                width={300}
-                                height={200}
-                                className="w-full h-40 object-cover transition-transform duration-500 group-hover:scale-110 group-hover:brightness-75"
+                                width={400}
+                                height={300}
+                                className="w-full h-60 object-cover group-hover:brightness-75 transition-transform duration-500 group-hover:scale-110"
                             />
                         </div>
                         {/* Hover Overlay */}
@@ -135,7 +135,7 @@ export default function CategoriesAndAges() {
                                 Shop Now <ArrowRight className="w-4 h-4" />
                             </div>
                         </div>
-                        {/* Age Label */}
+                        {/* Label */}
                         {/* <div className="absolute inset-x-0 bottom-0 bg-white/80 py-2 text-center font-medium text-gray-800">
                             Ages {item.age}
                         </div> */}

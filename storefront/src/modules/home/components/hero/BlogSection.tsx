@@ -70,7 +70,7 @@ export default function BlogCarousel() {
   )
 
   return (
-    <section className="bg-[#f9f9f9] py-20 px-6">
+    <section className="bg-white py-20 px-6">
       <div className="max-w-7xl mx-auto">
         <p className="uppercase text-sm tracking-widest text-[#262b5f] font-semibold mb-2 text-center font-fredoka">
           Our Blog
