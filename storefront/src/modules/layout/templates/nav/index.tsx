@@ -173,125 +173,91 @@ const Navbar = () => {
               </div>
 
               {/* Navigation links - in a scrollable container */}
-              <div className="flex-1 overflow-y-auto">
-                <div className="space-y-4">
+              <div className="flex-1 overflow-y-auto flex flex-col justify-center items-center">
+                <div className="flex flex-col gap-2 mt-4 items-center">
                   <LocalizedClientLink
                     href="/"
-                    className="block text-base font-medium hover:text-blue-600 transition-colors py-2 border-b border-gray-100"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Home
                   </LocalizedClientLink>
-
                   <LocalizedClientLink
                     href="/store"
-                    className="block text-base font-medium hover:text-blue-600 transition-colors py-2 border-b border-gray-100"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Products
                   </LocalizedClientLink>
-
-                  <div className="flex flex-wrap gap-x-4">
-                    <LocalizedClientLink
-                      href="/customkit"
-                      className="text-base font-medium hover:text-blue-600 transition-colors py-2 w-[45%]"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Custom Kit
-                    </LocalizedClientLink>
-                    <LocalizedClientLink
-                      href="/partnership-program"
-                      className="text-base font-medium hover:text-blue-600 transition-colors py-2 w-[45%]"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Partnership
-                    </LocalizedClientLink>
-                    <LocalizedClientLink
-                      href="/about-us"
-                      className="text-base font-medium hover:text-blue-600 transition-colors py-2 w-[45%]"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      About Us
-                    </LocalizedClientLink>
-                    <LocalizedClientLink
-                      href="/blogs"
-                      className="text-base font-medium hover:text-blue-600 transition-colors py-2 w-[45%]"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Blogs
-                    </LocalizedClientLink>
-                    <LocalizedClientLink
-                      href="/faq"
-                      className="text-base font-medium hover:text-blue-600 transition-colors py-2 w-[45%]"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      FAQ
-                    </LocalizedClientLink>
-                    <LocalizedClientLink
-                      href="/contact"
-                      className="text-base font-medium hover:text-blue-600 transition-colors py-2 w-[45%]"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Contact
-                    </LocalizedClientLink>
-                  </div>
-
-                  <div className="flex justify-between pt-2">
-                    <LocalizedClientLink
-                      href="/cart"
-                      className="flex items-center gap-1 text-base font-medium hover:text-blue-600 transition-colors py-1"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <ShoppingCart size={16} />
-                      <span>Cart</span>
-                      {cartCount > 0 && (
-                        <span className="ml-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                          {cartCount}
-                        </span>
-                      )}
-                    </LocalizedClientLink>
-
-                    <LocalizedClientLink
-                      href="/wishlist"
-                      className="flex items-center gap-1 text-base font-medium hover:text-blue-600 transition-colors py-1"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <Heart size={16} />
-                      <span>Wishlist</span>
-                      {wishlistCount > 0 && (
-                        <span className="ml-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                          {wishlistCount}
-                        </span>
-                      )}
-                    </LocalizedClientLink>
-                  </div>
+                  <LocalizedClientLink
+                    href="/cart"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors flex items-center gap-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <ShoppingCart size={16} />
+                    <span>Cart</span>
+                    {cartCount > 0 && (
+                      <span className="ml-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {cartCount}
+                      </span>
+                    )}
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href="/wishlist"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors flex items-center gap-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Heart size={16} />
+                    <span>Wishlist</span>
+                    {wishlistCount > 0 && (
+                      <span className="ml-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {wishlistCount}
+                      </span>
+                    )}
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href="/partnership-program"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Preschool Partnership Program
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href="/account"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    My account
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href="/about-us"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    About Us
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href="/blogs"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Blogs
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href="/faq"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    FAQ
+                  </LocalizedClientLink>
                 </div>
               </div>
 
               {/* Contact info in the footer - always visible */}
-              <div className="mt-4 pt-2 border-t border-gray-100">
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                      <Phone size={14} className="text-blue-600" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500">Call us</p>
-                      <p className="text-sm font-medium">+91 98765 43210</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                      <Mail size={14} className="text-blue-600" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500">Email</p>
-                      <p className="text-sm font-medium">
-                        hello@thejoyjunction.com
-                      </p>
-                    </div>
-                  </div>
+              <div className="mt-8 mb-8 pt-6 border-t border-gray-100">
+                <div className="flex flex-col items-start gap-4">
+                  <span className="text-2xl font-bold text-blue-900">+91 9321791644</span>
+                  <span className="text-xl font-semibold text-blue-900">support@thejoyjunction.com</span>
                 </div>
               </div>
             </div>
