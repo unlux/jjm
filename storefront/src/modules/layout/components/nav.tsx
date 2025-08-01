@@ -1,9 +1,9 @@
 "use client"
-
 import { useRouter } from "next/navigation"
 import { useState, useEffect, Suspense } from "react"
 import {
   Menu,
+  ShoppingCart,
   Heart,
   Search,
   User,
@@ -11,7 +11,6 @@ import {
   Phone,
   Mail,
   ArrowRight,
-  ShoppingCart,
 } from "lucide-react"
 import Image from "next/image"
 import { useWishlist } from "@/apna-context/WishlistContext" // Assuming this path is correct
@@ -20,7 +19,6 @@ import Marquee from "./Marquee"
 import SearchOverlay from "@modules/search/components/search-overlay"
 import CartDropdown from "@modules/layout/components/cart-dropdown"
 import { Cart } from "@medusajs/medusa"
-
 // The Navbar now accepts the cart as a prop
 const Navbar = ({
   cart,
@@ -31,7 +29,6 @@ const Navbar = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const { wishlistCount } = useWishlist()
-
   // state for mobile search
   const [mobileSearchTerm, setMobileSearchTerm] = useState("")
   const handleMobileSearch = (e?: React.FormEvent) => {
@@ -44,10 +41,8 @@ const Navbar = ({
       setMobileSearchTerm("")
     }
   }
-
   const totalItems =
     cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0
-
   return (
     <>
       <Marquee />
@@ -55,7 +50,6 @@ const Navbar = ({
         <LocalizedClientLink href="/">
           <Image src="/logo.png" alt="logo" width={100} height={50} />
         </LocalizedClientLink>
-
         <div className="hidden md:flex items-center space-x-6 relative ">
           <LocalizedClientLink
             href="/"
@@ -63,21 +57,18 @@ const Navbar = ({
           >
             Home
           </LocalizedClientLink>
-
           <LocalizedClientLink
             href="/store"
             className="hover:text-blue-300 transition-colors"
           >
             Store
           </LocalizedClientLink>
-
           <LocalizedClientLink
             href="/customkit"
             className="hover:text-blue-300 transition-colors"
           >
             Custom Kit
           </LocalizedClientLink>
-
           <LocalizedClientLink
             href="/contact"
             className="hover:text-blue-300 transition-colors"
@@ -85,13 +76,11 @@ const Navbar = ({
             Contact Us
           </LocalizedClientLink>
         </div>
-
         <div className="flex items-center space-x-5">
           {/* Replaced the simple cart link with the CartDropdown component */}
           <div className="hidden sm:block">
             <CartDropdown cart={cart} />
           </div>
-
           <LocalizedClientLink
             href="/wishlist"
             className="hidden sm:block relative cursor-pointer hover:text-blue-300 transition-colors"
@@ -114,7 +103,6 @@ const Navbar = ({
               <User size={22} />
             </div>
           </LocalizedClientLink>
-
           <div
             className="bg-white text-[#1E2A4A] rounded-full p-1.5 cursor-pointer hover:bg-blue-300 transition-colors"
             onClick={() => setMobileMenuOpen(true)}
@@ -122,24 +110,23 @@ const Navbar = ({
             <Menu size={20} />
           </div>
         </div>
-
         <SearchOverlay
           isOpen={searchOpen}
           onClose={() => setSearchOpen(false)}
         />
-
         {/* Mobile Menu Overlay */}
         {mobileMenuOpen && (
           <div
             className="fixed inset-0 backdrop-blur-md bg-white/30 z-50 flex justify-end transition-all duration-300"
             onClick={(e) => {
+              // Close when clicking outside the menu
               if (e.target === e.currentTarget) {
                 setMobileMenuOpen(false)
               }
             }}
           >
             <div className="bg-white text-gray-800 h-full w-full max-w-xs md:max-w-md p-4 flex flex-col animate-slide-left">
-              {/* ... existing mobile menu header ... */}
+              {/* Header with Logo and Close button */}
               <div className="flex justify-between items-center mb-4">
                 <Image src="/logo.png" alt="logo" width={100} height={50} />
                 <button
@@ -150,8 +137,7 @@ const Navbar = ({
                   <X size={24} className="text-gray-700" />
                 </button>
               </div>
-
-              {/* ... existing mobile search ... */}
+              {/* Mobile Search Input */}
               <div className="mb-4">
                 <form onSubmit={handleMobileSearch} className="relative">
                   <input
@@ -173,85 +159,95 @@ const Navbar = ({
                   </button>
                 </form>
               </div>
-
-              <div className="flex-1 overflow-y-auto">
-                <div className="space-y-4">
-                  {/* ... existing mobile nav links ... */}
+              {/* Navigation links - in a scrollable container */}
+              <div className="flex-1 overflow-y-auto flex flex-col justify-center items-center">
+                <div className="flex flex-col gap-2 mt-4 items-center">
                   <LocalizedClientLink
                     href="/"
-                    className="block text-base font-medium hover:text-blue-600 transition-colors py-2 border-b border-gray-100"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Home
                   </LocalizedClientLink>
-
                   <LocalizedClientLink
                     href="/store"
-                    className="block text-base font-medium hover:text-blue-600 transition-colors py-2 border-b border-gray-100"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Products
                   </LocalizedClientLink>
-
-                  {/* ... other links ... */}
-
-                  <div className="flex justify-between pt-2">
-                    {/* Mobile cart link now uses totalItems from the cart prop */}
-                    <LocalizedClientLink
-                      href="/cart"
-                      className="flex items-center gap-1 text-base font-medium hover:text-blue-600 transition-colors py-1"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <ShoppingCart size={16} />
-                      <span>Cart</span>
-                      {totalItems > 0 && (
-                        <span className="ml-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                          {totalItems}
-                        </span>
-                      )}
-                    </LocalizedClientLink>
-
-                    <LocalizedClientLink
-                      href="/wishlist"
-                      className="flex items-center gap-1 text-base font-medium hover:text-blue-600 transition-colors py-1"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <Heart size={16} />
-                      <span>Wishlist</span>
-                      {wishlistCount > 0 && (
-                        <span className="ml-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                          {wishlistCount}
-                        </span>
-                      )}
-                    </LocalizedClientLink>
-                  </div>
+                  <LocalizedClientLink
+                    href="/cart"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors flex items-center gap-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <ShoppingCart size={16} />
+                    <span>Cart</span>
+                    {totalItems > 0 && (
+                      <span className="ml-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {totalItems}
+                      </span>
+                    )}
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href="/wishlist"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors flex items-center gap-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Heart size={16} />
+                    <span>Wishlist</span>
+                    {wishlistCount > 0 && (
+                      <span className="ml-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {wishlistCount}
+                      </span>
+                    )}
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href="/partnership-program"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Preschool Partnership Program
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href="/account"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    My account
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href="/about-us"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    About Us
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href="/blogs"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Blogs
+                  </LocalizedClientLink>
+                  <LocalizedClientLink
+                    href="/faq"
+                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    FAQ
+                  </LocalizedClientLink>
                 </div>
               </div>
-
-              {/* ... existing mobile menu footer ... */}
-              <div className="mt-4 pt-2 border-t border-gray-100">
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                      <Phone size={14} className="text-blue-600" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500">Call us</p>
-                      <p className="text-sm font-medium">+91 98765 43210</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                      <Mail size={14} className="text-blue-600" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500">Email</p>
-                      <p className="text-sm font-medium">
-                        hello@thejoyjunction.com
-                      </p>
-                    </div>
-                  </div>
+              {/* Contact info in the footer - always visible */}
+              <div className="mt-8 mb-8 pt-6 border-t border-gray-100">
+                <div className="flex flex-col items-start gap-4">
+                  <span className="text-2xl font-bold text-blue-900">
+                    +91 9321791644
+                  </span>
+                  <span className="text-xl font-semibold text-blue-900">
+                    support@thejoyjunction.com
+                  </span>
                 </div>
               </div>
             </div>
@@ -261,5 +257,4 @@ const Navbar = ({
     </>
   )
 }
-
 export default Navbar
