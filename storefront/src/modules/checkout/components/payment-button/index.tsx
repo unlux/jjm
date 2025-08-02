@@ -1,6 +1,6 @@
 "use client"
 
-import { isManual, isStripe } from "@lib/constants"
+import { isManual, isRazorpay, isStripe } from "@lib/constants"
 import { placeOrder } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
@@ -26,7 +26,11 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     (cart.shipping_methods?.length ?? 0) < 1
 
   const paymentSession = cart.payment_collection?.payment_sessions?.[0]
-
+  if (!paymentSession) {
+    return <Button disabled>Select a payment method</Button>
+  }
+  console.log(`paymentSession: ` + JSON.stringify(paymentSession))
+  console.log(`cart: ` + JSON.stringify(cart))
   switch (true) {
     case isStripe(paymentSession?.provider_id):
       return (
@@ -39,6 +43,14 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     case isManual(paymentSession?.provider_id):
       return (
         <ManualTestPaymentButton notReady={notReady} data-testid={dataTestId} />
+      )
+    case isRazorpay(paymentSession?.provider_id):
+      return (
+        <RazorpayPaymentButton
+          session={paymentSession!}
+          notReady={notReady}
+          cart={cart}
+        />
       )
     default:
       return <Button disabled>Select a payment method</Button>
