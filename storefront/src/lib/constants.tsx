@@ -19,7 +19,7 @@ export const paymentInfoMap: Record<
     icon: <CreditCard />,
   },
   pp_stripe_stripe: {
-    title: "Credit card",
+    title: "Stripe",
     icon: <CreditCard />,
   },
   "pp_stripe-ideal_stripe": {
