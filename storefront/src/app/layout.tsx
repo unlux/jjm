@@ -3,6 +3,7 @@ import { Metadata } from "next"
 import "styles/globals.css"
 import { Analytics } from "@vercel/analytics/next"
 import { Quicksand } from "next/font/google"
+import ClickSparkProvider from "@/components/ClickSparkProvider"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
@@ -21,8 +22,10 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       <body
         className={`${quicksand.className} font-quicksand antialiased m-0 p-0 overflow-x-hidden`}
       >
-        <main className="relative">{props.children}</main>
-        <Analytics />
+        <ClickSparkProvider>
+          <main className="relative">{props.children}</main>
+          <Analytics />
+        </ClickSparkProvider>
       </body>
     </html>
   )
