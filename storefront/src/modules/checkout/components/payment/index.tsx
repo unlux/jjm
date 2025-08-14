@@ -1,7 +1,11 @@
 "use client"
 
 import { RadioGroup } from "@headlessui/react"
-import { isStripe as isStripeFunc, paymentInfoMap } from "@lib/constants"
+import {
+  isStripe as isStripeFunc,
+  isRazorpay as isRazorpayFunc,
+  paymentInfoMap,
+} from "@lib/constants"
 import { initiatePaymentSession } from "@lib/data/cart"
 import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
 import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
@@ -43,10 +47,36 @@ const Payment = ({
   const setPaymentMethod = async (method: string) => {
     setError(null)
     setSelectedPaymentMethod(method)
+    console.log("[Payment] setPaymentMethod", { method })
+    const hasSessionForMethod = cart.payment_collection?.payment_sessions?.some(
+      (s: any) => s?.provider_id === method
+    )
+
     if (isStripeFunc(method)) {
-      await initiatePaymentSession(cart, {
-        provider_id: method,
-      })
+      try {
+        console.log("[Payment] initiating Stripe session", {
+          provider_id: method,
+        })
+        await initiatePaymentSession(cart, {
+          provider_id: method,
+        })
+        console.log("[Payment] initiatePaymentSession: success")
+      } catch (e) {
+        console.error("[Payment] initiatePaymentSession (Stripe) failed", e)
+        throw e
+      }
+    } else if (isRazorpayFunc(method) && !hasSessionForMethod) {
+      try {
+        console.log("[Payment] initiating Razorpay session", {
+          provider_id: method,
+        })
+        await initiatePaymentSession(cart, { provider_id: method })
+        console.log("[Payment] initiatePaymentSession (Razorpay): success")
+      } catch (e) {
+        console.error("[Payment] initiatePaymentSession (Razorpay) failed", e)
+        // Don't throw; allow user to retry selecting
+        setError((e as any)?.message || "Failed to create Razorpay session")
+      }
     }
   }
 
@@ -75,16 +105,25 @@ const Payment = ({
   const handleSubmit = async () => {
     setIsLoading(true)
     try {
+      console.log("[Payment] handleSubmit", {
+        selectedPaymentMethod,
+        activeSessionProvider: activeSession?.provider_id,
+      })
       const shouldInputCard =
         isStripeFunc(selectedPaymentMethod) && !activeSession
 
       const checkActiveSession =
         activeSession?.provider_id === selectedPaymentMethod
 
-      if (!checkActiveSession) {
+      // Only (re)initialize for Stripe; Razorpay sessions are created server-side
+      if (!checkActiveSession && isStripeFunc(selectedPaymentMethod)) {
+        console.log("[Payment] initiating session for provider", {
+          provider_id: selectedPaymentMethod,
+        })
         await initiatePaymentSession(cart, {
           provider_id: selectedPaymentMethod,
         })
+        console.log("[Payment] initiatePaymentSession: success")
       }
 
       if (!shouldInputCard) {
@@ -96,7 +135,8 @@ const Payment = ({
         )
       }
     } catch (err: any) {
-      setError(err.message)
+      console.error("[Payment] handleSubmit error", err)
+      setError(err?.message || "Payment session failed")
     } finally {
       setIsLoading(false)
     }

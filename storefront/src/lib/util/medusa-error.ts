@@ -1,22 +1,55 @@
 export default function medusaError(error: any): never {
-  if (error.response) {
-    // The request was made and the server responded with a status code
-    // that falls out of the range of 2xx
-    const u = new URL(error.config.url, error.config.baseURL)
-    console.error("Resource:", u.toString())
-    console.error("Response data:", error.response.data)
-    console.error("Status code:", error.response.status)
-    console.error("Headers:", error.response.headers)
+  try {
+    if (error?.response) {
+      // The request was made and the server responded with a non-2xx status
+      const fullUrl = (() => {
+        try {
+          return new URL(error?.config?.url, error?.config?.baseURL).toString()
+        } catch {
+          return error?.config?.url || "<unknown>"
+        }
+      })()
 
-    // Extracting the error message from the response data
-    const message = error.response.data.message || error.response.data
+      const status = error?.response?.status
+      const data = error?.response?.data
 
-    throw new Error(message.charAt(0).toUpperCase() + message.slice(1) + ".")
-  } else if (error.request) {
-    // The request was made but no response was received
-    throw new Error("No response received: " + error.request)
-  } else {
-    // Something happened in setting up the request that triggered an Error
-    throw new Error("Error setting up the request: " + error.message)
+      console.error("[medusaError] Request failed", {
+        url: fullUrl,
+        status,
+        data,
+        headers: error?.response?.headers,
+      })
+
+      // Prefer a string message; safely stringify otherwise
+      let message: any =
+        data?.message ?? data ?? error?.message ?? "Unknown error"
+      if (typeof message !== "string") {
+        try {
+          message = JSON.stringify(message)
+        } catch {
+          message = String(message)
+        }
+      }
+
+      // Normalize message casing but avoid charAt on empty
+      const norm = message ? String(message) : "Unknown error"
+      throw new Error(norm)
+    } else if (error?.request) {
+      // The request was made but no response was received
+      console.error("[medusaError] No response received", {
+        url: error?.config?.url,
+        baseURL: error?.config?.baseURL,
+      })
+      throw new Error("No response received")
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error("[medusaError] Request setup error", {
+        message: error?.message,
+      })
+      throw new Error(error?.message || "Request setup error")
+    }
+  } catch (e: any) {
+    // Final fallback to ensure we always throw a usable message
+    throw new Error(e?.message || "Unexpected error")
   }
 }

@@ -1,0 +1,20 @@
+   ▲ Next.js 15.4.4
+   - Local:        http://localhost:8000
+   - Network:      http://10.202.43.127:8000
+
+ ✓ Starting...
+ ✓ Ready in 686ms
+ ⨯ Error: Error setting up the request: Failed to create Razorpay order: undefined
+    at d (.next/server/chunks/8549.js:1:6979)
+    at async f (.next/server/app/[countryCode]/(checkout)/checkout/page.js:1:118084)
+    at async n (.next/server/app/[countryCode]/(checkout)/checkout/page.js:2:1792)
+    at async K (.next/server/app/[countryCode]/(checkout)/checkout/page.js:2:6911) {
+  digest: '1815573762'
+}
+ ⨯ Error: Error setting up the request: Failed to create Razorpay order: undefined
+    at d (.next/server/chunks/8549.js:1:6979)
+    at async f (.next/server/app/[countryCode]/(checkout)/checkout/page.js:1:118084)
+    at async n (.next/server/app/[countryCode]/(checkout)/checkout/page.js:2:1792)
+    at async K (.next/server/app/[countryCode]/(checkout)/checkout/page.js:2:6911) {
+  digest: '1815573762'
+}

@@ -25,7 +25,15 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     !cart.email ||
     (cart.shipping_methods?.length ?? 0) < 1
 
-  const paymentSession = cart.payment_collection?.payment_sessions?.[0]
+  const paymentSession =
+    cart.payment_collection?.payment_sessions?.find(
+      (s) => s.status === "pending"
+    ) || cart.payment_collection?.payment_sessions?.[0]
+  console.log(
+    "[PaymentButton] sessions",
+    cart.payment_collection?.payment_sessions
+  )
+  console.log("[PaymentButton] selected session", paymentSession)
   if (!paymentSession) {
     return <Button disabled>Select a payment method</Button>
   }
