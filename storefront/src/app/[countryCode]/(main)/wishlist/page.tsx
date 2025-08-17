@@ -41,7 +41,7 @@ export default function WishlistPage() {
   }
 
   return (
-    <div className="bg-[#f9f9f9] min-h-screen py-10 px-4 md:px-6">
+    <div className="bg-[#f9f9f9] flex flex-col py-10 px-4 md:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Page Title */}
         <div className="text-center mb-10">

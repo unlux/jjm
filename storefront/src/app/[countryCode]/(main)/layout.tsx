@@ -25,8 +25,9 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
   }
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Nav />
+
       {customer && cart && (
         <CartMismatchBanner customer={customer} cart={cart} />
       )}
@@ -38,8 +39,11 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
           shippingOptions={shippingOptions}
         />
       )}
-      {props.children}
+
+      {/* Main content grows to take up remaining space */}
+      <main className="flex-1">{props.children}</main>
+
       <Footer />
-    </>
+    </div>
   )
 }
