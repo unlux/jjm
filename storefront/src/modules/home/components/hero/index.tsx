@@ -1,25 +1,20 @@
-import { Github } from "@medusajs/icons"
-import { Button, Heading } from "@medusajs/ui"
 import AboutSection from "./AboutSection"
 import BlogCarousel from "./BlogSection"
 import CategoriesAndAges from "./CategoriesAndAges"
 import FeatureStrip from "./FeatureStrip"
-// import Footer from "./Footer";
 import HeroSlider from "./HeroSlider"
-// import Navbar from "./Navbar";
 import PopularProducts from "./PopularProducts"
 import Testimonials from "./TestimonialSection"
 import WhatsAppButton from "./WhatsAppButton"
+import { HttpTypes } from "@medusajs/types"
 
-const Hero = () => {
+const Hero = ({ region }: { region: HttpTypes.StoreRegion }) => {
   return (
     <main className="w-full">
-      {/* <Marquee /> */}
-      {/* <Navbar /> */}
       <HeroSlider />
       <CategoriesAndAges />
       <AboutSection />
-      <PopularProducts />
+      <PopularProducts region={region} />
       <FeatureStrip />
       <Testimonials />
       <BlogCarousel />
