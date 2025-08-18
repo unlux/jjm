@@ -4,10 +4,11 @@ const AdditionalInfo = () => {
   return (
     <div className="mt-16 text-center">
       <h3 className="text-2xl md:text-3xl font-bold text-[#1e1e3f] mb-6 font-baloo tracking-wide">
-        ✨ Magical Benefits of Joining Us ✨
+        ✨ Magical Benefits of <br />
+        Joining Us ✨
       </h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto px-4 md:px-0">
         <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-blue-50">
           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-5 text-[#262b5f] animate-pulse-slow">
             <svg

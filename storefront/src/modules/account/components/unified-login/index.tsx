@@ -107,8 +107,8 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
   const toggleShowPassword = () => setShowPassword(!showPassword)
 
   return (
-    <div className="min-h-screen ">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto py-8 sm:py-12 px-4">
         {/* TOP TEXT */}
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-5xl font-bold text-[#1e1e3f] mb-3 font-baloo tracking-wide leading-tight">
@@ -167,7 +167,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                 <div className="absolute bottom-32 right-32 w-12 h-12 bg-green-400/10 transform rotate-45 animate-bounce-slow"></div>
               </div>
 
-              <div className="p-8 md:p-10 md:w-1/2">
+              <div className="p-6 sm:p-8 md:p-10 md:w-1/2">
                 <div className="flex border-b border-gray-200 mb-8">
                   <button
                     className={`pb-4 px-4 text-base font-medium transition-colors ${
@@ -210,7 +210,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             name="email"
                             id="email"
                             required
-                            className="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-colors"
+                            className="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
                             label=""
                             autoComplete="email"
                             data-testid="email-input"
@@ -242,7 +242,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             name="password"
                             id="password"
                             required
-                            className="pl-10 pr-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-colors"
+                            className="pl-10 pr-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
                             label=""
                             autoComplete={
                               isLogin ? "current-password" : "new-password"
@@ -309,7 +309,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                               id="first_name"
                               value={formData.first_name}
                               onChange={handleInputChange}
-                              className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-all duration-200"
+                              className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
                               label=""
                               autoComplete="given-name"
                               required
@@ -332,7 +332,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                               id="last_name"
                               value={formData.last_name}
                               onChange={handleInputChange}
-                              className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-all duration-200"
+                              className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
                               label=""
                               autoComplete="family-name"
                               required
@@ -359,7 +359,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             id="signup-email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-all duration-200"
+                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
                             label=""
                             autoComplete="email"
                             required
@@ -385,7 +385,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             id="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-all duration-200"
+                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
                             label=""
                             autoComplete="tel"
                             data-testid="phone-input"
@@ -410,7 +410,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             id="signup-password"
                             value={formData.password}
                             onChange={handleInputChange}
-                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-[#262b5f] outline-none transition-all duration-200"
+                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
                             label=""
                             autoComplete="new-password"
                             required
