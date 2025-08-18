@@ -30,15 +30,9 @@ export default function Footer() {
               <LocalizedClientLink href="/">Home</LocalizedClientLink>
             </li>
             <li>
-              <LocalizedClientLink href="/store">
-                Shop by Age →
-              </LocalizedClientLink>
+              <LocalizedClientLink href="/store">Shop →</LocalizedClientLink>
             </li>
-            <li>
-              <LocalizedClientLink href="/store">
-                Shop by Categories →
-              </LocalizedClientLink>
-            </li>
+            <li></li>
             <li>
               <LocalizedClientLink href="/customkit">
                 Custom Kit
