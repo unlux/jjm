@@ -1,7 +1,7 @@
 "use client"
 
 import { Hits, InstantSearch, useSearchBox } from "react-instantsearch"
-import { searchClient } from "../../../../lib/config"
+import { searchClient } from "@lib/config"
 import Image from "next/image"
 import { X } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -92,93 +92,68 @@ const DebouncedSearchBox = () => {
 }
 
 type SearchOverlayProps = {
-  isOpen: boolean
   onClose: () => void
 }
 
 const ageGroups = ["2-4", "4-6", "6-8", "8+"]
 const categories = [
-  "Card-Tastic Fun",
-  "Flashcard Fun",
-  "Kid's Development Games",
-  "Wooden Wonders",
+  "Puzzles",
+  "Board Games",
+  "Building Blocks",
+  "Art & Craft",
+  "Flashcards",
 ]
 
-const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
+const SearchOverlay = ({ onClose }: SearchOverlayProps) => {
   const router = useRouter()
-
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
-        onClose()
-      }
-    }
-
-    window.addEventListener("keydown", handleEsc)
-    return () => {
-      window.removeEventListener("keydown", handleEsc)
-    }
-  }, [isOpen, onClose])
-
-  const filterRoute = (type: string, value: string) => {
-    router.push(`/store?${type}=${value}`)
-    onClose()
-  }
-
-  if (!isOpen) {
-    return null
-  }
-
   return (
-    <div
-      className="fixed inset-0 backdrop-blur-md text-black bg-white/30 z-50 flex items-start justify-center pt-16 md:pt-24"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) {
-          onClose()
-        }
-      }}
-    >
-      <div className="bg-white rounded-xl p-6 w-full max-w-2xl mx-4 animate-slide-down shadow-2xl">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold text-black">Search Products</h3>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-          >
-            <X size={20} className="text-black" />
-          </button>
-        </div>
-
-        <InstantSearch
-          searchClient={searchClient}
-          indexName={process.env.NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME || ""}
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible group-[.search-open]:opacity-100 group-[.search-open]:visible transition-all duration-300">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col relative animate-scale-in">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors z-10"
+          aria-label="Close search"
         >
-          <DebouncedSearchBox />
-          <div className="mt-5">
-            <Hits hitComponent={Hit} />
-          </div>
-        </InstantSearch>
-
-        <div className="mt-5 flex flex-wrap gap-2">
-          <p className="text-sm text-gray-500 mr-2">Popular searches:</p>
-          {ageGroups.map((age) => (
-            <span
-              key={age}
-              onClick={() => filterRoute("age", age)}
-              className="px-3 py-1 text-sm bg-blue-50 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 transition-colors"
-            >
-              Ages {age}
-            </span>
-          ))}
-          {categories.map((cat) => (
-            <span
-              key={cat}
-              onClick={() => filterRoute("category", cat)}
-              className="px-3 py-1 text-sm bg-green-50 text-green-600 rounded-full cursor-pointer hover:bg-green-100 transition-colors"
-            >
-              {cat}
-            </span>
-          ))}
+          <X size={24} className="text-gray-700" />
+        </button>
+        <div className="p-8 flex-grow overflow-y-auto">
+          <InstantSearch searchClient={searchClient} indexName="products">
+            <DebouncedSearchBox />
+            <div className="mt-6">
+              <h2 className="text-lg font-semibold text-gray-800 mb-2">
+                Popular Searches
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {ageGroups.map((age) => (
+                  <button
+                    key={age}
+                    onClick={() => {
+                      router.push(`/store?age_group=${age}`)
+                      onClose()
+                    }}
+                    className="px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors"
+                  >
+                    Age: {age}
+                  </button>
+                ))}
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => {
+                      router.push(`/store?category=${category}`)
+                      onClose()
+                    }}
+                    className="px-3 py-1.5 bg-green-100 text-green-800 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="mt-6">
+              <Hits hitComponent={Hit} />
+            </div>
+          </InstantSearch>
         </div>
       </div>
     </div>

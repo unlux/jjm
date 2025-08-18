@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation"
-import { useState, useEffect, Suspense } from "react"
+import { useState, Suspense } from "react"
 import {
   Menu,
   ShoppingCart,
@@ -11,6 +11,11 @@ import {
   Phone,
   Mail,
   ArrowRight,
+  Home,
+  Store,
+  Info,
+  Newspaper,
+  HelpCircle,
 } from "lucide-react"
 import Image from "next/image"
 import { useWishlist } from "@/apna-context/WishlistContext" // Assuming this path is correct
@@ -18,38 +23,41 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import Marquee from "./Marquee"
 import SearchOverlay from "@modules/search/components/search-overlay"
 import CartDropdown from "@modules/layout/components/cart-dropdown"
-import { Cart } from "@medusajs/medusa"
+import { StoreCart } from "@medusajs/types"
+
 // The Navbar now accepts the cart as a prop
 const Navbar = ({
   cart,
 }: {
-  cart: Omit<Cart, "refundable_amount" | "refunded_total"> | null
+  cart: Omit<StoreCart, "refundable_amount" | "refunded_total"> | null
 }) => {
   const router = useRouter()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
   const { wishlistCount } = useWishlist()
-  // state for mobile search
-  const [mobileSearchTerm, setMobileSearchTerm] = useState("")
-  const handleMobileSearch = (e?: React.FormEvent) => {
-    e?.preventDefault()
-    if (mobileSearchTerm.trim()) {
-      router.push(
-        `/store?search=${encodeURIComponent(mobileSearchTerm.trim())}`
-      )
-      setMobileMenuOpen(false)
-      setMobileSearchTerm("")
+
+  const toggleNavClass = (className: string, force?: boolean) => {
+    const navElement = document.getElementById("main-nav")
+    if (navElement) {
+      navElement.classList.toggle(className, force)
     }
   }
+
   const totalItems =
-    cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0
+    cart?.items?.reduce(
+      (acc: number, item: { quantity: number }) => acc + item.quantity,
+      0
+    ) || 0
   return (
     <>
       <Marquee />
-      <nav className="bg-[#1E2A4A] text-white p-4 flex items-center justify-between">
-        <LocalizedClientLink href="/">
-          <Image src="/logo.png" alt="logo" width={100} height={50} />
-        </LocalizedClientLink>
+      <nav
+        id="main-nav"
+        className="bg-[#1E2A4A] text-white p-4 flex items-center justify-between group"
+      >
+        <div className="flex-1 flex justify-start">
+          <LocalizedClientLink href="/">
+            <Image src="/logo.png" alt="logo" width={100} height={50} />
+          </LocalizedClientLink>
+        </div>
         <div className="hidden md:flex items-center space-x-6 relative ">
           <LocalizedClientLink
             href="/"
@@ -76,10 +84,10 @@ const Navbar = ({
             Contact Us
           </LocalizedClientLink>
         </div>
-        <div className="flex items-center space-x-5">
+        <div className="flex-1 flex justify-end items-center space-x-5">
           {/* Replaced the simple cart link with the CartDropdown component */}
           <div className="hidden sm:block">
-            <CartDropdown cart={cart} />
+            <CartDropdown cart={cart as StoreCart} />
           </div>
           <LocalizedClientLink
             href="/wishlist"
@@ -94,7 +102,7 @@ const Navbar = ({
           </LocalizedClientLink>
           <div
             className="cursor-pointer hover:text-blue-300 transition-colors"
-            onClick={() => setSearchOpen(true)}
+            onClick={() => toggleNavClass("search-open", true)}
           >
             <Search size={22} />
           </div>
@@ -105,174 +113,210 @@ const Navbar = ({
           </LocalizedClientLink>
           <div
             className="bg-white text-[#1E2A4A] rounded-full p-1.5 cursor-pointer hover:bg-blue-300 transition-colors"
-            onClick={() => setMobileMenuOpen(true)}
+            onClick={() => toggleNavClass("menu-open", true)}
           >
             <Menu size={20} />
           </div>
         </div>
-        <SearchOverlay
-          isOpen={searchOpen}
-          onClose={() => setSearchOpen(false)}
-        />
+        <SearchOverlay onClose={() => toggleNavClass("search-open", false)} />
         {/* Mobile Menu Overlay */}
-        {mobileMenuOpen && (
-          <div
-            className="fixed inset-0 backdrop-blur-md bg-white/30 z-50 flex justify-end transition-all duration-300"
-            onClick={(e) => {
-              // Close when clicking outside the menu
-              if (e.target === e.currentTarget) {
-                setMobileMenuOpen(false)
-              }
-            }}
-          >
-            <div className="bg-white text-gray-800 h-full w-full max-w-xs md:max-w-md p-4 flex flex-col animate-slide-left">
-              {/* Header with Logo and Close button */}
-              <div className="flex justify-between items-center mb-4">
-                <Image src="/logo.png" alt="logo" width={100} height={50} />
-                <button
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-                  aria-label="Close menu"
+        <div
+          className="fixed inset-0 backdrop-blur-md bg-white/30 z-50 flex justify-end transition-all duration-300 opacity-0 invisible group-[.menu-open]:opacity-100 group-[.menu-open]:visible"
+          onClick={(e) => {
+            // Close when clicking outside the menu
+            if (e.target === e.currentTarget) {
+              toggleNavClass("menu-open", false)
+            }
+          }}
+        >
+          <div className="bg-white text-gray-800 h-full w-full max-w-sm flex flex-col shadow-2xl">
+            {/* Header with Logo and Close button */}
+            <div className="flex justify-between items-center p-4 border-b border-gray-200">
+              <LocalizedClientLink href="/" className="block w-28">
+                <Image
+                  src="/logo.png"
+                  alt="logo"
+                  width={100}
+                  height={50}
+                  className="w-full h-auto"
+                />
+              </LocalizedClientLink>
+              <button
+                onClick={() => toggleNavClass("menu-open", false)}
+                className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                aria-label="Close menu"
+              >
+                <X size={24} className="text-gray-700" />
+              </button>
+            </div>
+
+            {/* Navigation Content */}
+            <div className="flex-1 overflow-y-auto p-6">
+              {/* Search */}
+              <div
+                className="w-full py-3 px-4 bg-gray-100 border-0 rounded-lg flex items-center cursor-pointer text-gray-600 hover:bg-gray-200 transition-colors"
+                onClick={() => {
+                  toggleNavClass("search-open", true)
+                  toggleNavClass("menu-open", false)
+                }}
+              >
+                <Search size={20} className="text-gray-500" />
+                <span className="ml-3 font-medium">Search products...</span>
+              </div>
+
+              {/* Main Navigation */}
+              <div className="mt-8 flex flex-col gap-4">
+                <LocalizedClientLink
+                  href="/"
+                  className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  onClick={() => toggleNavClass("menu-open", false)}
                 >
-                  <X size={24} className="text-gray-700" />
-                </button>
+                  <Home size={20} />
+                  Home
+                </LocalizedClientLink>
+                <LocalizedClientLink
+                  href="/store"
+                  className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  onClick={() => toggleNavClass("menu-open", false)}
+                >
+                  <Store size={20} />
+                  Products
+                </LocalizedClientLink>
+                <LocalizedClientLink
+                  href="/cart"
+                  className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  onClick={() => toggleNavClass("menu-open", false)}
+                >
+                  <ShoppingCart size={20} />
+                  <span>Cart</span>
+                  {totalItems > 0 && (
+                    <span className="ml-auto bg-blue-600 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
+                      {totalItems}
+                    </span>
+                  )}
+                </LocalizedClientLink>
+                <LocalizedClientLink
+                  href="/wishlist"
+                  className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  onClick={() => toggleNavClass("menu-open", false)}
+                >
+                  <Heart size={20} />
+                  <span>Wishlist</span>
+                  {wishlistCount > 0 && (
+                    <span className="ml-auto bg-pink-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
+                      {wishlistCount}
+                    </span>
+                  )}
+                </LocalizedClientLink>
               </div>
-              {/* Mobile Search Input */}
-              <div className="mb-4">
-                <form onSubmit={handleMobileSearch} className="relative">
-                  <input
-                    type="text"
-                    value={mobileSearchTerm}
-                    onChange={(e) => setMobileSearchTerm(e.target.value)}
-                    placeholder="Search products..."
-                    className="w-full py-2 px-4 pl-10 bg-gray-100 border-0 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  />
-                  <Search
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    size={18}
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#262b5f] text-white p-1.5 rounded-md"
+
+              {/* Divider */}
+              <hr className="my-8 border-gray-200" />
+
+              {/* Special Program */}
+              <div className="relative inline-flex items-center justify-center my-2 group w-full">
+                <div className="absolute inset-0 duration-1000 opacity-60 transition-all bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-400 rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200"></div>
+                <LocalizedClientLink
+                  href="/partnership-program"
+                  className="group w-full relative inline-flex items-center justify-center text-base rounded-xl bg-white px-4 py-2 font-semibold text-blue-900 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:shadow-gray-600/30"
+                  onClick={() => toggleNavClass("menu-open", false)}
+                >
+                  Preschool Partnership Program
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 10 10"
+                    height="10"
+                    width="10"
+                    fill="none"
+                    className="mt-0.5 ml-2 -mr-1 stroke-blue-900 stroke-2"
                   >
-                    <ArrowRight size={16} />
-                  </button>
-                </form>
+                    <path
+                      d="M0 5h7"
+                      className="transition opacity-0 group-hover:opacity-100"
+                    ></path>
+                    <path
+                      d="M1 1l4 4-4 4"
+                      className="transition group-hover:translate-x-[3px]"
+                    ></path>
+                  </svg>
+                </LocalizedClientLink>
               </div>
-              {/* Navigation links - in a scrollable container */}
-              <div className="flex-1 overflow-y-auto flex flex-col justify-center">
-                <div className="flex flex-col gap-2 mt-4 items-start pl-10">
-                  <LocalizedClientLink
-                    href="/"
-                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Home
-                  </LocalizedClientLink>
-                  <LocalizedClientLink
-                    href="/store"
-                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Products
-                  </LocalizedClientLink>
-                  <LocalizedClientLink
-                    href="/cart"
-                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors flex items-center gap-2"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <ShoppingCart size={16} />
-                    <span>Cart</span>
-                    {totalItems > 0 && (
-                      <span className="ml-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                        {totalItems}
-                      </span>
-                    )}
-                  </LocalizedClientLink>
-                  <LocalizedClientLink
-                    href="/wishlist"
-                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors flex items-center gap-2"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <Heart size={16} />
-                    <span>Wishlist</span>
-                    {wishlistCount > 0 && (
-                      <span className="ml-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                        {wishlistCount}
-                      </span>
-                    )}
-                  </LocalizedClientLink>
-                  <div className="relative inline-flex items-center justify-center my-2 group">
-                    <div className="absolute inset-0 duration-1000 opacity-60 transition-all bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-400 rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200"></div>
-                    <LocalizedClientLink
-                      href="/partnership-program"
-                      className="group relative inline-flex items-center justify-center text-base rounded-xl bg-white px-4 py-2 font-semibold text-blue-900 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:shadow-gray-600/30"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Preschool Partnership Program
-                      <svg
-                        aria-hidden="true"
-                        viewBox="0 0 10 10"
-                        height="10"
-                        width="10"
-                        fill="none"
-                        className="mt-0.5 ml-2 -mr-1 stroke-blue-900 stroke-2"
-                      >
-                        <path
-                          d="M0 5h7"
-                          className="transition opacity-0 group-hover:opacity-100"
-                        ></path>
-                        <path
-                          d="M1 1l4 4-4 4"
-                          className="transition group-hover:translate-x-[3px]"
-                        ></path>
-                      </svg>
-                    </LocalizedClientLink>
-                  </div>
-                  <LocalizedClientLink
-                    href="/account"
-                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    My account
-                  </LocalizedClientLink>
-                  <LocalizedClientLink
-                    href="/about-us"
-                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    About Us
-                  </LocalizedClientLink>
-                  <LocalizedClientLink
-                    href="/blogs"
-                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Blogs
-                  </LocalizedClientLink>
-                  <LocalizedClientLink
-                    href="/faq"
-                    className="text-base font-semibold text-blue-900 hover:text-blue-600 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    FAQ
-                  </LocalizedClientLink>
-                </div>
+
+              {/* Secondary Navigation */}
+              <div className="mt-8 flex flex-col gap-4">
+                <LocalizedClientLink
+                  href="/account"
+                  className="text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  onClick={() => toggleNavClass("menu-open", false)}
+                >
+                  <User size={20} />
+                  My Account
+                </LocalizedClientLink>
+                <LocalizedClientLink
+                  href="/about-us"
+                  className="text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  onClick={() => toggleNavClass("menu-open", false)}
+                >
+                  <Info size={20} />
+                  About Us
+                </LocalizedClientLink>
+                <LocalizedClientLink
+                  href="/blogs"
+                  className="text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  onClick={() => toggleNavClass("menu-open", false)}
+                >
+                  <Newspaper size={20} />
+                  Blogs
+                </LocalizedClientLink>
+                <LocalizedClientLink
+                  href="/faq"
+                  className="text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  onClick={() => toggleNavClass("menu-open", false)}
+                >
+                  <HelpCircle size={20} />
+                  FAQ
+                </LocalizedClientLink>
               </div>
-              {/* Contact info in the footer - always visible */}
-              <div className="mt-8 mb-8 pt-6 border-t border-gray-100">
-                <div className="flex flex-col items-start gap-4">
-                  <span className="text-2xl font-bold text-blue-900">
-                    +91 9321791644
-                  </span>
-                  <span className="text-xl font-semibold text-blue-900">
-                    support@thejoyjunction.com
-                  </span>
-                </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-6 mt-auto border-t border-gray-200 bg-gray-50">
+              <div className="flex flex-col gap-3 text-center">
+                <a
+                  href="tel:+919321791644"
+                  className="text-base font-medium text-gray-800 hover:text-blue-600 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Phone size={18} />
+                  <span>+91 9321791644</span>
+                </a>
+                <a
+                  href="mailto:support@thejoyjunction.com"
+                  className="text-base font-medium text-gray-800 hover:text-blue-600 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Mail size={18} />
+                  <span>support@thejoyjunction.com</span>
+                </a>
+                <a
+                  href="https://wa.me/919321791644"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-green-500 px-4 py-2 text-white font-semibold shadow-md transition-colors hover:bg-green-600"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 4.315 1.919 6.066l-1.479 5.422 5.57-.924zM12.001 5.805c-.136 0-.273.009-.409.026l-.003.001c-3.313.216-5.955 3.058-5.952 6.379.002 3.522 2.87 6.39 6.392 6.39.001 0 .002 0 .003 0h.001c.353 0 .701-.034 1.043-.101l.003-.001c.317-.062.627-.145.923-.25.295-.104.581-.227.857-.371.277-.144.542-.31.792-.497.25-.187.484-.395.698-.623.216-.227.415-.472.595-.734.18-.262.342-.54.484-.831s.261-.597.354-.907c.093-.31.16-.626.202-.945.042-.319.061-.641.061-.965.002-3.522-2.87-6.39-6.392-6.39z" />
+                  </svg>
+                  <span>Chat on WhatsApp</span>
+                </a>
               </div>
             </div>
           </div>
-        )}
+        </div>
       </nav>
     </>
   )
