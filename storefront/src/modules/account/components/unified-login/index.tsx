@@ -114,7 +114,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
           <h1 className="text-3xl md:text-5xl font-bold text-[#1e1e3f] mb-3 font-baloo tracking-wide leading-tight">
             {isLogin ? "Welcome Back! 👋" : "Join The Joy Junction! 🎈"}
           </h1>
-          <p className="text-gray-600 text-lg md:text-xl font-fredoka max-w-2xl mx-auto">
+          <p className="text-gray-600 text-lg md:text-xl font-fredoka max-w-3xl mx-auto">
             {isLogin
               ? "Sign in to your magical toy box and continue your adventure!"
               : "Create an account and start your joyful journey into our toy wonderland!"}
