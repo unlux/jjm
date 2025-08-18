@@ -25,9 +25,9 @@ export default async function PopularProducts({
     }
 
     return (
-      <div className="pb-12 bg-slate-50">
+      <div className="bg-slate-50">
         <div className="content-container py-12">
-          <div className="flex flex-col items-center text-center mb-16">
+          <div className="flex flex-col items-center text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-center text-[#111827] mb-4 font-baloo tracking-tight">
               Popular in Store
             </h2>
