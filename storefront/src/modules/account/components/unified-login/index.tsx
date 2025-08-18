@@ -107,7 +107,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
   const toggleShowPassword = () => setShowPassword(!showPassword)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 mx-4 px-4">
       <div className="max-w-7xl mx-auto py-8 sm:py-12 px-4">
         {/* TOP TEXT */}
         <div className="text-center mb-10">
