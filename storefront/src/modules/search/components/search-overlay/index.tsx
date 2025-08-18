@@ -1,10 +1,15 @@
 "use client"
 
-import { Hits, InstantSearch, useSearchBox } from "react-instantsearch"
+import {
+  Hits,
+  InstantSearch,
+  useSearchBox,
+  useInstantSearch,
+} from "react-instantsearch"
 import { searchClient } from "@lib/config"
 import Image from "next/image"
 import { X } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
@@ -21,48 +26,79 @@ type HitProps = {
 
 const Hit = ({ hit }: HitProps) => {
   return (
-    <div className="flex flex-row gap-x-2 mt-4 relative">
-      <Image src={hit.thumbnail} alt={hit.title} width={100} height={100} />
-      <div className="flex flex-col gap-y-1">
-        <h3>{hit.title}</h3>
-        <p className="text-sm text-gray-500">{hit.description}</p>
+    <LocalizedClientLink
+      href={`/products/${hit.handle}`}
+      className="group"
+      aria-label={`View Product: ${hit.title}`}
+    >
+      <div className="flex flex-row gap-x-4 p-2 rounded-lg group-hover:bg-gray-100 transition-colors">
+        <div className="relative w-20 h-20 flex-shrink-0">
+          <Image
+            src={hit.thumbnail}
+            alt={hit.title}
+            fill
+            className="object-contain"
+          />
+        </div>
+        <div className="flex flex-col justify-center">
+          <h3 className="text-base font-semibold text-gray-900">{hit.title}</h3>
+          <p className="text-sm text-gray-600">{hit.description}</p>
+        </div>
       </div>
-      <LocalizedClientLink
-        href={`/products/${hit.handle}`}
-        className="absolute right-0 top-0 w-full h-full"
-        aria-label={`View Product: ${hit.title}`}
-      />
-    </div>
+    </LocalizedClientLink>
   )
 }
 
-const useDebounce = <T,>(value: T, delay: number): T => {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value)
+const SkeletonHit = () => (
+  <div className="flex flex-row gap-x-4 p-2">
+    <div className="relative w-20 h-20 flex-shrink-0 bg-gray-200 rounded-md animate-pulse"></div>
+    <div className="flex flex-col justify-center gap-y-2 flex-grow">
+      <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+      <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+    </div>
+  </div>
+)
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value)
-    }, delay)
+const Results = () => {
+  const { status, results } = useInstantSearch()
+  const isLoading = status === "loading" || status === "stalled"
 
-    return () => {
-      clearTimeout(handler)
-    }
-  }, [value, delay])
+  // Show skeleton only on initial search when there are no results yet.
+  if (isLoading && results.nbHits === 0) {
+    return (
+      <div className="flex flex-col gap-y-2">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <SkeletonHit key={index} />
+        ))}
+      </div>
+    )
+  }
 
-  return debouncedValue
+  // Show "no results" message only after a search completes with no hits.
+  if (results.nbHits === 0 && results.query) {
+    return (
+      <div className="text-center py-10">
+        <p className="text-gray-600">
+          No results found for{" "}
+          <span className="font-semibold">"{results.query}"</span>.
+        </p>
+      </div>
+    )
+  }
+
+  return <Hits hitComponent={Hit} />
 }
 
-const DebouncedSearchBox = () => {
+const SearchBox = () => {
   const { refine } = useSearchBox()
   const [inputValue, setInputValue] = useState("")
-  const debouncedInputValue = useDebounce(inputValue, 500)
-
-  useEffect(() => {
-    refine(debouncedInputValue)
-  }, [debouncedInputValue, refine])
+  const isSearchDisabled = !inputValue || inputValue.trim() === ""
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    if (isSearchDisabled) {
+      return
+    }
     refine(inputValue)
   }
 
@@ -71,7 +107,7 @@ const DebouncedSearchBox = () => {
       noValidate
       action=""
       role="search"
-      className="flex gap-2"
+      className="flex items-center gap-x-3"
       onSubmit={handleFormSubmit}
     >
       <input
@@ -79,11 +115,12 @@ const DebouncedSearchBox = () => {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         placeholder="Search for toys, games, flashcards..."
-        className="w-full py-3 px-5 pr-12 bg-gray-100 border-0 rounded-lg focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+        className="w-full py-3 px-5 bg-gray-100 border-0 rounded-lg focus:ring-2 focus:ring-blue-500 placeholder-gray-500 text-gray-900"
       />
       <button
         type="submit"
-        className="px-4 py-3 bg-[#262b5f] hover:bg-[#1e2248] text-white font-medium rounded-lg transition-colors"
+        disabled={isSearchDisabled}
+        className="px-5 py-3 bg-[#262b5f] hover:bg-[#1e2248] text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Search
       </button>
@@ -107,20 +144,32 @@ const categories = [
 const SearchOverlay = ({ onClose }: SearchOverlayProps) => {
   const router = useRouter()
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible group-[.search-open]:opacity-100 group-[.search-open]:visible transition-all duration-300">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col relative animate-scale-in">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors z-10"
-          aria-label="Close search"
-        >
-          <X size={24} className="text-gray-700" />
-        </button>
-        <div className="p-8 flex-grow overflow-y-auto">
+    <div
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible group-[.search-open]/nav:opacity-100 group-[.search-open]/nav:visible transition-opacity duration-300"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose()
+        }
+      }}
+    >
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col relative opacity-0 scale-95 group-[.search-open]/nav:opacity-100 group-[.search-open]/nav:scale-100 transition-all duration-300 ease-out">
+        <div className="p-6 sm:p-8 flex-grow overflow-y-auto">
           <InstantSearch searchClient={searchClient} indexName="products">
-            <DebouncedSearchBox />
-            <div className="mt-6">
-              <h2 className="text-lg font-semibold text-gray-800 mb-2">
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+                Search Our Store
+              </h1>
+              <button
+                onClick={onClose}
+                className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                aria-label="Close search"
+              >
+                <X size={24} className="text-gray-700" />
+              </button>
+            </div>
+            <SearchBox />
+            <div className="mt-8">
+              <h2 className="text-lg font-semibold text-gray-800 mb-3">
                 Popular Searches
               </h2>
               <div className="flex flex-wrap gap-2">
@@ -151,7 +200,7 @@ const SearchOverlay = ({ onClose }: SearchOverlayProps) => {
               </div>
             </div>
             <div className="mt-6">
-              <Hits hitComponent={Hit} />
+              <Results />
             </div>
           </InstantSearch>
         </div>
