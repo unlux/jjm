@@ -34,11 +34,8 @@ const Navbar = ({
   const router = useRouter()
   const { wishlistCount } = useWishlist()
 
-  const toggleNavClass = (className: string, force?: boolean) => {
-    const navElement = document.getElementById("main-nav")
-    if (navElement) {
-      navElement.classList.toggle(className, force)
-    }
+  const toggleBodyClass = (className: string, force?: boolean) => {
+    document.body.classList.toggle(className, force)
   }
 
   const totalItems =
@@ -51,7 +48,7 @@ const Navbar = ({
       <Marquee />
       <nav
         id="main-nav"
-        className="bg-[#1E2A4A] text-white p-4 flex items-center justify-between group"
+        className="bg-[#1E2A4A] text-white p-4 flex items-center justify-between"
       >
         <div className="flex-1 flex justify-start">
           <LocalizedClientLink href="/">
@@ -102,7 +99,7 @@ const Navbar = ({
           </LocalizedClientLink>
           <div
             className="cursor-pointer hover:text-blue-300 transition-colors"
-            onClick={() => toggleNavClass("search-open", true)}
+            onClick={() => toggleBodyClass("search-open", true)}
           >
             <Search size={22} />
           </div>
@@ -113,19 +110,19 @@ const Navbar = ({
           </LocalizedClientLink>
           <div
             className="bg-white text-[#1E2A4A] rounded-full p-1.5 cursor-pointer hover:bg-blue-300 transition-colors"
-            onClick={() => toggleNavClass("menu-open", true)}
+            onClick={() => toggleBodyClass("menu-open", true)}
           >
             <Menu size={20} />
           </div>
         </div>
-        <SearchOverlay onClose={() => toggleNavClass("search-open", false)} />
+        <SearchOverlay onClose={() => toggleBodyClass("search-open", false)} />
         {/* Mobile Menu Overlay */}
         <div
           className="fixed inset-0 backdrop-blur-md bg-white/30 z-50 flex justify-end transition-all duration-300 opacity-0 invisible group-[.menu-open]:opacity-100 group-[.menu-open]:visible"
           onClick={(e) => {
             // Close when clicking outside the menu
             if (e.target === e.currentTarget) {
-              toggleNavClass("menu-open", false)
+              toggleBodyClass("menu-open", false)
             }
           }}
         >
@@ -142,7 +139,7 @@ const Navbar = ({
                 />
               </LocalizedClientLink>
               <button
-                onClick={() => toggleNavClass("menu-open", false)}
+                onClick={() => toggleBodyClass("menu-open", false)}
                 className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
                 aria-label="Close menu"
               >
@@ -156,8 +153,8 @@ const Navbar = ({
               <div
                 className="w-full py-3 px-4 bg-gray-100 border-0 rounded-lg flex items-center cursor-pointer text-gray-600 hover:bg-gray-200 transition-colors"
                 onClick={() => {
-                  toggleNavClass("search-open", true)
-                  toggleNavClass("menu-open", false)
+                  toggleBodyClass("search-open", true)
+                  toggleBodyClass("menu-open", false)
                 }}
               >
                 <Search size={20} className="text-gray-500" />
@@ -169,7 +166,7 @@ const Navbar = ({
                 <LocalizedClientLink
                   href="/"
                   className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
-                  onClick={() => toggleNavClass("menu-open", false)}
+                  onClick={() => toggleBodyClass("menu-open", false)}
                 >
                   <Home size={20} />
                   Home
@@ -177,7 +174,7 @@ const Navbar = ({
                 <LocalizedClientLink
                   href="/store"
                   className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
-                  onClick={() => toggleNavClass("menu-open", false)}
+                  onClick={() => toggleBodyClass("menu-open", false)}
                 >
                   <Store size={20} />
                   Products
@@ -185,7 +182,7 @@ const Navbar = ({
                 <LocalizedClientLink
                   href="/cart"
                   className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
-                  onClick={() => toggleNavClass("menu-open", false)}
+                  onClick={() => toggleBodyClass("menu-open", false)}
                 >
                   <ShoppingCart size={20} />
                   <span>Cart</span>
@@ -198,7 +195,7 @@ const Navbar = ({
                 <LocalizedClientLink
                   href="/wishlist"
                   className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
-                  onClick={() => toggleNavClass("menu-open", false)}
+                  onClick={() => toggleBodyClass("menu-open", false)}
                 >
                   <Heart size={20} />
                   <span>Wishlist</span>
@@ -219,7 +216,7 @@ const Navbar = ({
                 <LocalizedClientLink
                   href="/partnership-program"
                   className="group w-full relative inline-flex items-center justify-center text-base rounded-xl bg-white px-4 py-2 font-semibold text-blue-900 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:shadow-gray-600/30"
-                  onClick={() => toggleNavClass("menu-open", false)}
+                  onClick={() => toggleBodyClass("menu-open", false)}
                 >
                   Preschool Partnership Program
                   <svg
@@ -247,7 +244,7 @@ const Navbar = ({
                 <LocalizedClientLink
                   href="/account"
                   className="text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-3"
-                  onClick={() => toggleNavClass("menu-open", false)}
+                  onClick={() => toggleBodyClass("menu-open", false)}
                 >
                   <User size={20} />
                   My Account
@@ -255,7 +252,7 @@ const Navbar = ({
                 <LocalizedClientLink
                   href="/about-us"
                   className="text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-3"
-                  onClick={() => toggleNavClass("menu-open", false)}
+                  onClick={() => toggleBodyClass("menu-open", false)}
                 >
                   <Info size={20} />
                   About Us
@@ -263,7 +260,7 @@ const Navbar = ({
                 <LocalizedClientLink
                   href="/blogs"
                   className="text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-3"
-                  onClick={() => toggleNavClass("menu-open", false)}
+                  onClick={() => toggleBodyClass("menu-open", false)}
                 >
                   <Newspaper size={20} />
                   Blogs
@@ -271,7 +268,7 @@ const Navbar = ({
                 <LocalizedClientLink
                   href="/faq"
                   className="text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-3"
-                  onClick={() => toggleNavClass("menu-open", false)}
+                  onClick={() => toggleBodyClass("menu-open", false)}
                 >
                   <HelpCircle size={20} />
                   FAQ
