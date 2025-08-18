@@ -65,10 +65,10 @@ export default function CategoriesAndAges() {
     <div className="bg-[#f6f7fa] min-h-screen w-full py-12 px-4">
       {/* CATEGORIES */}
       <div className="text-center items-center flex flex-col mb-10">
-        <p className="font-bold text-gray-600 max-w-lg mx-auto py-3">
+        <p className="font-bold md:text-base text-sm text-gray-600 max-w-lg mx-auto py-3">
           CATEGORIES
         </p>
-        <h2 className="max-w-5xl text-7xl md:text-6xl font-bold text-black mb-2">
+        <h2 className="max-w-5xl text-4xl md:text-6xl font-bold text-black mb-2">
           We design toys not just for kids but with kids
         </h2>
       </div>
@@ -106,10 +106,10 @@ export default function CategoriesAndAges() {
       {/* SHOP BY AGE */}
       <div className="text-center mt-20 mb-6">
         <div className="text-center items-center flex flex-col mb-10">
-          <p className="font-bold text-gray-600 max-w-lg mx-auto py-3">
+          <p className="font-bold md:text-base text-sm text-gray-600 max-w-lg mx-auto py-3">
             Shop By Age
           </p>
-          <h2 className="max-w-6xl text-7xl md:text-6xl font-bold text-black mb-2">
+          <h2 className="max-w-6xl  text-4xl md:text-6xl font-bold text-black mb-2">
             JJ Toys & Games for every stage of childhood development
           </h2>
         </div>
