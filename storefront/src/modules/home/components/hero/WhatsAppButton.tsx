@@ -17,7 +17,7 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
   )}`
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 group-[.menu-open]:hidden">
+    <div className="fixed bottom-6 right-6 z-40 group-[.menu-open]/nav:hidden">
       <Link
         href={whatsappUrl}
         target="_blank"

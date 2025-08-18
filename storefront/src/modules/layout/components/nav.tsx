@@ -118,7 +118,7 @@ const Navbar = ({
         <SearchOverlay onClose={() => toggleBodyClass("search-open", false)} />
         {/* Mobile Menu Overlay */}
         <div
-          className="fixed inset-0 backdrop-blur-md bg-white/30 z-50 flex justify-end transition-all duration-300 opacity-0 invisible group-[.menu-open]:opacity-100 group-[.menu-open]:visible"
+          className="fixed inset-0 backdrop-blur-md bg-white/30 z-50 flex justify-end transition-all duration-300 opacity-0 invisible group-[.menu-open]/nav:opacity-100 group-[.menu-open]/nav:visible"
           onClick={(e) => {
             // Close when clicking outside the menu
             if (e.target === e.currentTarget) {
