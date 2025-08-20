@@ -70,12 +70,12 @@ export default function BlogCarousel() {
   )
 
   return (
-    <section className="bg-white py-20 px-6">
+    <section className="bg-white py-12 sm:py-16 md:py-20 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <p className="uppercase text-sm tracking-widest text-[#262b5f] font-semibold mb-2 text-center font-fredoka">
           Our Blog
         </p>
-        <h2 className="text-4xl font-bold text-center text-[#1e1e3f] mb-6 font-baloo">
+        <h2 className="text-4xl font-bold text-center text-[#1e1e3f] mb-4 font-baloo">
           Latest Updates
         </h2>
         <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12">
@@ -87,7 +87,7 @@ export default function BlogCarousel() {
           {blogs.map((blog, i) => (
             <div key={i} className="keen-slider__slide">
               <Link href={`/blogs/${blog.id}`} className="block h-full">
-                <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group h-[400px] flex flex-col">
+                <div className="bg-white rounded-2xl overflow-hidden transition-all duration-300 group h-[400px] flex flex-col">
                   <div className="relative overflow-hidden">
                     <Image
                       src={blog.image}
@@ -110,28 +110,6 @@ export default function BlogCarousel() {
                     <h3 className="text-lg font-bold text-[#1e1e3f] leading-snug group-hover:text-[#262b5f] transition-colors line-clamp-2 min-h-[3.5rem]">
                       {blog.title}
                     </h3>
-                    <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center">
-                      <span className="text-xs font-medium text-[#262b5f]">
-                        Read more
-                      </span>
-                      <span className="w-8 h-8 rounded-full bg-[#f2f2f7] flex items-center justify-center group-hover:bg-[#262b5f] transition-colors">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="text-[#262b5f] group-hover:text-white transition-colors"
-                        >
-                          <path d="M5 12h14"></path>
-                          <path d="m12 5 7 7-7 7"></path>
-                        </svg>
-                      </span>
-                    </div>
                   </div>
                 </div>
               </Link>

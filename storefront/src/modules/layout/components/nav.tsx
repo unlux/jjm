@@ -173,7 +173,7 @@ const Navbar = ({
         <SearchOverlay onClose={() => toggleBodyClass("search-open", false)} />
         {/* Mobile Menu Overlay */}
         <div
-          className={`fixed inset-0 z-50 flex justify-end transition-all duration-300 ${
+          className={`fixed inset-0 z-50 flex justify-end transition-all duration-300 p-2 md:p-4 ${
             isMenuOpen
               ? "opacity-100 visible backdrop-blur-md bg-black/30"
               : "opacity-0 invisible"
@@ -185,7 +185,7 @@ const Navbar = ({
           }}
         >
           <div
-            className={`bg-white text-gray-800 h-full w-full max-w-sm flex flex-col shadow-2xl transform transition-transform duration-300 ${
+            className={`bg-white text-gray-800 h-full w-full max-w-sm flex flex-col shadow-2xl rounded-xl ring-1 ring-black/5 overflow-hidden transform transition-transform duration-300 ${
               isMenuOpen ? "translate-x-0" : "translate-x-full"
             }`}
           >

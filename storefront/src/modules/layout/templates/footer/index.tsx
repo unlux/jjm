@@ -4,15 +4,15 @@ import Link from "next/link"
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1e2554] text-white py-16 px-6">
+    <footer className="bg-[#181D4E] text-white py-16 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-10">
         {/* Logo */}
         <div className="col-span-1 md:col-span-1 flex flex-col items-center md:items-start">
           <Image
             src="/logo.png"
             alt="The Joy Junction"
-            width={160}
-            height={60}
+            width={200}
+            height={200}
           />
         </div>
 

@@ -62,7 +62,7 @@ export default function CategoriesAndAges() {
   }
 
   return (
-    <div className="bg-[#f6f7fa] min-h-screen flex-1 items-center justify-center w-full py-10 px-4">
+    <div className="bg-[#f6f7fa] flex-1 items-center justify-center w-full py-12 sm:py-16 md:py-20 px-4">
       {/* CATEGORIES */}
       <div className="text-center items-center flex flex-col mb-6">
         <p className="font-bold md:text-base text-sm text-[#181D4E] max-w-lg mx-auto tracking-widest">

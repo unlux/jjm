@@ -5,8 +5,8 @@ import FloatingShowcase from "./FloatingShowcase"
 
 export default function AboutSection() {
   return (
-    <section className="text-[#181D4E] bg-white w-full px-6 md:px-12 py-8 md:py-24 flex flex-col justify-center">
-      <div className="max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-2 gap-10 md:gap-12">
+    <section className="text-[#181D4E] bg-white w-full px-4 sm:px-6 md:px-12 py-10 md:py-24 flex flex-col justify-center">
+      <div className="max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-2 gap-10 md:gap-24">
         {/* Images Section - Stacked on mobile, left side in desktop */}
         <div className="relative w-full flex flex-col items-center md:items-start">
           <FloatingShowcase

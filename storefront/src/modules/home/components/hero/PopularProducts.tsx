@@ -17,7 +17,7 @@ export default async function PopularProducts({
       response: { products },
     } = await listProducts({
       regionId: region.id,
-      queryParams: { limit: 4 },
+      queryParams: { limit: 8 },
     })
 
     if (!products || products.length === 0) {
@@ -25,8 +25,8 @@ export default async function PopularProducts({
     }
 
     return (
-      <div className="bg-slate-50">
-        <div className="content-container py-12">
+      <div className="bg-slate-50 md:py-10">
+        <div className="content-container py-10 sm:py-12">
           <div className="flex flex-col items-center text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-center text-[#111827] mb-4 font-baloo tracking-tight">
               Popular in Store
