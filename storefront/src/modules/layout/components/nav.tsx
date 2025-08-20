@@ -33,6 +33,7 @@ const Navbar = ({
 }) => {
   const router = useRouter()
   const { wishlistCount } = useWishlist()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleBodyClass = (className: string, force?: boolean) => {
     document.body.classList.toggle(className, force)
@@ -46,9 +47,9 @@ const Navbar = ({
   return (
     <>
       <Marquee />
-      <nav id="main-nav" className="bg-[#1E2A4A] text-white">
+      <nav id="main-nav" className="bg-[#181D4E] text-white">
         {/* Desktop Layout */}
-        <div className="hidden md:flex items-center justify-between p-4">
+        <div className="hidden md:flex items-center justify-between p-4 ">
           <div className="flex-1 flex justify-start">
             <LocalizedClientLink href="/">
               <Image src="/logo.png" alt="logo" width={150} height={150} />
@@ -57,25 +58,25 @@ const Navbar = ({
           <div className="flex items-center space-x-6 relative">
             <LocalizedClientLink
               href="/"
-              className="hover:text-blue-300 transition-colors"
+              className="hover:text-blue-300 transition-colors font-semibold"
             >
               Home
             </LocalizedClientLink>
             <LocalizedClientLink
               href="/store"
-              className="hover:text-blue-300 transition-colors"
+              className="hover:text-blue-300 transition-colors font-semibold"
             >
               Store
             </LocalizedClientLink>
             <LocalizedClientLink
               href="/customkit"
-              className="hover:text-blue-300 transition-colors"
+              className="hover:text-blue-300 transition-colors font-semibold"
             >
               Custom Kit
             </LocalizedClientLink>
             <LocalizedClientLink
               href="/contact"
-              className="hover:text-blue-300 transition-colors"
+              className="hover:text-blue-300 transition-colors font-semibold"
             >
               Contact Us
             </LocalizedClientLink>
@@ -106,7 +107,7 @@ const Navbar = ({
             </LocalizedClientLink>
             <div
               className="bg-white text-[#1E2A4A] rounded-full p-1.5 cursor-pointer hover:bg-blue-300 transition-colors"
-              onClick={() => toggleBodyClass("menu-open", true)}
+              onClick={() => setIsMenuOpen(true)}
             >
               <Menu size={20} />
             </div>
@@ -163,7 +164,7 @@ const Navbar = ({
 
             <div
               className="bg-white text-[#1E2A4A] rounded-full p-1.5 cursor-pointer hover:bg-blue-300 transition-colors"
-              onClick={() => toggleBodyClass("menu-open", true)}
+              onClick={() => setIsMenuOpen(true)}
             >
               <Menu size={20} />
             </div>
@@ -172,15 +173,22 @@ const Navbar = ({
         <SearchOverlay onClose={() => toggleBodyClass("search-open", false)} />
         {/* Mobile Menu Overlay */}
         <div
-          className="fixed inset-0 backdrop-blur-md bg-white/30 z-50 flex justify-end transition-all duration-300 opacity-0 invisible group-[.menu-open]/nav:opacity-100 group-[.menu-open]/nav:visible"
+          className={`fixed inset-0 z-50 flex justify-end transition-all duration-300 ${
+            isMenuOpen
+              ? "opacity-100 visible backdrop-blur-md bg-black/30"
+              : "opacity-0 invisible"
+          }`}
           onClick={(e) => {
-            // Close when clicking outside the menu
             if (e.target === e.currentTarget) {
-              toggleBodyClass("menu-open", false)
+              setIsMenuOpen(false)
             }
           }}
         >
-          <div className="bg-white text-gray-800 h-full w-full max-w-sm flex flex-col shadow-2xl">
+          <div
+            className={`bg-white text-gray-800 h-full w-full max-w-sm flex flex-col shadow-2xl transform transition-transform duration-300 ${
+              isMenuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
             {/* Header with Logo and Close button */}
             <div className="flex justify-between items-center p-4 border-b border-gray-200">
               <LocalizedClientLink href="/" className="block w-28">
@@ -193,7 +201,7 @@ const Navbar = ({
                 />
               </LocalizedClientLink>
               <button
-                onClick={() => toggleBodyClass("menu-open", false)}
+                onClick={() => setIsMenuOpen(false)}
                 className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
                 aria-label="Close menu"
               >
@@ -208,7 +216,7 @@ const Navbar = ({
                 className="w-full py-3 px-4 bg-gray-100 border-0 rounded-lg flex items-center cursor-pointer text-gray-600 hover:bg-gray-200 transition-colors"
                 onClick={() => {
                   toggleBodyClass("search-open", true)
-                  toggleBodyClass("menu-open", false)
+                  setIsMenuOpen(false)
                 }}
               >
                 <Search size={20} className="text-gray-500" />
@@ -220,7 +228,7 @@ const Navbar = ({
                 <LocalizedClientLink
                   href="/"
                   className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
-                  onClick={() => toggleBodyClass("menu-open", false)}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   <Home size={20} />
                   Home
@@ -228,7 +236,7 @@ const Navbar = ({
                 <LocalizedClientLink
                   href="/store"
                   className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
-                  onClick={() => toggleBodyClass("menu-open", false)}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   <Store size={20} />
                   Products
@@ -236,7 +244,7 @@ const Navbar = ({
                 <LocalizedClientLink
                   href="/cart"
                   className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
-                  onClick={() => toggleBodyClass("menu-open", false)}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   <ShoppingCart size={20} />
                   <span>Cart</span>
@@ -249,7 +257,7 @@ const Navbar = ({
                 <LocalizedClientLink
                   href="/wishlist"
                   className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
-                  onClick={() => toggleBodyClass("menu-open", false)}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   <Heart size={20} />
                   <span>Wishlist</span>

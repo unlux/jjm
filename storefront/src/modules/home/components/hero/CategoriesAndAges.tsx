@@ -7,22 +7,22 @@ import { ArrowRight } from "lucide-react"
 const categories = [
   {
     title: "Card-Tastic Fun",
-    image: "/category1.jpg",
+    image: "/card-tastic-fun.png",
     slug: "Card-Tastic Fun",
   },
   {
     title: "Flashcard Fun",
-    image: "/category2.jpg",
+    image: "/flashcard-fun.png",
     slug: "Flashcard Fun",
   },
   {
     title: "Kid's Development Games",
-    image: "/category3.jpg",
+    image: "/kids-development-games.png",
     slug: "Kid's Development Games",
   },
   {
     title: "Wooden Wonders",
-    image: "/category4.png",
+    image: "/wooden-wonders.png",
     slug: "Wooden Wonders",
   },
 ]
@@ -30,22 +30,22 @@ const categories = [
 const shopByAge = [
   {
     age: "2-4",
-    image: "/age-2-4.jpg",
+    image: "/age-2-4.png",
     slug: "2-4",
   },
   {
     age: "4-6",
-    image: "/age-4-6.jpg",
+    image: "/age-4-6.png",
     slug: "4-6",
   },
   {
     age: "6-8",
-    image: "/age-6-8.jpg",
+    image: "/age-6-8.png",
     slug: "6-8",
   },
   {
     age: "8+",
-    image: "/age-8-plus.jpg",
+    image: "/age-8-plus.png",
     slug: "8+",
   },
 ]
@@ -62,13 +62,13 @@ export default function CategoriesAndAges() {
   }
 
   return (
-    <div className="bg-[#f6f7fa] min-h-screen w-full py-12 px-4">
+    <div className="bg-[#f6f7fa] min-h-screen flex-1 items-center justify-center w-full py-10 px-4">
       {/* CATEGORIES */}
-      <div className="text-center items-center flex flex-col mb-10">
-        <p className="font-bold md:text-base text-sm text-gray-600 max-w-lg mx-auto py-3">
+      <div className="text-center items-center flex flex-col mb-6">
+        <p className="font-bold md:text-base text-sm text-[#181D4E] max-w-lg mx-auto tracking-widest">
           CATEGORIES
         </p>
-        <h2 className="max-w-5xl text-4xl md:text-6xl font-bold text-black mb-2">
+        <h2 className="max-w-5xl text-[#181D4E] text-3xl md:text-6xl font-bold mb-2 leading-tight">
           We design toys not just for kids but with kids
         </h2>
       </div>
@@ -77,16 +77,16 @@ export default function CategoriesAndAges() {
         {categories.map((cat, i) => (
           <div
             key={i}
-            className="relative group overflow-hidden rounded-xl shadow-md hover:shadow-lg transition cursor-pointer"
+            className="relative group overflow-hidden rounded-2xl  hover:shadow-lg transition cursor-pointer shadow-lg"
             onClick={() => handleCategoryClick(cat.slug)}
           >
-            <div className="overflow-hidden">
+            <div className="shadow-md relative overflow-hidden rounded-2xl">
               <Image
                 src={cat.image}
                 alt={cat.title}
-                width={400}
-                height={300}
-                className="w-full h-60 object-cover group-hover:brightness-75 transition-transform duration-500 group-hover:scale-110"
+                width={500}
+                height={500}
+                className="object-cover group-hover:brightness-75 transition-transform duration-500 group-hover:scale-110 "
               />
             </div>
             {/* Hover Overlay */}
@@ -97,8 +97,8 @@ export default function CategoriesAndAges() {
             </div>
             {/* Label */}
             {/* <div className="absolute inset-x-0 bottom-0 bg-white/80 py-2 text-center font-medium text-gray-800">
-                            {cat.title}
-                        </div> */}
+              {cat.title}
+            </div> */}
           </div>
         ))}
       </div>
@@ -106,10 +106,10 @@ export default function CategoriesAndAges() {
       {/* SHOP BY AGE */}
       <div className="text-center mt-20 mb-6">
         <div className="text-center items-center flex flex-col mb-10">
-          <p className="font-bold md:text-base text-sm text-gray-600 max-w-lg mx-auto py-3">
-            Shop By Age
+          <p className="font-bold md:text-base text-sm text-[#181D4E] max-w-lg mx-auto tracking-widest">
+            SHOP BY AGE
           </p>
-          <h2 className="max-w-6xl  text-4xl md:text-6xl font-bold text-black mb-2">
+          <h2 className="max-w-5xl text-[#181D4E] text-3xl md:text-6xl font-bold mb-2 leading-tight">
             JJ Toys & Games for every stage of childhood development
           </h2>
         </div>
@@ -119,16 +119,16 @@ export default function CategoriesAndAges() {
         {shopByAge.map((item, i) => (
           <div
             key={i}
-            className="relative group overflow-hidden rounded-xl shadow-md hover:shadow-lg transition cursor-pointer"
+            className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition cursor-pointer"
             onClick={() => handleAgeClick(item.slug)}
           >
-            <div className="overflow-hidden">
+            <div className="relative overflow-hidden aspect-[2/1]">
               <Image
                 src={item.image}
                 alt={item.age}
-                width={400}
-                height={300}
-                className="w-full h-60 object-cover group-hover:brightness-75 transition-transform duration-500 group-hover:scale-110"
+                fill
+                sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw"
+                className="object-cover group-hover:brightness-75 transition-transform duration-500 group-hover:scale-110"
               />
             </div>
             {/* Hover Overlay */}

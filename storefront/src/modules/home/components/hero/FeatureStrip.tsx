@@ -5,19 +5,19 @@ import Image from "next/image"
 const features = [
   {
     title: "Crafted by teachers",
-    image: "/ficon1.jpg",
+    image: "/ficon1.png",
   },
   {
     title: "Premium Quality",
-    image: "/ficon2.jpg",
+    image: "/ficon2.png",
   },
   {
     title: "Engaging play",
-    image: "/ficon3.jpg",
+    image: "/ficon3.png",
   },
   {
     title: "Future Support",
-    image: "/ficon4.jpg",
+    image: "/ficon4.png",
   },
 ]
 
