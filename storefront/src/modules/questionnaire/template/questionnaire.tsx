@@ -98,7 +98,7 @@ export default function JoyfulQuestionnaire() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-900 to-blue-800 py-8 px-2">
+    <div className="flex items-center justify-center bg-gradient-to-b from-blue-900 to-blue-800 py-8 px-2">
       <div className="w-full max-w-2xl bg-blue-900/60 backdrop-blur rounded-2xl shadow-2xl p-6 md:p-10 border-4 border-blue-200">
         {/* Header & Progress */}
         <div className="mb-6">

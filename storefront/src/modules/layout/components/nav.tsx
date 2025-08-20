@@ -46,73 +46,127 @@ const Navbar = ({
   return (
     <>
       <Marquee />
-      <nav
-        id="main-nav"
-        className="bg-[#1E2A4A] text-white p-4 flex items-center justify-between"
-      >
-        <div className="flex-1 flex justify-start">
-          <LocalizedClientLink href="/">
-            <Image src="/logo.png" alt="logo" width={100} height={50} />
-          </LocalizedClientLink>
-        </div>
-        <div className="hidden md:flex items-center space-x-6 relative ">
-          <LocalizedClientLink
-            href="/"
-            className="hover:text-blue-300 transition-colors"
-          >
-            Home
-          </LocalizedClientLink>
-          <LocalizedClientLink
-            href="/store"
-            className="hover:text-blue-300 transition-colors"
-          >
-            Store
-          </LocalizedClientLink>
-          <LocalizedClientLink
-            href="/customkit"
-            className="hover:text-blue-300 transition-colors"
-          >
-            Custom Kit
-          </LocalizedClientLink>
-          <LocalizedClientLink
-            href="/contact"
-            className="hover:text-blue-300 transition-colors"
-          >
-            Contact Us
-          </LocalizedClientLink>
-        </div>
-        <div className="flex-1 flex justify-end items-center space-x-5">
-          {/* Replaced the simple cart link with the CartDropdown component */}
-          <div className="hidden sm:block">
+      <nav id="main-nav" className="bg-[#1E2A4A] text-white">
+        {/* Desktop Layout */}
+        <div className="hidden md:flex items-center justify-between p-4">
+          <div className="flex-1 flex justify-start">
+            <LocalizedClientLink href="/">
+              <Image src="/logo.png" alt="logo" width={150} height={150} />
+            </LocalizedClientLink>
+          </div>
+          <div className="flex items-center space-x-6 relative">
+            <LocalizedClientLink
+              href="/"
+              className="hover:text-blue-300 transition-colors"
+            >
+              Home
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/store"
+              className="hover:text-blue-300 transition-colors"
+            >
+              Store
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/customkit"
+              className="hover:text-blue-300 transition-colors"
+            >
+              Custom Kit
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/contact"
+              className="hover:text-blue-300 transition-colors"
+            >
+              Contact Us
+            </LocalizedClientLink>
+          </div>
+          <div className="flex-1 flex justify-end items-center space-x-5">
             <CartDropdown cart={cart as StoreCart} />
-          </div>
-          <LocalizedClientLink
-            href="/wishlist"
-            className="hidden sm:block relative cursor-pointer hover:text-blue-300 transition-colors"
-          >
-            <Heart size={22} />
-            {wishlistCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                {wishlistCount}
-              </span>
-            )}
-          </LocalizedClientLink>
-          <div
-            className="cursor-pointer hover:text-blue-300 transition-colors"
-            onClick={() => toggleBodyClass("search-open", true)}
-          >
-            <Search size={22} />
-          </div>
-          <LocalizedClientLink href="/account">
-            <div className="hidden sm:block cursor-pointer hover:text-blue-300 transition-colors">
-              <User size={22} />
+            <LocalizedClientLink
+              href="/wishlist"
+              className="relative cursor-pointer hover:text-blue-300 transition-colors"
+            >
+              <Heart size={22} />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </LocalizedClientLink>
+            <div
+              className="cursor-pointer hover:text-blue-300 transition-colors"
+              onClick={() => toggleBodyClass("search-open", true)}
+            >
+              <Search size={22} />
             </div>
-          </LocalizedClientLink>
-          <div
-            className="bg-white text-[#1E2A4A] rounded-full p-1.5 cursor-pointer hover:bg-blue-300 transition-colors"
-            onClick={() => toggleBodyClass("menu-open", true)}
-          >
-            <Menu size={20} />
+            <LocalizedClientLink href="/account">
+              <div className="cursor-pointer hover:text-blue-300 transition-colors">
+                <User size={22} />
+              </div>
+            </LocalizedClientLink>
+            <div
+              className="bg-white text-[#1E2A4A] rounded-full p-1.5 cursor-pointer hover:bg-blue-300 transition-colors"
+              onClick={() => toggleBodyClass("menu-open", true)}
+            >
+              <Menu size={20} />
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Layout */}
+        <div className="md:hidden">
+          {/* Logo centered at top */}
+          <div className="flex justify-center p-4">
+            <LocalizedClientLink href="/">
+              <Image src="/logo.png" alt="logo" width={120} height={60} />
+            </LocalizedClientLink>
+          </div>
+
+          {/* Navigation icons centered below logo */}
+          <div className="flex justify-center items-center space-x-6 pb-4">
+            <LocalizedClientLink
+              href="/cart"
+              className="relative cursor-pointer hover:text-blue-300 transition-colors border border-white rounded p-2"
+            >
+              <ShoppingCart size={24} />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </LocalizedClientLink>
+
+            <LocalizedClientLink
+              href="/wishlist"
+              className="relative cursor-pointer hover:text-blue-300 transition-colors"
+            >
+              <Heart size={24} />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </LocalizedClientLink>
+
+            <div
+              className="cursor-pointer hover:text-blue-300 transition-colors"
+              onClick={() => toggleBodyClass("search-open", true)}
+            >
+              <Search size={24} />
+            </div>
+
+            <LocalizedClientLink href="/account">
+              <div className="cursor-pointer hover:text-blue-300 transition-colors">
+                <User size={24} />
+              </div>
+            </LocalizedClientLink>
+
+            <div
+              className="bg-white text-[#1E2A4A] rounded-full p-1.5 cursor-pointer hover:bg-blue-300 transition-colors"
+              onClick={() => toggleBodyClass("menu-open", true)}
+            >
+              <Menu size={20} />
+            </div>
           </div>
         </div>
         <SearchOverlay onClose={() => toggleBodyClass("search-open", false)} />
