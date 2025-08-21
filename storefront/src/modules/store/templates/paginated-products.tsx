@@ -1,4 +1,6 @@
 import { listProductsWithSort } from "@lib/data/products"
+import { getAuthHeaders, getCacheOptions } from "@/lib/data/cookies"
+import { sdk } from "@/lib/config"
 import { getRegion } from "@lib/data/regions"
 import ProductPreview from "@modules/products/components/product-preview"
 import { Pagination } from "@modules/store/components/pagination"
@@ -12,6 +14,7 @@ type PaginatedProductsParams = {
   category_id?: string[]
   id?: string[]
   order?: string
+  tag_id?: string[]
 }
 
 export default async function PaginatedProducts({
@@ -19,6 +22,7 @@ export default async function PaginatedProducts({
   page,
   collectionId,
   categoryId,
+  age,
   productsIds,
   countryCode,
 }: {
@@ -26,6 +30,7 @@ export default async function PaginatedProducts({
   page: number
   collectionId?: string
   categoryId?: string
+  age?: string
   productsIds?: string[]
   countryCode: string
 }) {
@@ -39,6 +44,41 @@ export default async function PaginatedProducts({
 
   if (categoryId) {
     queryParams["category_id"] = [categoryId]
+  }
+
+  // Server-side age filtering by resolving age tag value -> tag id(s), fallback to client filter if not found
+  let ageForClientFilter: string | undefined = undefined
+  if (age) {
+    try {
+      const headers = {
+        ...(await getAuthHeaders()),
+      }
+      const next = {
+        ...(await getCacheOptions("product-tags")),
+      }
+      const tagResp = await sdk.client.fetch<any>(`/store/product-tags`, {
+        method: "GET",
+        query: { value: age, limit: 10 },
+        headers,
+        next,
+        cache: "force-cache",
+      })
+      const tagsArr: any[] =
+        tagResp?.product_tags || tagResp?.tags || tagResp?.data || []
+      const ids = tagsArr
+        .filter(
+          (t) => String(t?.value ?? "").toLowerCase() === age.toLowerCase()
+        )
+        .map((t) => t.id)
+        .filter(Boolean)
+      if (ids.length > 0) {
+        queryParams["tag_id"] = ids as string[]
+      } else {
+        ageForClientFilter = age
+      }
+    } catch (_) {
+      ageForClientFilter = age
+    }
   }
 
   if (productsIds) {
@@ -63,6 +103,18 @@ export default async function PaginatedProducts({
     sortBy,
     countryCode,
   })
+
+  // Fallback client-side filtering if we couldn't resolve tag ids above
+  if (ageForClientFilter) {
+    const filtered = products.filter((p) =>
+      (p.tags || []).some(
+        (t) =>
+          (t.value || "").toLowerCase() === ageForClientFilter!.toLowerCase()
+      )
+    )
+    count = filtered.length
+    products = filtered
+  }
 
   const totalPages = Math.ceil(count / PRODUCT_LIMIT)
 

@@ -11,11 +11,13 @@ const StoreTemplate = ({
   page,
   countryCode,
   categoryId,
+  age,
 }: {
   sortBy?: SortOptions
   page?: string
   countryCode: string
   categoryId?: string
+  age?: string
 }) => {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
@@ -35,6 +37,7 @@ const StoreTemplate = ({
             sortBy={sort}
             page={pageNumber}
             categoryId={categoryId}
+            age={age}
             countryCode={countryCode}
           />
         </Suspense>
