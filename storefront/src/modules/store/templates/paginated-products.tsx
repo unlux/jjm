@@ -21,16 +21,16 @@ export default async function PaginatedProducts({
   sortBy,
   page,
   collectionId,
-  categoryId,
-  age,
+  categoryIds,
+  ages,
   productsIds,
   countryCode,
 }: {
   sortBy?: SortOptions
   page: number
   collectionId?: string
-  categoryId?: string
-  age?: string
+  categoryIds?: string[]
+  ages?: string[]
   productsIds?: string[]
   countryCode: string
 }) {
@@ -42,13 +42,13 @@ export default async function PaginatedProducts({
     queryParams["collection_id"] = [collectionId]
   }
 
-  if (categoryId) {
-    queryParams["category_id"] = [categoryId]
+  if (categoryIds && categoryIds.length) {
+    queryParams["category_id"] = categoryIds
   }
 
-  // Server-side age filtering by resolving age tag value -> tag id(s), fallback to client filter if not found
-  let ageForClientFilter: string | undefined = undefined
-  if (age) {
+  // Server-side age filtering: resolve age tag value -> tag id(s); fallback to client filter if not found
+  let agesForClientFilter: string[] = []
+  if (ages && ages.length) {
     try {
       const headers = {
         ...(await getAuthHeaders()),
@@ -56,28 +56,35 @@ export default async function PaginatedProducts({
       const next = {
         ...(await getCacheOptions("product-tags")),
       }
-      const tagResp = await sdk.client.fetch<any>(`/store/product-tags`, {
-        method: "GET",
-        query: { value: age, limit: 10 },
-        headers,
-        next,
-        cache: "force-cache",
-      })
-      const tagsArr: any[] =
-        tagResp?.product_tags || tagResp?.tags || tagResp?.data || []
-      const ids = tagsArr
-        .filter(
-          (t) => String(t?.value ?? "").toLowerCase() === age.toLowerCase()
-        )
-        .map((t) => t.id)
-        .filter(Boolean)
-      if (ids.length > 0) {
-        queryParams["tag_id"] = ids as string[]
-      } else {
-        ageForClientFilter = age
+      // Resolve all age values to tag ids
+      const allIds: string[] = []
+      for (const age of ages) {
+        const tagResp = await sdk.client.fetch<any>(`/store/product-tags`, {
+          method: "GET",
+          query: { value: age, limit: 10 },
+          headers,
+          next,
+          cache: "force-cache",
+        })
+        const tagsArr: any[] =
+          tagResp?.product_tags || tagResp?.tags || tagResp?.data || []
+        const ids = tagsArr
+          .filter(
+            (t) => String(t?.value ?? "").toLowerCase() === age.toLowerCase()
+          )
+          .map((t) => t.id)
+          .filter(Boolean)
+        if (ids.length > 0) {
+          allIds.push(...(ids as string[]))
+        } else {
+          agesForClientFilter.push(age)
+        }
+      }
+      if (allIds.length) {
+        queryParams["tag_id"] = allIds
       }
     } catch (_) {
-      ageForClientFilter = age
+      agesForClientFilter = ages
     }
   }
 
@@ -104,14 +111,13 @@ export default async function PaginatedProducts({
     countryCode,
   })
 
-  // Fallback client-side filtering if we couldn't resolve tag ids above
-  if (ageForClientFilter) {
-    const filtered = products.filter((p) =>
-      (p.tags || []).some(
-        (t) =>
-          (t.value || "").toLowerCase() === ageForClientFilter!.toLowerCase()
-      )
-    )
+  // Enforce AND semantics for ages (client-side guard only for unresolved values)
+  if (agesForClientFilter.length) {
+    const lowered = agesForClientFilter.map((a) => a.toLowerCase())
+    const filtered = products.filter((p) => {
+      const values = (p.tags || []).map((t) => (t.value || "").toLowerCase())
+      return lowered.every((v) => values.includes(v))
+    })
     count = filtered.length
     products = filtered
   }

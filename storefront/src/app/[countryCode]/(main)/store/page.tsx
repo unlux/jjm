@@ -14,8 +14,8 @@ type Params = {
   searchParams: Promise<{
     sortBy?: SortOptions
     page?: string
-    categoryId?: string
-    age?: string
+    categoryId?: string | string[]
+    age?: string | string[]
     category?: string
   }>
   params: Promise<{
@@ -28,7 +28,14 @@ export default async function StorePage(props: Params) {
   const searchParams = await props.searchParams
   const { sortBy, page, categoryId, age, category } = searchParams
 
-  let resolvedCategoryId = categoryId
+  const categoryIds: string[] = Array.isArray(categoryId)
+    ? categoryId
+    : categoryId
+    ? [categoryId]
+    : []
+  const ages: string[] = Array.isArray(age) ? age : age ? [age] : []
+
+  let resolvedCategoryId = categoryIds[0]
   if (!resolvedCategoryId && category) {
     // Resolve a category name (or handle-like string) to its ID
     try {
@@ -81,8 +88,8 @@ export default async function StorePage(props: Params) {
     <StoreTemplate
       sortBy={sortBy}
       page={page}
-      categoryId={resolvedCategoryId}
-      age={age}
+      categoryIds={resolvedCategoryId ? [resolvedCategoryId] : categoryIds}
+      ages={ages}
       countryCode={params.countryCode}
     />
   )

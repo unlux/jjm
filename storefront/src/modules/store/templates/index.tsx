@@ -10,14 +10,14 @@ const StoreTemplate = ({
   sortBy,
   page,
   countryCode,
-  categoryId,
-  age,
+  categoryIds,
+  ages,
 }: {
   sortBy?: SortOptions
   page?: string
   countryCode: string
-  categoryId?: string
-  age?: string
+  categoryIds?: string[]
+  ages?: string[]
 }) => {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
@@ -42,8 +42,8 @@ const StoreTemplate = ({
           <PaginatedProducts
             sortBy={sort}
             page={pageNumber}
-            categoryId={categoryId}
-            age={age}
+            categoryIds={categoryIds}
+            ages={ages}
             countryCode={countryCode}
           />
         </Suspense>
