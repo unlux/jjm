@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { sdk } from "@/lib/config"
+import { listStoreCategoriesCached } from "@/lib/data/categories"
 import { HttpTypes } from "@medusajs/types"
 
 export default function CategoryFilter({
@@ -25,16 +25,15 @@ export default function CategoryFilter({
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    let isMounted = true
-    sdk.store.category
-      .list({ limit: 50 })
-      .then(({ product_categories }) => {
-        if (!isMounted) return
-        setCategories(product_categories || [])
+    let mounted = true
+    listStoreCategoriesCached()
+      .then(({ categories: data }) => {
+        if (!mounted) return
+        setCategories(data || [])
       })
-      .finally(() => isMounted && setLoading(false))
+      .finally(() => mounted && setLoading(false))
     return () => {
-      isMounted = false
+      mounted = false
     }
   }, [])
 
