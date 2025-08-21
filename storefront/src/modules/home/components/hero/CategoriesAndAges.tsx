@@ -1,31 +1,12 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { ArrowRight } from "lucide-react"
+import { homeCategories } from "./categories.config"
 
-const categories = [
-  {
-    title: "Card-Tastic Fun",
-    image: "/card-tastic-fun.png",
-    slug: "Card-Tastic Fun",
-  },
-  {
-    title: "Flashcard Fun",
-    image: "/flashcard-fun.png",
-    slug: "Flashcard Fun",
-  },
-  {
-    title: "Kid's Development Games",
-    image: "/kids-development-games.png",
-    slug: "Kid's Development Games",
-  },
-  {
-    title: "Wooden Wonders",
-    image: "/wooden-wonders.png",
-    slug: "Wooden Wonders",
-  },
-]
+const categories = homeCategories
 
 const shopByAge = [
   {
@@ -50,7 +31,11 @@ const shopByAge = [
   },
 ]
 
-export default function CategoriesAndAges() {
+type Props = {
+  resolvedCategoryIds?: Record<string, string>
+}
+
+export default function CategoriesAndAges({ resolvedCategoryIds = {} }: Props) {
   const router = useRouter()
 
   const handleCategoryClick = (category: string) => {
@@ -75,10 +60,14 @@ export default function CategoriesAndAges() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl  mx-auto">
         {categories.map((cat, i) => (
-          <div
+          <Link
+            href={
+              resolvedCategoryIds[cat.handle]
+                ? `/store?categoryId=${resolvedCategoryIds[cat.handle]}`
+                : `/store?category=${encodeURIComponent(cat.handle)}`
+            }
             key={i}
-            className="relative group overflow-hidden rounded-2xl  hover:shadow-lg transition cursor-pointer shadow-lg"
-            onClick={() => handleCategoryClick(cat.slug)}
+            className="relative group overflow-hidden rounded-2xl hover:shadow-lg transition cursor-pointer shadow-lg"
           >
             <div className="shadow-md relative overflow-hidden rounded-2xl">
               <Image
@@ -99,7 +88,7 @@ export default function CategoriesAndAges() {
             {/* <div className="absolute inset-x-0 bottom-0 bg-white/80 py-2 text-center font-medium text-gray-800">
               {cat.title}
             </div> */}
-          </div>
+          </Link>
         ))}
       </div>
 
@@ -117,10 +106,10 @@ export default function CategoriesAndAges() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
         {shopByAge.map((item, i) => (
-          <div
+          <Link
+            href={`/store?age=${encodeURIComponent(item.slug)}`}
             key={i}
             className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition cursor-pointer"
-            onClick={() => handleAgeClick(item.slug)}
           >
             <div className="relative overflow-hidden aspect-[2/1]">
               <Image
@@ -141,7 +130,7 @@ export default function CategoriesAndAges() {
             {/* <div className="absolute inset-x-0 bottom-0 bg-white/80 py-2 text-center font-medium text-gray-800">
                             Ages {item.age}
                         </div> */}
-          </div>
+          </Link>
         ))}
       </div>
     </div>
