@@ -1,7 +1,8 @@
 "use client"
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useEffect, useState } from "react"
+import { createPortal } from "react-dom"
 
 import SortProducts, { SortOptions } from "./sort-products"
 import CategoryFilter from "./category-filter"
@@ -20,6 +21,8 @@ const RefinementList = ({
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileTriggerTarget, setMobileTriggerTarget] =
+    useState<HTMLElement | null>(null)
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -67,17 +70,37 @@ const RefinementList = ({
     router.push(`${pathname}?${params.toString()}`)
   }
 
+  useEffect(() => {
+    const el =
+      typeof window !== "undefined"
+        ? document.getElementById("mobile-filters-trigger")
+        : null
+    setMobileTriggerTarget(el as HTMLElement | null)
+  }, [])
+
   return (
     <>
-      {/* Mobile trigger */}
-      <div className="small:hidden mb-4 pl-6">
-        <button
-          className="inline-flex items-center gap-2 rounded-md bg-ui-bg-base px-3 py-2 text-ui-fg-subtle ring-1 ring-ui-border-base hover:text-ui-fg-base hover:bg-ui-bg-subtle"
-          onClick={() => setMobileOpen(true)}
-        >
-          <span>Filters</span>
-        </button>
-      </div>
+      {/* Mobile trigger: portal into heading area if target exists; fallback below */}
+      {mobileTriggerTarget ? (
+        createPortal(
+          <button
+            className="inline-flex items-center gap-2 rounded-md bg-ui-bg-base px-3 py-2 ring-1 ring-ui-border-base hover:text-ui-fg-base hover:bg-ui-bg-subtle"
+            onClick={() => setMobileOpen(true)}
+          >
+            <span className="">Filters</span>
+          </button>,
+          mobileTriggerTarget
+        )
+      ) : (
+        <div className="small:hidden mb-4 flex justify-center">
+          <button
+            className="inline-flex items-center gap-2 rounded-md bg-ui-bg-base px-3 py-2 text-ui-fg-subtle ring-1 ring-ui-border-base hover:text-ui-fg-base hover:bg-ui-bg-subtle"
+            onClick={() => setMobileOpen(true)}
+          >
+            <span className="">Filters</span>
+          </button>
+        </div>
+      )}
 
       {/* Desktop sidebar */}
       <div
@@ -107,7 +130,7 @@ const RefinementList = ({
             if (e.target === e.currentTarget) setMobileOpen(false)
           }}
         >
-          <div className="h-full w-4/5 max-w-xs bg-white shadow-2xl p-4 overflow-y-auto transform transition-transform duration-300 translate-x-0">
+          <div className="h-full w-4/5 max-w-xs bg-white shadow-2xl pl-8 p-4 overflow-y-auto transform transition-transform duration-300 translate-x-0">
             <div className="flex justify-between items-center mb-4">
               <h2 className="txt-compact-small-plus text-ui-fg-subtle">
                 Filters
