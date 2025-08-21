@@ -42,6 +42,7 @@ export default function SearchModal() {
         <InstantSearch
           searchClient={searchClient}
           indexName={process.env.NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME}
+          future={{ preserveSharedStateOnUnmount: true }}
         >
           <SearchBox className="w-full [&_input]:w-[94%] [&_input]:outline-none [&_button]:w-[3%]" />
           <Hits hitComponent={Hit} />
