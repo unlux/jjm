@@ -4,7 +4,9 @@ export default async function productUpdatedHandler({
   event: { data },
 }: SubscriberArgs<{ id: string }>) {
   // send request to next.js storefront to revalidate cache
-  await fetch(`${process.env.STOREFRONT_URL}/api/revalidate?tags=products`);
+  await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/revalidate?tags=products`
+  );
 }
 
 export const config: SubscriberConfig = {
