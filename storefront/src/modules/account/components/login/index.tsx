@@ -9,6 +9,7 @@ import { login, transferCart } from "@lib/data/customer"
 import Button from "@modules/common/components/button"
 import { Google } from "@medusajs/icons"
 import { sdk } from "@lib/config"
+import Spinner from "@modules/common/icons/spinner"
 import {
   getCacheTag,
   revalidateCustomerCache,
@@ -23,6 +24,7 @@ const Login = ({ setCurrentView }: Props) => {
   const [message, formAction] = useActionState(login, null)
   const [code, setCode] = useState<string | null>(null)
   const [state, setState] = useState<string | null>(null)
+  const [isExchanging, setIsExchanging] = useState(false)
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
@@ -31,6 +33,7 @@ const Login = ({ setCurrentView }: Props) => {
     setCode(code)
     setState(state)
     if (code) {
+      setIsExchanging(true)
       sdk.auth
         .callback("customer", "custom-google", {
           code: code,
@@ -42,6 +45,7 @@ const Login = ({ setCurrentView }: Props) => {
           await revalidateCustomerCache(cacheTag)
           await transferCart()
         })
+        .finally(() => setIsExchanging(false))
     }
   }, [])
 
@@ -77,6 +81,12 @@ const Login = ({ setCurrentView }: Props) => {
       className="max-w-sm w-full h-full flex flex-col justify-center gap-6 my-auto"
       data-testid="login-page"
     >
+      {isExchanging && (
+        <div className="flex items-center gap-2 p-3 rounded-md bg-neutral-100 text-neutral-900">
+          <Spinner />
+          <span>Signing you in with Google…</span>
+        </div>
+      )}
       <Text className="text-4xl text-neutral-950 text-left">
         Log in for faster
         <br />
@@ -84,6 +94,18 @@ const Login = ({ setCurrentView }: Props) => {
       </Text>
       <form className="w-full" action={formAction}>
         <div className="flex flex-col w-full gap-y-2">
+          <Button
+            data-testid="sign-in-button"
+            className="w-full"
+            onClick={loginWithGoogle}
+          >
+            <Text className="text-neutral-950 text-base-regular">
+              Log in with
+            </Text>
+            <Google className="w-4 h-4 mr-2" />
+            <Text className="text-neutral-950 text-base-regular">Google</Text>
+          </Button>
+          <div className="flex flex-col gap-2 w-full border-b border-neutral-200 my-6" />
           <Input
             label="Email"
             name="email"
@@ -114,17 +136,6 @@ const Login = ({ setCurrentView }: Props) => {
           <SubmitButton data-testid="sign-in-button" className="w-full mt-6">
             Log in
           </SubmitButton>
-          <Button
-            data-testid="sign-in-button"
-            className="w-full"
-            onClick={loginWithGoogle}
-          >
-            <Text className="text-neutral-950 text-base-regular">
-              Log in with
-            </Text>
-            <Google className="w-4 h-4 mr-2" />
-            <Text className="text-neutral-950 text-base-regular">Google</Text>
-          </Button>
           <Button
             variant="secondary"
             onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}

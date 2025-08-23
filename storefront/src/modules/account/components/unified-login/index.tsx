@@ -14,6 +14,7 @@ import { login, signup, transferCart } from "@lib/data/customer"
 import Button from "@modules/common/components/button"
 import { Google } from "@medusajs/icons"
 import { sdk } from "@lib/config"
+import Spinner from "@modules/common/icons/spinner"
 import {
   getCacheTag,
   revalidateCustomerCache,
@@ -30,6 +31,7 @@ type Props = {
 const AccountPage = ({ setCurrentView, currentView }: Props) => {
   const [isLogin, setIsLogin] = useState(currentView === LOGIN_VIEW.SIGN_IN)
   const [showPassword, setShowPassword] = useState(false)
+  const [isExchanging, setIsExchanging] = useState(false)
 
   const [loginMessage, loginAction] = useActionState(login, null)
   const [signupMessage, signupAction] = useActionState(signup, null)
@@ -56,6 +58,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
     const code = urlParams.get("code")
     const state = urlParams.get("state")
     if (code) {
+      setIsExchanging(true)
       sdk.auth
         .callback("customer", "custom-google", {
           code: code,
@@ -70,6 +73,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
         .catch((error) => {
           console.error("Error during Google authentication callback:", error)
         })
+        .finally(() => setIsExchanging(false))
     }
   }, [])
 
@@ -150,7 +154,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
 
                   <div className="absolute bottom-0 right-0 w-72 h-72 opacity-20 animate-float">
                     <Image
-                      src="/category1.jpg"
+                      src="/category1.png"
                       alt="Toy illustration"
                       width={300}
                       height={300}
@@ -194,6 +198,32 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                 {isLogin ? (
                   <form action={loginAction}>
                     <div className="space-y-5">
+                      <div className="mt-0">
+                        <button
+                          type="button"
+                          onClick={loginWithGoogle}
+                          className="w-full py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#262b5f] flex items-center justify-center gap-2"
+                        >
+                          <Google />
+                          Continue with Google
+                        </button>
+                      </div>
+                      <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                          <div className="w-full border-t border-gray-200"></div>
+                        </div>
+                        <div className="relative flex justify-center">
+                          <span className="px-4 bg-white text-sm text-gray-500">
+                            Or sign in with email
+                          </span>
+                        </div>
+                      </div>
+                      {isExchanging && (
+                        <div className="flex items-center gap-2 p-3 rounded-md bg-neutral-100 text-neutral-900">
+                          <Spinner />
+                          <span>Signing you in with Google…</span>
+                        </div>
+                      )}
                       <div>
                         <label
                           htmlFor="email"
@@ -291,6 +321,26 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                       value={formData.password}
                     />
                     <div className="space-y-5">
+                      <div className="mt-0">
+                        <button
+                          type="button"
+                          onClick={loginWithGoogle}
+                          className="w-full py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#262b5f] flex items-center justify-center gap-2"
+                        >
+                          <Google />
+                          Continue with Google
+                        </button>
+                      </div>
+                      <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                          <div className="w-full border-t border-gray-200"></div>
+                        </div>
+                        <div className="relative flex justify-center">
+                          <span className="px-4 bg-white text-sm text-gray-500">
+                            Or sign up with email
+                          </span>
+                        </div>
+                      </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
                           <label
@@ -463,29 +513,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                   </form>
                 )}
 
-                <div className="mt-8">
-                  <div className="relative">
-                    <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-gray-200"></div>
-                    </div>
-                    <div className="relative flex justify-center">
-                      <span className="px-4 bg-white text-sm text-gray-500">
-                        Or continue with
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="mt-6">
-                    <button
-                      type="button"
-                      onClick={loginWithGoogle}
-                      className="w-full py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#262b5f] flex items-center justify-center gap-2"
-                    >
-                      <Google />
-                      Continue with Google
-                    </button>
-                  </div>
-                </div>
+                {/* Removed bottom Google button; moved above email */}
 
                 <div className="mt-8 text-center text-sm">
                   <p className="text-gray-600">
