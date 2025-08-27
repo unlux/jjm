@@ -127,7 +127,8 @@ module.exports = defineConfig({
             id: "razorpay",
             options: {
               key_id:
-                process?.env?.RAZORPAY_TEST_KEY_ID ?? process?.env?.RAZORPAY_ID,
+                process?.env?.RAZORPAY_TEST_KEY_ID ??
+                process?.env?.RAZORPAY_KEY_ID,
               key_secret:
                 process?.env?.RAZORPAY_TEST_KEY_SECRET ??
                 process?.env?.RAZORPAY_SECRET,
