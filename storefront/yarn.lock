@@ -878,7 +878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/types@npm:2.8.8, @medusajs/types@npm:^2.8.8":
+"@medusajs/types@npm:2.8.8":
   version: 2.8.8
   resolution: "@medusajs/types@npm:2.8.8"
   dependencies:
@@ -893,6 +893,24 @@ __metadata:
     vite:
       optional: true
   checksum: e96b816adc35cea2d412c7da3bbdbbc976c2f55004684d968cac6c7e9bc317c603790a649b02dae5b7c82341cfeea168eb12bd17e1092ded8d8f68d5b012afda
+  languageName: node
+  linkType: hard
+
+"@medusajs/types@npm:^2.9":
+  version: 2.9.0
+  resolution: "@medusajs/types@npm:2.9.0"
+  dependencies:
+    bignumber.js: ^9.1.2
+  peerDependencies:
+    awilix: ^8.0.1
+    ioredis: ^5.4.1
+    vite: ^5 || ^6
+  peerDependenciesMeta:
+    ioredis:
+      optional: true
+    vite:
+      optional: true
+  checksum: d11d510818fe84d260bf2585c7b048fb4ae9aea50ebd433c023326e49c57f9015e5c0c53cef1fef29461ab268ace5a7cf7870f51194cdd901de846de0ca12b5f
   languageName: node
   linkType: hard
 
@@ -9430,7 +9448,7 @@ __metadata:
     "@babel/core": ^7.17.5
     "@headlessui/react": ^2.2.0
     "@medusajs/js-sdk": latest
-    "@medusajs/types": ^2.8.8
+    "@medusajs/types": ^2.9
     "@medusajs/ui": latest
     "@medusajs/ui-preset": latest
     "@radix-ui/react-accordion": ^1.2.1
