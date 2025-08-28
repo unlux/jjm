@@ -12,7 +12,7 @@ export const homeCategories: HomeCategory[] = [
   },
   {
     title: "Flashcard Fun",
-    image: "/flashcard-fun.png",
+    image: "/Flashcards.png",
     handle: "flashcard-fun",
   },
   {
