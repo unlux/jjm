@@ -1,7 +1,4 @@
-"use server"
-
 import "server-only"
-
 import { cookies as nextCookies } from "next/headers"
 import { revalidateTag } from "next/cache"
 
@@ -12,12 +9,12 @@ export const getAuthHeaders = async (): Promise<
     const cookies = await nextCookies()
     const token = cookies.get("_medusa_jwt")?.value
 
-    if (token) {
-      return { authorization: `Bearer ${token}` }
+    if (!token) {
+      return {}
     }
 
-    return {}
-  } catch (error) {
+    return { authorization: `Bearer ${token}` }
+  } catch {
     return {}
   }
 }
@@ -55,7 +52,6 @@ export const getCacheOptions = async (
 
 export const setAuthToken = async (token: string) => {
   const cookies = await nextCookies()
-
   cookies.set("_medusa_jwt", token, {
     maxAge: 60 * 60 * 24 * 7,
     httpOnly: true,
@@ -66,13 +62,13 @@ export const setAuthToken = async (token: string) => {
 
 export const removeAuthToken = async () => {
   const cookies = await nextCookies()
-
-  cookies.delete("_medusa_jwt")
+  cookies.set("_medusa_jwt", "", {
+    maxAge: -1,
+  })
 }
 
 export const getCartId = async () => {
   const cookies = await nextCookies()
-
   return cookies.get("_medusa_cart_id")?.value
 }
 
