@@ -1,11 +1,11 @@
 "use client"
 
+import { blogs } from "@/apna-data/blogs"
 import "keen-slider/keen-slider.min.css"
 import { useKeenSlider } from "keen-slider/react"
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
-import { blogs } from "./blogs"
 
 export default function BlogCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0)

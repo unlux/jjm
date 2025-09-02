@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { ArrowRight } from "lucide-react"
-import { homeCategories } from "./categories.config"
+import { homeCategories } from "@/apna-context/categories.config"
 
 const categories = homeCategories
 
