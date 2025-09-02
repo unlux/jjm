@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useActionState } from "react"
+import React, { useEffect, useActionState } from "react";
 
 import Input from "@modules/common/components/input"
 
@@ -12,7 +12,7 @@ type MyInformationProps = {
   customer: HttpTypes.StoreCustomer
 }
 
-const ProfilePhone: React.FC<MyInformationProps> = ({ customer }) => {
+const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false)
 
   const updateCustomerPhone = async (
@@ -59,14 +59,11 @@ const ProfilePhone: React.FC<MyInformationProps> = ({ customer }) => {
           <Input
             label="Phone"
             name="phone"
-            type="tel"
-            autoComplete="tel"
+            type="phone"
+            autoComplete="phone"
             required
             defaultValue={customer.phone ?? ""}
             data-testid="phone-input"
-            pattern="[0-9]{10}"
-            title="Phone number must be 10 digits."
-            maxLength={10}
           />
         </div>
       </AccountInfo>
@@ -74,4 +71,4 @@ const ProfilePhone: React.FC<MyInformationProps> = ({ customer }) => {
   )
 }
 
-export default ProfilePhone
+export default ProfileEmail
