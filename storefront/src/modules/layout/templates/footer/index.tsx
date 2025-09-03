@@ -1,8 +1,15 @@
 import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Link from "next/link"
+import { listCategories } from "@lib/data/categories"
+import ShopCategoriesAccordion from "./shop-categories-accordion"
 
-export default function Footer() {
+export default async function Footer() {
+  const productCategories = await listCategories()
+  const topLevelCategories = (productCategories || []).filter(
+    (c: any) => !c?.parent_category
+  )
+
   return (
     <footer className="bg-[#181D4E] text-white py-16 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-10">
@@ -30,9 +37,8 @@ export default function Footer() {
               <LocalizedClientLink href="/">Home</LocalizedClientLink>
             </li>
             <li>
-              <LocalizedClientLink href="/store">Shop →</LocalizedClientLink>
+              <ShopCategoriesAccordion categories={topLevelCategories as any} />
             </li>
-            <li></li>
             <li>
               <LocalizedClientLink href="/customkit">
                 Custom Kit
@@ -127,7 +133,7 @@ export default function Footer() {
                 <input
                   type="checkbox"
                   id="privacy-checkbox"
-                  className="appearance-none w-4 h-4 border border-gray-400 rounded-sm bg-transparent checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition-colors"
+                  className="peer appearance-none w-4 h-4 border border-gray-400 rounded-sm bg-transparent checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition-colors"
                 />
                 <svg
                   className="absolute w-3 h-3 text-white pointer-events-none opacity-0 peer-checked:opacity-100 left-0.5 top-0.5"
