@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation"
-import { useState, Suspense } from "react"
+import { useEffect, useState, Suspense } from "react"
 import {
   Menu,
   ShoppingCart,
@@ -24,6 +24,10 @@ import Marquee from "./Marquee"
 import SearchOverlay from "@modules/search/components/search-overlay"
 import CartDropdown from "@modules/layout/components/cart-dropdown"
 import { StoreCart } from "@medusajs/types"
+import ShopCategoriesAccordion, {
+  type Category as FooterCategory,
+} from "../templates/footer/shop-categories-accordion"
+import { sdk } from "@/lib/config"
 
 // The Navbar now accepts the cart as a prop
 const Navbar = ({
@@ -34,6 +38,8 @@ const Navbar = ({
   const router = useRouter()
   const { wishlistCount } = useWishlist()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [categories, setCategories] = useState<FooterCategory[] | null>(null)
+  const [isLoadingCats, setIsLoadingCats] = useState(false)
 
   const toggleBodyClass = (className: string, force?: boolean) => {
     document.body.classList.toggle(className, force)
@@ -44,6 +50,34 @@ const Navbar = ({
       (acc: number, item: { quantity: number }) => acc + item.quantity,
       0
     ) || 0
+
+  // Lazy-load categories when opening the sidebar
+  useEffect(() => {
+    if (!isMenuOpen || categories || isLoadingCats) return
+    const load = async () => {
+      try {
+        setIsLoadingCats(true)
+        const { product_categories } = await sdk.client.fetch<{
+          product_categories: any[]
+        }>("/store/product-categories", {
+          method: "GET",
+          query: {
+            limit: 100,
+            fields: "id,name,handle,parent_category,category_children",
+          },
+        })
+        const tops = (product_categories || []).filter(
+          (c: any) => !c?.parent_category
+        )
+        setCategories(tops as FooterCategory[])
+      } catch (e) {
+        // no-op; keep menu working even if categories fail
+      } finally {
+        setIsLoadingCats(false)
+      }
+    }
+    load()
+  }, [isMenuOpen, categories, isLoadingCats])
   return (
     <>
       <Marquee />
@@ -123,11 +157,28 @@ const Navbar = ({
             </LocalizedClientLink>
           </div>
 
-          {/* Navigation icons centered below logo */}
-          <div className="flex justify-center items-center space-x-6 pb-4">
+          {/* Navigation icons: Shop, Search, Cart, Account, Sidebar */}
+          <div className="flex justify-center items-center gap-5 pb-4">
+            <LocalizedClientLink
+              href="/store"
+              className="cursor-pointer hover:text-blue-300 transition-colors"
+              aria-label="Shop"
+            >
+              <Store size={24} />
+            </LocalizedClientLink>
+
+            <button
+              className="cursor-pointer hover:text-blue-300 transition-colors"
+              aria-label="Search"
+              onClick={() => toggleBodyClass("search-open", true)}
+            >
+              <Search size={24} />
+            </button>
+
             <LocalizedClientLink
               href="/cart"
-              className="relative cursor-pointer hover:text-blue-300 transition-colors border border-white rounded p-2"
+              className="relative cursor-pointer hover:text-blue-300 transition-colors"
+              aria-label="Cart"
             >
               <ShoppingCart size={24} />
               {totalItems > 0 && (
@@ -137,37 +188,19 @@ const Navbar = ({
               )}
             </LocalizedClientLink>
 
-            <LocalizedClientLink
-              href="/wishlist"
-              className="relative cursor-pointer hover:text-blue-300 transition-colors"
-            >
-              <Heart size={24} />
-              {wishlistCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {wishlistCount}
-                </span>
-              )}
-            </LocalizedClientLink>
-
-            <div
-              className="cursor-pointer hover:text-blue-300 transition-colors"
-              onClick={() => toggleBodyClass("search-open", true)}
-            >
-              <Search size={24} />
-            </div>
-
-            <LocalizedClientLink href="/account">
+            <LocalizedClientLink href="/account" aria-label="Account">
               <div className="cursor-pointer hover:text-blue-300 transition-colors">
                 <User size={24} />
               </div>
             </LocalizedClientLink>
 
-            <div
+            <button
               className="bg-white text-[#1E2A4A] rounded-full p-1.5 cursor-pointer hover:bg-blue-300 transition-colors"
               onClick={() => setIsMenuOpen(true)}
+              aria-label="Open sidebar"
             >
               <Menu size={20} />
-            </div>
+            </button>
           </div>
         </div>
         <SearchOverlay onClose={() => toggleBodyClass("search-open", false)} />
@@ -185,7 +218,7 @@ const Navbar = ({
           }}
         >
           <div
-            className={`bg-white text-gray-800 h-full w-full max-w-sm flex flex-col shadow-2xl rounded-xl ring-1 ring-black/5 overflow-hidden transform transition-transform duration-300 ${
+            className={`bg-white text-gray-800 h-full w-full max-w-sm flex flex-col min-h-0 shadow-2xl rounded-xl ring-1 ring-black/5 overflow-hidden transform transition-transform duration-300 ${
               isMenuOpen ? "translate-x-0" : "translate-x-full"
             }`}
           >
@@ -209,8 +242,8 @@ const Navbar = ({
               </button>
             </div>
 
-            {/* Navigation Content */}
-            <div className="flex-1 overflow-y-auto p-6">
+            {/* Navigation Content (scrollable) */}
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-6 py-5 md:p-6">
               {/* Search */}
               <div
                 className="w-full py-3 px-4 bg-gray-100 border-0 rounded-lg flex items-center cursor-pointer text-gray-600 hover:bg-gray-200 transition-colors"
@@ -220,49 +253,56 @@ const Navbar = ({
                 }}
               >
                 <Search size={20} className="text-gray-500" />
-                <span className="ml-3 font-medium">Search products...</span>
+                <span className="ml-3 text-sm md:text-base font-medium">
+                  Search products...
+                </span>
               </div>
 
               {/* Main Navigation */}
-              <div className="mt-8 flex flex-col gap-4">
+              <div className="mt-4 md:mt-6 flex flex-col gap-4 md:gap-4">
                 <LocalizedClientLink
                   href="/"
-                  className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  className="text-base md:text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-2.5 md:gap-3"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <Home size={20} />
+                  <Home size={18} className="md:h-5 md:w-5" />
                   Home
                 </LocalizedClientLink>
-                <LocalizedClientLink
-                  href="/store"
-                  className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Store size={20} />
-                  Products
-                </LocalizedClientLink>
+                {/* Replace Products link with flush accordion */}
+                {categories && categories.length > 0 ? (
+                  <ShopCategoriesAccordion
+                    categories={categories}
+                    appearance="light"
+                    variant="list"
+                    className="w-full"
+                  />
+                ) : (
+                  <div className="text-xs md:text-sm text-gray-500">
+                    {isLoadingCats ? "Loading..." : ""}
+                  </div>
+                )}
                 <LocalizedClientLink
                   href="/cart"
-                  className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  className="text-base md:text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-2.5 md:gap-3"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <ShoppingCart size={20} />
+                  <ShoppingCart size={18} className="md:h-5 md:w-5" />
                   <span>Cart</span>
                   {totalItems > 0 && (
-                    <span className="ml-auto bg-blue-600 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
+                    <span className="ml-auto bg-blue-600 text-white text-[10px] md:text-xs font-bold rounded-full h-5 w-5 md:h-6 md:w-6 flex items-center justify-center">
                       {totalItems}
                     </span>
                   )}
                 </LocalizedClientLink>
                 <LocalizedClientLink
                   href="/wishlist"
-                  className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  className="text-base md:text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-2.5 md:gap-3"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <Heart size={20} />
+                  <Heart size={18} className="md:h-5 md:w-5" />
                   <span>Wishlist</span>
                   {wishlistCount > 0 && (
-                    <span className="ml-auto bg-pink-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
+                    <span className="ml-auto bg-pink-500 text-white text-[10px] md:text-xs font-bold rounded-full h-5 w-5 md:h-6 md:w-6 flex items-center justify-center">
                       {wishlistCount}
                     </span>
                   )}
@@ -270,14 +310,14 @@ const Navbar = ({
               </div>
 
               {/* Divider */}
-              <hr className="my-8 border-gray-200" />
+              <hr className="my-4 md:my-5 border-gray-200" />
 
               {/* Special Program */}
-              <div className="relative inline-flex items-center justify-center my-2 group w-full">
+              <div className="relative inline-flex items-center justify-center my-2 md:my-2 group w-full">
                 <div className="absolute inset-0 duration-1000 opacity-60 transition-all bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-400 rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200"></div>
                 <LocalizedClientLink
                   href="/partnership-program"
-                  className="group w-full relative inline-flex items-center justify-center text-base rounded-xl bg-white px-4 py-2 font-semibold text-blue-900 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:shadow-gray-600/30"
+                  className="group w-full relative inline-flex items-center justify-center text-sm md:text-base rounded-xl bg-white px-3.5 md:px-4 py-2 font-semibold text-blue-900 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:shadow-gray-600/30"
                   onClick={() => toggleBodyClass("menu-open", false)}
                 >
                   Preschool Partnership Program
@@ -302,44 +342,44 @@ const Navbar = ({
               </div>
 
               {/* Secondary Navigation */}
-              <div className="mt-8 flex flex-col gap-4">
+              <div className="mt-6 md:mt-8 flex flex-col gap-4 md:gap-5">
                 <LocalizedClientLink
                   href="/account"
-                  className="text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  className="text-sm md:text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-2.5 md:gap-3"
                   onClick={() => toggleBodyClass("menu-open", false)}
                 >
-                  <User size={20} />
+                  <User size={18} className="md:h-5 md:w-5" />
                   My Account
                 </LocalizedClientLink>
                 <LocalizedClientLink
                   href="/about-us"
-                  className="text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  className="text-sm md:text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-2.5 md:gap-3"
                   onClick={() => toggleBodyClass("menu-open", false)}
                 >
-                  <Info size={20} />
+                  <Info size={18} className="md:h-5 md:w-5" />
                   About Us
                 </LocalizedClientLink>
                 <LocalizedClientLink
                   href="/blogs"
-                  className="text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  className="text-sm md:text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-2.5 md:gap-3"
                   onClick={() => toggleBodyClass("menu-open", false)}
                 >
-                  <Newspaper size={20} />
+                  <Newspaper size={18} className="md:h-5 md:w-5" />
                   Blogs
                 </LocalizedClientLink>
                 <LocalizedClientLink
                   href="/faq"
-                  className="text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-3"
+                  className="text-sm md:text-base text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-2.5 md:gap-3"
                   onClick={() => toggleBodyClass("menu-open", false)}
                 >
-                  <HelpCircle size={20} />
+                  <HelpCircle size={18} className="md:h-5 md:w-5" />
                   FAQ
                 </LocalizedClientLink>
               </div>
             </div>
 
-            {/* Footer */}
-            <div className="p-6 mt-auto border-t border-gray-200 bg-gray-50">
+            {/* Footer (pinned) */}
+            <div className="p-6 border-t border-gray-200 bg-gray-50">
               <div className="flex flex-col gap-3 text-center">
                 <a
                   href="tel:+919321791644"

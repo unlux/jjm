@@ -22,116 +22,209 @@ type Props = {
   title?: string
   categories: Category[]
   defaultOpen?: boolean
+  // Visual appearance: footer uses dark; sidebar uses light
+  appearance?: "dark" | "light"
+  // Layout variant: 'card' (with bordered content) or 'list' (flush, no border)
+  variant?: "card" | "list"
+  // Optional wrapper class
+  className?: string
 }
 
 export default function ShopCategoriesAccordion({
   title = "Shop by Categories",
   categories,
   defaultOpen = false,
+  appearance = "dark",
+  variant = "card",
+  className,
 }: Props) {
+  const isLight = appearance === "light"
   const ageGroups = [
     { label: "2-4", value: "2-4" },
     { label: "4-6", value: "4-6" },
     { label: "6-8", value: "6-8" },
     { label: "8+", value: "8+" },
   ]
+
+  const itemBorder = isLight ? "border-gray-200" : "border-white/10"
+  const triggerText = isLight ? "text-gray-900" : "text-white"
+  const chevronColor = isLight ? "text-gray-500" : "text-gray-300"
+  const focusRing = isLight
+    ? "focus-visible:ring-gray-300"
+    : "focus-visible:ring-white/30"
+  const contentBorder = isLight ? "border-gray-200" : "border-white/15"
+  const listText = isLight ? "text-gray-700" : "text-gray-300"
+  const childListText = isLight ? "text-gray-500" : "text-gray-400"
+  const iconColor = "text-gray-400"
+
+  const triggerSizing =
+    variant === "list" ? "text-base md:text-lg" : "text-base"
+  const listSizing =
+    variant === "list" ? "text-sm md:text-base" : "text-sm md:text-base"
+
+  const contentWrap =
+    variant === "list"
+      ? "mt-1 pl-1 pr-1 pt-1 pb-2 md:pl-0 md:pr-0"
+      : cn("mt-2 border rounded-md pl-3 pr-2 pt-2 pb-2", contentBorder)
+
+  const contentAnim =
+    "overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+
+  const listContainer =
+    variant === "list"
+      ? "mt-1 space-y-2.5"
+      : "mt-1 space-y-2 max-h-64 overflow-auto pr-1"
+
   return (
-    <AccordionPrimitive.Root
-      type="single"
-      collapsible
-      defaultValue={defaultOpen ? "item-1" : undefined}
-    >
-      <AccordionPrimitive.Item
-        value="item-1"
-        className="border-b border-white/10 last:border-b-0"
+    <div className={className}>
+      <AccordionPrimitive.Root
+        type="single"
+        collapsible
+        defaultValue={defaultOpen ? "item-1" : undefined}
       >
-        <AccordionPrimitive.Header className="flex">
-          <AccordionPrimitive.Trigger
-            className={cn(
-              "flex flex-1 items-center justify-between gap-2 py-2 text-left font-semibold text-white outline-none transition-all",
-              "focus-visible:ring-2 focus-visible:ring-white/30 rounded-md"
-            )}
-          >
-            <span>{title}</span>
-            <ChevronDownIcon className="size-4 shrink-0 text-gray-300 transition-transform duration-200 data-[state=open]:rotate-180" />
-          </AccordionPrimitive.Trigger>
-        </AccordionPrimitive.Header>
-        <AccordionPrimitive.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-          <div className="mt-2 border border-white/15 rounded-md pl-3 pr-2 pt-2 pb-2">
-            <ul className="mt-1 space-y-2 text-gray-300 max-h-64 overflow-auto pr-1">
-              {categories.map((cat) => (
-                <li key={cat.id}>
-                  <LocalizedClientLink
-                    href={`/categories/${cat.handle}`}
-                    className="group inline-flex min-w-0 items-start justify-start gap-1 w-auto whitespace-normal"
-                  >
-                    <span className="leading-snug">{cat.name}</span>
-                    <span className="relative inline-flex h-4 w-4 shrink-0 translate-y-0.5">
-                      <ArrowUpRightMini className="absolute inset-0 text-gray-400 transition-opacity duration-150 ease-in-out opacity-100 group-hover:opacity-0" />
-                      <ArrowRightMini className="absolute inset-0 text-gray-400 transition-opacity duration-150 ease-in-out opacity-0 group-hover:opacity-100" />
-                    </span>
-                  </LocalizedClientLink>
-                  {Array.isArray(cat.category_children) &&
-                    cat.category_children.length > 0 && (
-                      <ul className="mt-1 ml-3 space-y-1 text-gray-400">
-                        {cat.category_children.map((child) => (
-                          <li key={child.id}>
-                            <LocalizedClientLink
-                              href={`/categories/${child.handle}`}
-                              className="group inline-flex min-w-0 items-start justify-start gap-1 w-auto whitespace-normal"
-                            >
-                              <span className="leading-snug">{child.name}</span>
-                              <span className="relative inline-flex h-4 w-4 shrink-0 translate-y-0.5">
-                                <ArrowUpRightMini className="absolute inset-0 text-gray-400 transition-opacity duration-150 ease-in-out opacity-100 group-hover:opacity-0" />
-                                <ArrowRightMini className="absolute inset-0 text-gray-400 transition-opacity duration-150 ease-in-out opacity-0 group-hover:opacity-100" />
-                              </span>
-                            </LocalizedClientLink>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </AccordionPrimitive.Content>
-      </AccordionPrimitive.Item>
-      <AccordionPrimitive.Item
-        value="item-2"
-        className="border-b border-white/10 last:border-b-0"
-      >
-        <AccordionPrimitive.Header className="flex">
-          <AccordionPrimitive.Trigger
-            className={cn(
-              "flex flex-1 items-center justify-between gap-2 py-2 text-left font-semibold text-white outline-none transition-all",
-              "focus-visible:ring-2 focus-visible:ring-white/30 rounded-md"
-            )}
-          >
-            <span>Shop by Age</span>
-            <ChevronDownIcon className="size-4 shrink-0 text-gray-300 transition-transform duration-200 data-[state=open]:rotate-180" />
-          </AccordionPrimitive.Trigger>
-        </AccordionPrimitive.Header>
-        <AccordionPrimitive.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-          <div className="mt-2 border border-white/15 rounded-md pl-3 pr-2 pt-2 pb-2">
-            <ul className="mt-1 space-y-2 text-gray-300">
-              {ageGroups.map((age) => (
-                <li key={age.value}>
-                  <LocalizedClientLink
-                    href={`/store?age=${encodeURIComponent(age.value)}`}
-                    className="group inline-flex min-w-0 items-start justify-start gap-1 w-auto whitespace-normal"
-                  >
-                    <span className="leading-snug">{age.label}</span>
-                    <span className="relative inline-flex h-4 w-4 shrink-0 translate-y-0.5">
-                      <ArrowUpRightMini className="absolute inset-0 text-gray-400 transition-opacity duration-150 ease-in-out opacity-100 group-hover:opacity-0" />
-                      <ArrowRightMini className="absolute inset-0 text-gray-400 transition-opacity duration-150 ease-in-out opacity-0 group-hover:opacity-100" />
-                    </span>
-                  </LocalizedClientLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </AccordionPrimitive.Content>
-      </AccordionPrimitive.Item>
-    </AccordionPrimitive.Root>
+        <AccordionPrimitive.Item
+          value="item-1"
+          className={cn("border-b last:border-b-0", itemBorder)}
+        >
+          <AccordionPrimitive.Header className="flex">
+            <AccordionPrimitive.Trigger
+              className={cn(
+                "flex flex-1 items-center justify-between gap-2 py-2 px-1 md:px-0 text-left font-semibold outline-none transition-all",
+                triggerSizing,
+                triggerText,
+                "focus-visible:ring-2 rounded-md",
+                focusRing
+              )}
+            >
+              <span>{title}</span>
+              <ChevronDownIcon
+                className={cn(
+                  "size-4 shrink-0 transition-transform duration-200 data-[state=open]:rotate-180",
+                  chevronColor
+                )}
+              />
+            </AccordionPrimitive.Trigger>
+          </AccordionPrimitive.Header>
+          <AccordionPrimitive.Content className={contentAnim}>
+            <div className={contentWrap}>
+              <ul className={cn(listContainer, listSizing, listText)}>
+                {categories.map((cat) => (
+                  <li key={cat.id}>
+                    <LocalizedClientLink
+                      href={`/categories/${cat.handle}`}
+                      className="group inline-flex min-w-0 items-start justify-start gap-1 w-auto whitespace-normal"
+                    >
+                      <span className="leading-snug">{cat.name}</span>
+                      <span className="relative inline-flex h-4 w-4 shrink-0 translate-y-0.5">
+                        <ArrowUpRightMini
+                          className={cn(
+                            "absolute inset-0 transition-opacity duration-150 ease-in-out opacity-100 group-hover:opacity-0",
+                            iconColor
+                          )}
+                        />
+                        <ArrowRightMini
+                          className={cn(
+                            "absolute inset-0 transition-opacity duration-150 ease-in-out opacity-0 group-hover:opacity-100",
+                            iconColor
+                          )}
+                        />
+                      </span>
+                    </LocalizedClientLink>
+                    {Array.isArray(cat.category_children) &&
+                      cat.category_children.length > 0 && (
+                        <ul
+                          className={cn("mt-1 ml-3 space-y-1", childListText)}
+                        >
+                          {cat.category_children.map((child) => (
+                            <li key={child.id}>
+                              <LocalizedClientLink
+                                href={`/categories/${child.handle}`}
+                                className="group inline-flex min-w-0 items-start justify-start gap-1 w-auto whitespace-normal"
+                              >
+                                <span className="leading-snug">
+                                  {child.name}
+                                </span>
+                                <span className="relative inline-flex h-4 w-4 shrink-0 translate-y-0.5">
+                                  <ArrowUpRightMini
+                                    className={cn(
+                                      "absolute inset-0 transition-opacity duration-150 ease-in-out opacity-100 group-hover:opacity-0",
+                                      iconColor
+                                    )}
+                                  />
+                                  <ArrowRightMini
+                                    className={cn(
+                                      "absolute inset-0 transition-opacity duration-150 ease-in-out opacity-0 group-hover:opacity-100",
+                                      iconColor
+                                    )}
+                                  />
+                                </span>
+                              </LocalizedClientLink>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </AccordionPrimitive.Content>
+        </AccordionPrimitive.Item>
+
+        <AccordionPrimitive.Item
+          value="item-2"
+          className={cn("border-b last:border-b-0", itemBorder)}
+        >
+          <AccordionPrimitive.Header className="flex">
+            <AccordionPrimitive.Trigger
+              className={cn(
+                "flex flex-1 items-center justify-between gap-2 py-2 text-left font-semibold outline-none transition-all",
+                triggerSizing,
+                triggerText,
+                "focus-visible:ring-2 rounded-md",
+                focusRing
+              )}
+            >
+              <span>Shop by Age</span>
+              <ChevronDownIcon
+                className={cn(
+                  "size-4 shrink-0 transition-transform duration-200 data-[state=open]:rotate-180",
+                  chevronColor
+                )}
+              />
+            </AccordionPrimitive.Trigger>
+          </AccordionPrimitive.Header>
+          <AccordionPrimitive.Content className={contentAnim}>
+            <div className={contentWrap}>
+              <ul className={cn("mt-1 space-y-2", listSizing, listText)}>
+                {ageGroups.map((age) => (
+                  <li key={age.value}>
+                    <LocalizedClientLink
+                      href={`/store?age=${encodeURIComponent(age.value)}`}
+                      className="group inline-flex min-w-0 items-start justify-start gap-1 w-auto whitespace-normal"
+                    >
+                      <span className="leading-snug">{age.label}</span>
+                      <span className="relative inline-flex h-4 w-4 shrink-0 translate-y-0.5">
+                        <ArrowUpRightMini
+                          className={cn(
+                            "absolute inset-0 transition-opacity duration-150 ease-in-out opacity-100 group-hover:opacity-0",
+                            iconColor
+                          )}
+                        />
+                        <ArrowRightMini
+                          className={cn(
+                            "absolute inset-0 transition-opacity duration-150 ease-in-out opacity-0 group-hover:opacity-100",
+                            iconColor
+                          )}
+                        />
+                      </span>
+                    </LocalizedClientLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </AccordionPrimitive.Content>
+        </AccordionPrimitive.Item>
+      </AccordionPrimitive.Root>
+    </div>
   )
 }
