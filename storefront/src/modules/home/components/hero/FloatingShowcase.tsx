@@ -52,7 +52,7 @@ export default function FloatingShowcase({
 
   return (
     <div
-      className={`relative w-full mx-auto ${className}`.trim()}
+      className={`relative w-full mx-auto overflow-x-hidden ${className}`.trim()}
       style={{ maxWidth: mainImageWidth }}
     >
       {/* Main image */}
