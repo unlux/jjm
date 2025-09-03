@@ -6,6 +6,11 @@ export type HomeCategory = {
 
 export const homeCategories: HomeCategory[] = [
   {
+    title: "Wooden Wonders",
+    image: "/wooden-wonders.png",
+    handle: "wooden-wonders",
+  },
+  {
     title: "Card-Tastic Fun",
     image: "/card-tastic-fun.png",
     handle: "card-tastic-fun",
@@ -19,10 +24,5 @@ export const homeCategories: HomeCategory[] = [
     title: "Kid's Development Games",
     image: "/kids-development-games.png",
     handle: "kids-development-games",
-  },
-  {
-    title: "Wooden Wonders",
-    image: "/wooden-wonders.png",
-    handle: "wooden-wonders",
   },
 ]

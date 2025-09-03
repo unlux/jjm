@@ -111,7 +111,7 @@ export default function ShopCategoriesAccordion({
                 {categories.map((cat) => (
                   <li key={cat.id}>
                     <LocalizedClientLink
-                      href={`/categories/${cat.handle}`}
+                      href={`/store?category=${cat.handle}`}
                       className="group inline-flex min-w-0 items-start justify-start gap-1 w-auto whitespace-normal"
                     >
                       <span className="leading-snug">{cat.name}</span>

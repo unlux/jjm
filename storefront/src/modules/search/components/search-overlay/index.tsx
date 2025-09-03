@@ -223,7 +223,7 @@ const SearchOverlay = ({ onClose }: SearchOverlayProps) => {
                     <button
                       key={cat.id}
                       onClick={() => {
-                        router.push(`/categories/${cat.handle}`)
+                        router.push(`/store?category=${cat.handle}`)
                         onClose()
                       }}
                       className="px-3 py-1.5 bg-green-100 text-green-800 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
