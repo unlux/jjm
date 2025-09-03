@@ -1,7 +1,5 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { listStoreCategoriesCached } from "@/lib/data/categories"
 import { HttpTypes } from "@medusajs/types"
 
 export default function CategoryFilter({
@@ -11,6 +9,7 @@ export default function CategoryFilter({
   clearAll,
   clearCategory,
   clearAge,
+  categories = [],
 }: {
   setQueryParams: (name: string, value: string) => void
   selectedCategoryId?: string
@@ -18,24 +17,9 @@ export default function CategoryFilter({
   clearAll?: () => void
   clearCategory?: () => void
   clearAge?: () => void
+  categories?: HttpTypes.StoreProductCategory[]
 }) {
-  const [categories, setCategories] = useState<
-    HttpTypes.StoreProductCategory[]
-  >([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    let mounted = true
-    listStoreCategoriesCached()
-      .then(({ categories: data }) => {
-        if (!mounted) return
-        setCategories(data || [])
-      })
-      .finally(() => mounted && setLoading(false))
-    return () => {
-      mounted = false
-    }
-  }, [])
+  // Categories are now provided from the server and passed down as props
 
   const ageGroups = [
     { label: "2-4", value: "2-4" },

@@ -6,16 +6,19 @@ import { createPortal } from "react-dom"
 
 import SortProducts, { SortOptions } from "./sort-products"
 import CategoryFilter from "./category-filter"
+import { HttpTypes } from "@medusajs/types"
 
 type RefinementListProps = {
   sortBy: SortOptions
   search?: boolean
   "data-testid"?: string
+  categories?: HttpTypes.StoreProductCategory[]
 }
 
 const RefinementList = ({
   sortBy,
   "data-testid": dataTestId,
+  categories,
 }: RefinementListProps) => {
   const router = useRouter()
   const pathname = usePathname()
@@ -119,6 +122,7 @@ const RefinementList = ({
           clearAll={clearAll}
           clearCategory={clearCategory}
           clearAge={clearAge}
+          categories={categories}
         />
       </div>
 
@@ -158,6 +162,7 @@ const RefinementList = ({
                 }}
                 clearCategory={clearCategory}
                 clearAge={clearAge}
+                categories={categories}
               />
             </div>
           </div>
