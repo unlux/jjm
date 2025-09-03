@@ -32,13 +32,20 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
         className="content-container flex flex-col small:flex-row small:items-start py-6 relative"
         data-testid="product-container"
       >
+        {/* Product Info - Left Sidebar */}
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
           <ProductInfo product={product} />
           <ProductTabs product={product} />
         </div>
-        <div className="block w-full relative">
-          <ImageGallery images={product?.images || []} />
+
+        {/* Image Gallery - Middle Content (Scrollable) */}
+        <div className="flex-1 w-full">
+          <div className="block w-full relative">
+            <ImageGallery images={product?.images || []} />
+          </div>
         </div>
+
+        {/* Product Actions - Right Sidebar */}
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
           <ProductOnboardingCta />
           <Suspense
