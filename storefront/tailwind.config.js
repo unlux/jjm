@@ -47,7 +47,7 @@ module.exports = {
         "8xl": "100rem",
       },
       screens: {
-        "2xsmall": "320px",
+        "2xsmall": "480px",
         xsmall: "512px",
         small: "1024px",
         medium: "1280px",
