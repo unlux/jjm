@@ -1,20 +1,9 @@
-"use client"
-import { MouseEventHandler, useActionState, useEffect, useState } from "react"
+import { login } from "@lib/data/customer"
 import { LOGIN_VIEW } from "@modules/account/templates/login-template"
-import { Checkbox, Text } from "@medusajs/ui"
-import Input from "@modules/common/components/input"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
-import { login, transferCart } from "@lib/data/customer"
-import Button from "@modules/common/components/button"
-import { Google } from "@medusajs/icons"
-import { sdk } from "@lib/config"
-import Spinner from "@modules/common/icons/spinner"
-import {
-  getCacheTag,
-  revalidateCustomerCache,
-  setAuthToken,
-} from "@lib/data/cookies"
+import Input from "@modules/common/components/input"
+import { useActionState } from "react"
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
@@ -22,90 +11,18 @@ type Props = {
 
 const Login = ({ setCurrentView }: Props) => {
   const [message, formAction] = useActionState(login, null)
-  const [code, setCode] = useState<string | null>(null)
-  const [state, setState] = useState<string | null>(null)
-  const [isExchanging, setIsExchanging] = useState(false)
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const code = urlParams.get("code")
-    const state = urlParams.get("state")
-    setCode(code)
-    setState(state)
-    if (code) {
-      setIsExchanging(true)
-      sdk.auth
-        .callback("customer", "custom-google", {
-          code: code,
-          state: state,
-        })
-        .then(async (token) => {
-          setAuthToken(token as string)
-          const cacheTag = await getCacheTag("customers")
-          await revalidateCustomerCache(cacheTag)
-          await transferCart()
-        })
-        .finally(() => setIsExchanging(false))
-    }
-  }, [])
-
-  const loginWithGoogle = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault()
-    try {
-      const result = await fetch(
-        `${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/auth/customer/google`,
-        {
-          credentials: "include",
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      ).then((res) => res.json())
-
-      if (result.location) {
-        // redirect to Google for authentication
-        window.location.href = result.location
-        return
-      }
-    } catch (error) {
-      console.error("Error during login with Google:", error)
-    }
-  }
 
   return (
     <div
-      className="max-w-sm w-full h-full flex flex-col justify-center gap-6 my-auto"
+      className="max-w-sm w-full flex flex-col items-center"
       data-testid="login-page"
     >
-      {isExchanging && (
-        <div className="flex items-center gap-2 p-3 rounded-md bg-neutral-100 text-neutral-900">
-          <Spinner />
-          <span>Signing you in with Google…</span>
-        </div>
-      )}
-      <Text className="text-4xl text-neutral-950 text-left">
-        Log in for faster
-        <br />
-        checkout.
-      </Text>
+      <h1 className="text-large-semi uppercase mb-6">Welcome back</h1>
+      <p className="text-center text-base-regular text-ui-fg-base mb-8">
+        Sign in to access an enhanced shopping experience.
+      </p>
       <form className="w-full" action={formAction}>
         <div className="flex flex-col w-full gap-y-2">
-          <Button
-            data-testid="sign-in-button"
-            className="w-full"
-            onClick={loginWithGoogle}
-          >
-            <Text className="text-neutral-950 text-base-regular">
-              Log in with
-            </Text>
-            <Google className="w-4 h-4 mr-2" />
-            <Text className="text-neutral-950 text-base-regular">Google</Text>
-          </Button>
-          <div className="flex flex-col gap-2 w-full border-b border-neutral-200 my-6" />
           <Input
             label="Email"
             name="email"
@@ -123,29 +40,23 @@ const Login = ({ setCurrentView }: Props) => {
             required
             data-testid="password-input"
           />
-          <div className="flex flex-col gap-2 w-full border-b border-neutral-200 my-6" />
-          <div className="flex items-center gap-2">
-            <Checkbox name="remember_me" data-testid="remember-me-checkbox" />
-            <Text className="text-neutral-950 text-base-regular">
-              Remember me
-            </Text>
-          </div>
         </div>
         <ErrorMessage error={message} data-testid="login-error-message" />
-        <div className="flex flex-col gap-2">
-          <SubmitButton data-testid="sign-in-button" className="w-full mt-6">
-            Log in
-          </SubmitButton>
-          <Button
-            variant="secondary"
-            onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
-            className="w-full h-10"
-            data-testid="register-button"
-          >
-            Register
-          </Button>
-        </div>
+        <SubmitButton data-testid="sign-in-button" className="w-full mt-6">
+          Sign in
+        </SubmitButton>
       </form>
+      <span className="text-center text-ui-fg-base text-small-regular mt-6">
+        Not a member?{" "}
+        <button
+          onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
+          className="underline"
+          data-testid="register-button"
+        >
+          Join us
+        </button>
+        .
+      </span>
     </div>
   )
 }

@@ -154,7 +154,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
 
                   <div className="absolute bottom-0 right-0 w-72 h-72 opacity-20 animate-float">
                     <Image
-                      src="/category1.png"
+                      src="/card-tastic-fun.png"
                       alt="Toy illustration"
                       width={300}
                       height={300}
