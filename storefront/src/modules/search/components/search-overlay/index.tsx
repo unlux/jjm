@@ -12,6 +12,10 @@ import { X } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import {
+  homeCategories,
+  type HomeCategory,
+} from "@/apna-context/categories.config"
 import { sdk } from "@/lib/config"
 
 type HitProps = {
@@ -143,34 +147,8 @@ type Category = {
 
 const SearchOverlay = ({ onClose }: SearchOverlayProps) => {
   const router = useRouter()
-  const [cats, setCats] = useState<Category[] | null>(null)
-  const [loadingCats, setLoadingCats] = useState(false)
-
-  useEffect(() => {
-    const fetchCats = async () => {
-      try {
-        setLoadingCats(true)
-        const { product_categories } = await sdk.client.fetch<{
-          product_categories: Category[]
-        }>("/store/product-categories", {
-          method: "GET",
-          query: {
-            limit: 100,
-            fields: "id,name,handle,parent_category,category_children",
-          },
-        })
-        const tops = (product_categories || []).filter(
-          (c: Category) => !c?.parent_category
-        )
-        setCats(tops)
-      } catch (e) {
-        setCats([])
-      } finally {
-        setLoadingCats(false)
-      }
-    }
-    fetchCats()
-  }, [])
+  // Hardcoded categories from config (handles)
+  const overlayCategories: HomeCategory[] = homeCategories
   return (
     <div
       className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible group-[.search-open]/nav:opacity-100 group-[.search-open]/nav:visible transition-opacity duration-300"
@@ -213,24 +191,20 @@ const SearchOverlay = ({ onClose }: SearchOverlayProps) => {
                     Age: {age}
                   </button>
                 ))}
-                {loadingCats && (
-                  <span className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-full text-sm">
-                    Loading categories...
-                  </span>
-                )}
-                {cats &&
-                  cats.slice(0, 10).map((cat) => (
-                    <button
-                      key={cat.id}
-                      onClick={() => {
-                        router.push(`/store?category=${cat.handle}`)
-                        onClose()
-                      }}
-                      className="px-3 py-1.5 bg-green-100 text-green-800 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
-                    >
-                      {cat.name}
-                    </button>
-                  ))}
+                {overlayCategories.slice(0, 10).map((cat) => (
+                  <button
+                    key={cat.handle}
+                    onClick={() => {
+                      router.push(
+                        `/store?category=${encodeURIComponent(cat.handle)}`
+                      )
+                      onClose()
+                    }}
+                    className="px-3 py-1.5 bg-green-100 text-green-800 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
+                  >
+                    {cat.title}
+                  </button>
+                ))}
               </div>
             </div>
             <div className="mt-6">

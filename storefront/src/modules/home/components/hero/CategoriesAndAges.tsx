@@ -2,7 +2,6 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { ArrowRight } from "lucide-react"
 import { homeCategories } from "@/apna-context/categories.config"
 
@@ -12,22 +11,18 @@ const shopByAge = [
   {
     age: "2-4",
     image: "/age-2-4.png",
-    slug: "2-4",
   },
   {
     age: "4-6",
     image: "/age-4-6.png",
-    slug: "4-6",
   },
   {
     age: "6-8",
     image: "/age-6-8.png",
-    slug: "6-8",
   },
   {
     age: "8+",
     image: "/age-8-plus.png",
-    slug: "8+",
   },
 ]
 
@@ -36,15 +31,7 @@ type Props = {
 }
 
 export default function CategoriesAndAges({ resolvedCategoryIds = {} }: Props) {
-  const router = useRouter()
-
-  const handleCategoryClick = (category: string) => {
-    router.push(`/products?category=${encodeURIComponent(category)}`)
-  }
-
-  const handleAgeClick = (age: string) => {
-    router.push(`/products?age=${encodeURIComponent(age)}`)
-  }
+  // No client-side navigation handlers needed; using links directly
 
   return (
     <div className="bg-[#f6f7fa] flex-1 items-center justify-center w-full py-12 sm:py-16 md:py-20 px-4">
@@ -59,14 +46,14 @@ export default function CategoriesAndAges({ resolvedCategoryIds = {} }: Props) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-8xl  mx-auto">
-        {categories.map((cat, i) => (
+        {categories.map((cat) => (
           <Link
             href={
               resolvedCategoryIds[cat.handle]
                 ? `/store?categoryId=${resolvedCategoryIds[cat.handle]}`
                 : `/store?category=${encodeURIComponent(cat.handle)}`
             }
-            key={i}
+            key={cat.handle}
             className="relative group overflow-hidden rounded-2xl hover:shadow-lg transition cursor-pointer shadow-lg"
           >
             <div className="shadow-md relative overflow-hidden rounded-2xl">
@@ -105,10 +92,10 @@ export default function CategoriesAndAges({ resolvedCategoryIds = {} }: Props) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-8xl mx-auto">
-        {shopByAge.map((item, i) => (
+        {shopByAge.map((item) => (
           <Link
-            href={`/store?age=${encodeURIComponent(item.slug)}`}
-            key={i}
+            href={`/store?age=${encodeURIComponent(item.age)}`}
+            key={item.age}
             className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition cursor-pointer"
           >
             <div className="relative overflow-hidden aspect-[2/1]">
