@@ -24,12 +24,12 @@ const StoreTemplate = ({
 
   return (
     <div
-      className="flex flex-col small:flex-row small:items-start py-6 content-container"
+      className="flex flex-col small:flex-row small:items-start p-6 "
       data-testid="category-container"
     >
       <RefinementList sortBy={sort} />
-      <div className="w-full">
-        <div className="mb-8 flex items-end justify-between small:justify-start ">
+      <div className="w-full large:mx-10">
+        <div className="mb-8 flex items-end justify-between small:justify-start border-gray-900">
           <h1
             data-testid="store-page-title"
             className="text-2xl-semi small:text-2xl-semi"
