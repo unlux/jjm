@@ -107,7 +107,7 @@ const RefinementList = ({
 
       {/* Desktop sidebar */}
       <div
-        className="hidden small:flex small:flex-col gap-12 py-4 mb-8 small:px-0 pl-6 small:min-w-[250px] small:ml-[1.675rem] small:mr-10"
+        className="hidden small:flex small:flex-col gap-12 py-4 mb-8 small:px-0 pl-6 small:min-w-[250px] small:ml-[1.675rem] small:mr-10 small:sticky"
         data-testid="test-list"
       >
         <SortProducts

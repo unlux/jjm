@@ -39,15 +39,13 @@ const StoreTemplate = async ({
       className="flex flex-col small:flex-row small:items-start p-6 "
       data-testid="category-container"
     >
-  <RefinementList sortBy={sort} categories={ensureCategories} />
+      <RefinementList sortBy={sort} categories={ensureCategories} />
       <div className="w-full large:mx-10">
         <div className="mb-8 flex items-end justify-between small:justify-start border-gray-900">
           <h1
             data-testid="store-page-title"
             className="text-2xl-semi small:text-2xl-semi"
-          >
-            All of our toys
-          </h1>
+          ></h1>
           <div id="mobile-filters-trigger" className="test-sm small:hidden" />
         </div>
         <Suspense fallback={<SkeletonProductGrid />}>

@@ -1,5 +1,6 @@
 "use client"
 
+import { useMemo } from "react"
 import { HttpTypes } from "@medusajs/types"
 
 export default function CategoryFilter({
@@ -19,7 +20,11 @@ export default function CategoryFilter({
   clearAge?: () => void
   categories?: HttpTypes.StoreProductCategory[]
 }) {
-  // Categories are now provided from the server and passed down as props
+  // Use only top-level categories for clarity
+  const topLevel = useMemo(
+    () => (categories || []).filter((c: any) => !c?.parent_category),
+    [categories]
+  )
 
   const ageGroups = [
     { label: "2-4", value: "2-4" },
@@ -28,11 +33,15 @@ export default function CategoryFilter({
     { label: "8+", value: "8+" },
   ]
 
+  const hasActiveFilters = Boolean(selectedCategoryId || selectedAge)
+
   return (
     <div className="flex flex-col gap-6 w-full">
       <div className="flex justify-between items-center pr-2">
-        <span className="txt-compact-small-plus text-ui-fg-muted">Filters</span>
-        {clearAll && (
+        <span className="font-semibold text-ui-fg-base text-base sm:text-lg">
+          Filters
+        </span>
+        {hasActiveFilters && clearAll && (
           <button
             className="txt-compact-small text-ui-fg-interactive hover:text-ui-fg-interactive-hover rounded-md px-2 py-1 ring-1 ring-ui-border-base"
             onClick={clearAll}
@@ -42,35 +51,55 @@ export default function CategoryFilter({
         )}
       </div>
 
-      {categories.length > 0 && (
+      {topLevel.length > 0 && (
         <div>
           <h4 className="txt-compact-small-plus text-ui-fg-muted mb-2">
             Categories
           </h4>
-          <div className="flex flex-col gap-1">
-            {categories.map((c) => (
-              <div key={c.id} className="flex items-center justify-between">
-                <button
-                  className={`text-left py-2 px-2 rounded-md hover:bg-ui-bg-subtle transition ${
-                    selectedCategoryId === c.id
-                      ? "bg-blue-50 text-ui-fg-base ring-1 ring-blue-200"
-                      : "text-ui-fg-subtle hover:text-ui-fg-base"
-                  }`}
-                  onClick={() => setQueryParams("categoryId", c.id)}
-                >
-                  {c.name}
-                </button>
-                {selectedCategoryId === c.id && clearCategory && (
+          <div className="flex flex-col gap-2 max-h-64 overflow-y-auto pr-1">
+            {topLevel.map((c) => {
+              const selected = selectedCategoryId === c.id
+              return (
+                <div key={c.id} className="flex items-center justify-between">
                   <button
-                    className="txt-compact-small text-ui-fg-muted hover:text-ui-fg-base rounded px-2"
-                    onClick={clearCategory}
-                    aria-label="Clear category"
+                    className={`group flex w-full items-center justify-between rounded-lg px-3 py-2 text-left transition ring-1 ${
+                      selected
+                        ? "bg-blue-50 text-ui-fg-base ring-blue-200"
+                        : "bg-ui-bg-base/0 text-ui-fg-subtle hover:text-ui-fg-base hover:bg-ui-bg-subtle ring-ui-border-base"
+                    }`}
+                    aria-pressed={selected}
+                    onClick={() => {
+                      if (selected) {
+                        if (clearCategory) {
+                          clearCategory()
+                        } else {
+                          setQueryParams("categoryId", "")
+                        }
+                      } else {
+                        setQueryParams("categoryId", c.id)
+                      }
+                    }}
                   >
-                    ×
+                    <span className="flex items-center gap-2">
+                      <span className="truncate">{c.name}</span>
+                    </span>
+                    {selected && (
+                      <span className="txt-compact-small text-blue-600">✓</span>
+                    )}
                   </button>
-                )}
-              </div>
-            ))}
+                  {selected && clearCategory && (
+                    <button
+                      className="ml-2 inline-flex h-7 w-7 items-center justify-center rounded-md text-ui-fg-muted hover:text-ui-fg-base hover:bg-ui-bg-subtle"
+                      onClick={clearCategory}
+                      aria-label="Clear category"
+                      title="Clear"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
       )}
@@ -83,27 +112,33 @@ export default function CategoryFilter({
           {ageGroups.map((a) => (
             <button
               key={a.value}
-              className={`py-2 px-2 border rounded-md hover:bg-ui-bg-subtle transition ${
+              className={`py-2 px-2 border rounded-md transition-all duration-200 ease-out transform ${
                 selectedAge === a.value
-                  ? "bg-blue-50 text-ui-fg-base border-blue-200 ring-1 ring-blue-200"
-                  : "text-ui-fg-subtle border-ui-border-base hover:text-ui-fg-base"
+                  ? "bg-blue-50 text-ui-fg-base border-blue-200 ring-1 ring-blue-200 scale-[1.01]"
+                  : "text-ui-fg-subtle border-ui-border-base hover:text-ui-fg-base hover:scale-[1.01]"
               }`}
-              onClick={() => setQueryParams("age", a.value)}
+              aria-pressed={selectedAge === a.value}
+              onClick={() => {
+                if (selectedAge === a.value) {
+                  if (clearAge) {
+                    clearAge()
+                  } else {
+                    setQueryParams("age", "")
+                  }
+                } else {
+                  setQueryParams("age", a.value)
+                }
+              }}
             >
-              {a.label}
+              <span className="flex w-full items-center justify-center gap-2">
+                {selectedAge === a.value && (
+                  <span className="txt-compact-small text-blue-600">✓</span>
+                )}
+                <span className="text-center">{a.label}</span>
+              </span>
             </button>
           ))}
         </div>
-        {selectedAge && clearAge && (
-          <div className="mt-2">
-            <button
-              className="txt-compact-small text-ui-fg-muted hover:text-ui-fg-base"
-              onClick={clearAge}
-            >
-              Clear age
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )
