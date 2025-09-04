@@ -1,4 +1,4 @@
-"use client"
+// Server component: no client-only APIs used
 
 import React from "react"
 import Link from "next/link"

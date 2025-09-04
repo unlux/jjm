@@ -176,6 +176,7 @@ export const RazorpayPaymentButton = ({
   return (
     <>
       <Button
+        data-testid="razorpay-payment-button"
         disabled={
           submitting ||
           notReady ||
