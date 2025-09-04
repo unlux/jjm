@@ -88,7 +88,7 @@ const basicTest = (cy: any) => {
 
   // Wait for the Razorpay payment option to be visible
   console.log("💳 Looking for Razorpay payment option")
-  cy.get('[data-testid="payment-payment-button"]').click()
+  cy.get('[data-testid="razorpay-payment-button"]').click()
   cy.wait(5000)
 
   // Click continue to review
