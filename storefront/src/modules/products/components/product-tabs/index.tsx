@@ -1,4 +1,4 @@
-"use client"
+// Server component: no client-only APIs used
 
 import Back from "@modules/common/icons/back"
 import FastDelivery from "@modules/common/icons/fast-delivery"

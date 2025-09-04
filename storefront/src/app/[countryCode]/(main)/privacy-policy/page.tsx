@@ -1,7 +1,7 @@
 // components/PrivacyPolicy.tsx
-'use client';
+// Server component: static content only
 
-import React from "react";
+import React from "react"
 
 const PrivacyPolicy = () => {
   return (
@@ -11,12 +11,16 @@ const PrivacyPolicy = () => {
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">1. Introduction</h2>
         <p>
-          Welcome to Joy Junction! This Privacy Policy explains how we collect, use, and protect your personal information when you use our website and services.
+          Welcome to Joy Junction! This Privacy Policy explains how we collect,
+          use, and protect your personal information when you use our website
+          and services.
         </p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">2. Information We Collect</h2>
+        <h2 className="text-xl font-semibold mb-2">
+          2. Information We Collect
+        </h2>
         <ul className="list-disc pl-6 space-y-1">
           <li>Personal info (name, email, shipping address, phone number)</li>
           <li>Order details and payment information</li>
@@ -26,7 +30,9 @@ const PrivacyPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">3. How We Use Your Information</h2>
+        <h2 className="text-xl font-semibold mb-2">
+          3. How We Use Your Information
+        </h2>
         <ul className="list-disc pl-6 space-y-1">
           <li>To process orders and deliver products</li>
           <li>To send order updates and promotional emails (opt-in only)</li>
@@ -38,14 +44,17 @@ const PrivacyPolicy = () => {
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">4. Cookies</h2>
         <p>
-          We use cookies to remember your preferences, keep you logged in, and track usage for analytics. You can control cookies in your browser settings.
+          We use cookies to remember your preferences, keep you logged in, and
+          track usage for analytics. You can control cookies in your browser
+          settings.
         </p>
       </section>
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">5. Data Protection</h2>
         <p>
-          We take your privacy seriously. All sensitive data is encrypted, and we never sell or share your information with third-party marketers.
+          We take your privacy seriously. All sensitive data is encrypted, and
+          we never sell or share your information with third-party marketers.
         </p>
       </section>
 
@@ -59,19 +68,27 @@ const PrivacyPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">7. Changes to This Policy</h2>
+        <h2 className="text-xl font-semibold mb-2">
+          7. Changes to This Policy
+        </h2>
         <p>
-          We may update this Privacy Policy occasionally. Any changes will be posted here with an updated effective date.
+          We may update this Privacy Policy occasionally. Any changes will be
+          posted here with an updated effective date.
         </p>
       </section>
 
       <section>
         <h2 className="text-xl font-semibold mb-2">8. Contact Us</h2>
         <p>
-          If you have any questions about this Privacy Policy, please contact us at{" "}
-          <a href="mailto:support@joyjunction.com" className="text-blue-600 hover:underline">
+          If you have any questions about this Privacy Policy, please contact us
+          at{" "}
+          <a
+            href="mailto:support@joyjunction.com"
+            className="text-blue-600 hover:underline"
+          >
             support@joyjunction.com
-          </a>.
+          </a>
+          .
         </p>
       </section>
 
@@ -79,7 +96,7 @@ const PrivacyPolicy = () => {
         Last updated: July 17, 2025
       </p>
     </div>
-  );
-};
+  )
+}
 
-export default PrivacyPolicy;
+export default PrivacyPolicy

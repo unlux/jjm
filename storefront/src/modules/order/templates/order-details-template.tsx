@@ -1,4 +1,4 @@
-"use client"
+// Server component: no client-only APIs used
 
 import { XMark } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"

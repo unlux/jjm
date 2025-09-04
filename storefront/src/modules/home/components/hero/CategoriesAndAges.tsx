@@ -1,4 +1,4 @@
-"use client"
+// Server component: no client-only APIs used
 
 import Image from "next/image"
 import Link from "next/link"

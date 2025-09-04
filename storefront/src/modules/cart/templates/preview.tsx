@@ -1,4 +1,4 @@
-"use client"
+// Server component: no client-only APIs used
 
 import repeat from "@lib/util/repeat"
 import { HttpTypes } from "@medusajs/types"
