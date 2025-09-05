@@ -8,7 +8,13 @@ import "swiper/css"
 import "swiper/css/pagination"
 import "swiper/css/navigation"
 
-type SlideItem = { src: string; alt: string; href?: string; duration?: number } // duration in seconds
+type SlideItem = {
+  src: string
+  alt: string
+  href?: string
+  duration?: number // seconds
+  isForMobile?: boolean
+}
 
 const slides: SlideItem[] = [
   { src: "/hero1.mp4", alt: "Hero video 1", href: "/in/custom-kit" },
@@ -16,24 +22,23 @@ const slides: SlideItem[] = [
   { src: "/hero3.mp4", alt: "Hero video 3", href: "/in/partnership-program" },
 ]
 
-export default function HeroSlider() {
+// Helper to detect if a slide is a video based on file extension
+const isVideoSrc = (src: string) => /\.(mp4|webm|ogg)(\?.*)?$/i.test(src)
+
+function VideoSwiper({
+  slides,
+  navId,
+  heightClass = "h-[240px] sm:h-[480px]",
+}: {
+  slides: SlideItem[]
+  navId: string
+  heightClass?: string
+}) {
   const videoRefs = useRef<HTMLVideoElement[]>([])
   const swiperRef = useRef<SwiperType | null>(null)
   const lastActiveRef = useRef<number>(0)
-
-  // Start playback only when the video can play to avoid first-paint restart
-  const playWhenReady = (v: HTMLVideoElement) => {
-    if (!v) return
-    if (v.readyState >= 2) {
-      v.play().catch(() => {})
-    } else {
-      const onCanPlay = () => {
-        v.play().catch(() => {})
-      }
-      v.addEventListener("canplay", onCanPlay, { once: true })
-    }
-  }
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const DEFAULT_IMAGE_DURATION = 5 // seconds
 
   const clearSlideTimer = () => {
     if (timerRef.current) {
@@ -44,33 +49,45 @@ export default function HeroSlider() {
 
   const startSlideTimer = (index: number) => {
     clearSlideTimer()
-    const d = slides[index]?.duration
+    const item = slides[index]
+    if (!item) return
+    const isVid = isVideoSrc(item.src)
+    // If image: use provided duration or default 5s. If video: only use duration when explicitly provided.
+    const d = isVid ? item.duration : item.duration ?? DEFAULT_IMAGE_DURATION
     if (typeof d === "number" && d > 0) {
       timerRef.current = setTimeout(() => {
         const swiper = swiperRef.current
-        if (swiper && swiper.realIndex === index) {
-          swiper.slideNext()
-        }
+        if (swiper && swiper.realIndex === index) swiper.slideNext()
       }, d * 1000)
     }
+  }
+
+  const playWhenReady = (v: HTMLVideoElement) => {
+    if (!v) return
+    if (v.readyState >= 2) v.play().catch(() => {})
+    else
+      v.addEventListener("canplay", () => v.play().catch(() => {}), {
+        once: true,
+      })
   }
 
   useEffect(() => () => clearSlideTimer(), [])
 
   return (
-    <div className="relative w-full overflow-hidden">
+    <div className={`relative w-full overflow-hidden ${heightClass}`}>
       <Swiper
         modules={[Pagination, Navigation]}
-        // Use rewind to avoid DOM cloning on init that can cause restarts
         rewind
         pagination={{ clickable: true }}
-        navigation={{ prevEl: ".hero-prev", nextEl: ".hero-next" }}
+        navigation={{
+          prevEl: `.hero-prev-${navId}`,
+          nextEl: `.hero-next-${navId}`,
+        }}
         speed={0}
         onSwiper={(swiper) => {
           swiperRef.current = swiper
         }}
         onInit={(swiper) => {
-          // Play only the active slide's video on init
           const active = swiper.realIndex
           lastActiveRef.current = active
           videoRefs.current.forEach((v, i) => {
@@ -81,7 +98,6 @@ export default function HeroSlider() {
           startSlideTimer(active)
         }}
         onSlideChange={(swiper) => {
-          // Pause all, play the newly active slide
           const active = swiper.realIndex
           if (lastActiveRef.current === active) return
           lastActiveRef.current = active
@@ -99,86 +115,73 @@ export default function HeroSlider() {
           })
           startSlideTimer(active)
         }}
-        className="w-full"
+        className="w-full h-full"
       >
-        {slides.map((s, i) => (
-          <SwiperSlide key={s.src}>
-            {s.href ? (
-              s.href.startsWith("http") ? (
-                <a
-                  href={s.href}
-                  aria-label={s.alt}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block"
-                >
-                  <video
-                    ref={(el) => {
-                      if (el) videoRefs.current[i] = el
-                    }}
-                    src={s.src}
+        {slides.map((s, i) => {
+          const isVid = isVideoSrc(s.src)
+          const media = isVid ? (
+            <video
+              ref={(el) => {
+                if (el) videoRefs.current[i] = el
+              }}
+              src={s.src}
+              aria-label={s.alt}
+              className="w-full h-full object-cover"
+              muted
+              playsInline
+              autoPlay
+              preload="auto"
+              onEnded={() => {
+                const swiper = swiperRef.current
+                if (!swiper) return
+                // Advance on end only when no explicit duration override is set
+                if (s.duration == null && swiper.realIndex === i)
+                  swiper.slideNext()
+              }}
+            />
+          ) : (
+            <img
+              src={s.src}
+              alt={s.alt}
+              className="w-full h-full object-cover"
+              loading="eager"
+            />
+          )
+
+          return (
+            <SwiperSlide key={`${s.src}-${i}`} className="w-full h-full">
+              {s.href ? (
+                s.href.startsWith("http") ? (
+                  <a
+                    href={s.href}
                     aria-label={s.alt}
-                    className="w-full h-auto object-cover"
-                    muted
-                    playsInline
-                    preload="auto"
-                    onEnded={() => {
-                      const swiper = swiperRef.current
-                      if (!swiper) return
-                      // If a custom duration is set, we let the timer control the advance
-                      if (slides[i]?.duration == null && swiper.realIndex === i)
-                        swiper.slideNext()
-                    }}
-                  />
-                </a>
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full h-full"
+                  >
+                    {media}
+                  </a>
+                ) : (
+                  <Link
+                    href={s.href}
+                    aria-label={s.alt}
+                    className="block w-full h-full"
+                  >
+                    {media}
+                  </Link>
+                )
               ) : (
-                <Link href={s.href} aria-label={s.alt} className="block">
-                  <video
-                    ref={(el) => {
-                      if (el) videoRefs.current[i] = el
-                    }}
-                    src={s.src}
-                    aria-label={s.alt}
-                    className="w-full h-auto object-cover"
-                    muted
-                    playsInline
-                    preload="auto"
-                    onEnded={() => {
-                      const swiper = swiperRef.current
-                      if (!swiper) return
-                      if (slides[i]?.duration == null && swiper.realIndex === i)
-                        swiper.slideNext()
-                    }}
-                  />
-                </Link>
-              )
-            ) : (
-              <video
-                ref={(el) => {
-                  if (el) videoRefs.current[i] = el
-                }}
-                src={s.src}
-                aria-label={s.alt}
-                className="w-full h-auto object-cover"
-                muted
-                playsInline
-                preload="auto"
-                onEnded={() => {
-                  const swiper = swiperRef.current
-                  if (!swiper) return
-                  if (slides[i]?.duration == null && swiper.realIndex === i)
-                    swiper.slideNext()
-                }}
-              />
-            )}
-          </SwiperSlide>
-        ))}
+                media
+              )}
+            </SwiperSlide>
+          )
+        })}
       </Swiper>
-      {/* Navigation buttons */}
+      {/* Navigation buttons for this instance */}
       <div className="pointer-events-none absolute inset-y-0 left-0 right-0 z-40 flex items-center justify-between px-2 sm:px-4">
         <button
           aria-label="Previous slide"
-          className="hero-prev pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white transition hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white/70 sm:h-12 sm:w-12"
+          className={`hero-prev-${navId} pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white transition hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white/70 sm:h-12 sm:w-12`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -195,7 +198,7 @@ export default function HeroSlider() {
         </button>
         <button
           aria-label="Next slide"
-          className="hero-next pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white transition hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white/70 sm:h-12 sm:w-12"
+          className={`hero-next-${navId} pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white transition hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white/70 sm:h-12 sm:w-12`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -213,5 +216,43 @@ export default function HeroSlider() {
       </div>
       <div className="absolute inset-0 animate-fadeIn pointer-events-none z-30" />
     </div>
+  )
+}
+
+export default function HeroSlider() {
+  const mobileSlides = slides.filter((s) => s.isForMobile)
+  const desktopSlides = slides.filter((s) => !s.isForMobile)
+
+  // Defaults; change to your desired heights
+  const MOBILE_HEIGHT = "h-[400px]"
+  const DESKTOP_HEIGHT = "h-[600px]"
+
+  if (mobileSlides.length > 0) {
+    return (
+      <>
+        <div className="sm:hidden">
+          <VideoSwiper
+            slides={mobileSlides}
+            navId="mobile"
+            heightClass={MOBILE_HEIGHT}
+          />
+        </div>
+        <div className="hidden sm:block">
+          <VideoSwiper
+            slides={desktopSlides}
+            navId="desktop"
+            heightClass={DESKTOP_HEIGHT}
+          />
+        </div>
+      </>
+    )
+  }
+
+  return (
+    <VideoSwiper
+      slides={desktopSlides}
+      navId="all"
+      heightClass={`${MOBILE_HEIGHT} sm:${DESKTOP_HEIGHT}`}
+    />
   )
 }
