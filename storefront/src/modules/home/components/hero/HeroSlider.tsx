@@ -28,11 +28,11 @@ const isVideoSrc = (src: string) => /\.(mp4|webm|ogg)(\?.*)?$/i.test(src)
 function VideoSwiper({
   slides,
   navId,
-  heightClass = "h-[240px] sm:h-[480px]",
+  aspectRatioClass = "aspect-[4/5] sm:aspect-video",
 }: {
   slides: SlideItem[]
   navId: string
-  heightClass?: string
+  aspectRatioClass?: string
 }) {
   const videoRefs = useRef<HTMLVideoElement[]>([])
   const swiperRef = useRef<SwiperType | null>(null)
@@ -74,109 +74,111 @@ function VideoSwiper({
   useEffect(() => () => clearSlideTimer(), [])
 
   return (
-    <div className={`relative w-full overflow-hidden ${heightClass}`}>
-      <Swiper
-        modules={[Pagination, Navigation]}
-        rewind
-        pagination={{ clickable: true }}
-        navigation={{
-          prevEl: `.hero-prev-${navId}`,
-          nextEl: `.hero-next-${navId}`,
-        }}
-        speed={0}
-        onSwiper={(swiper) => {
-          swiperRef.current = swiper
-        }}
-        onInit={(swiper) => {
-          const active = swiper.realIndex
-          lastActiveRef.current = active
-          videoRefs.current.forEach((v, i) => {
-            if (!v) return
-            if (i === active) playWhenReady(v)
-            else v.pause()
-          })
-          startSlideTimer(active)
-        }}
-        onSlideChange={(swiper) => {
-          const active = swiper.realIndex
-          if (lastActiveRef.current === active) return
-          lastActiveRef.current = active
-          clearSlideTimer()
-          videoRefs.current.forEach((v, i) => {
-            if (!v) return
-            if (i === active) {
-              try {
-                v.currentTime = 0
-              } catch {}
-              playWhenReady(v)
-            } else {
-              v.pause()
-            }
-          })
-          startSlideTimer(active)
-        }}
-        className="w-full h-full"
-      >
-        {slides.map((s, i) => {
-          const isVid = isVideoSrc(s.src)
-          const media = isVid ? (
-            <video
-              ref={(el) => {
-                if (el) videoRefs.current[i] = el
-              }}
-              src={s.src}
-              aria-label={s.alt}
-              className="w-full h-full object-cover"
-              muted
-              playsInline
-              autoPlay
-              preload="auto"
-              onEnded={() => {
-                const swiper = swiperRef.current
-                if (!swiper) return
-                // Advance on end only when no explicit duration override is set
-                if (s.duration == null && swiper.realIndex === i)
-                  swiper.slideNext()
-              }}
-            />
-          ) : (
-            <img
-              src={s.src}
-              alt={s.alt}
-              className="w-full h-full object-cover"
-              loading="eager"
-            />
-          )
+    <div className={`relative w-full ${aspectRatioClass}`}>
+      <div className="absolute inset-0">
+        <Swiper
+          modules={[Pagination, Navigation]}
+          rewind
+          pagination={{ clickable: true }}
+          navigation={{
+            prevEl: `.hero-prev-${navId}`,
+            nextEl: `.hero-next-${navId}`,
+          }}
+          speed={0}
+          onSwiper={(swiper) => {
+            swiperRef.current = swiper
+          }}
+          onInit={(swiper) => {
+            const active = swiper.realIndex
+            lastActiveRef.current = active
+            videoRefs.current.forEach((v, i) => {
+              if (!v) return
+              if (i === active) playWhenReady(v)
+              else v.pause()
+            })
+            startSlideTimer(active)
+          }}
+          onSlideChange={(swiper) => {
+            const active = swiper.realIndex
+            if (lastActiveRef.current === active) return
+            lastActiveRef.current = active
+            clearSlideTimer()
+            videoRefs.current.forEach((v, i) => {
+              if (!v) return
+              if (i === active) {
+                try {
+                  v.currentTime = 0
+                } catch {}
+                playWhenReady(v)
+              } else {
+                v.pause()
+              }
+            })
+            startSlideTimer(active)
+          }}
+          className="w-full h-full"
+        >
+          {slides.map((s, i) => {
+            const isVid = isVideoSrc(s.src)
+            const media = isVid ? (
+              <video
+                ref={(el) => {
+                  if (el) videoRefs.current[i] = el
+                }}
+                src={s.src}
+                aria-label={s.alt}
+                className="w-full h-full object-cover"
+                muted
+                playsInline
+                autoPlay
+                preload="auto"
+                onEnded={() => {
+                  const swiper = swiperRef.current
+                  if (!swiper) return
+                  // Advance on end only when no explicit duration override is set
+                  if (s.duration == null && swiper.realIndex === i)
+                    swiper.slideNext()
+                }}
+              />
+            ) : (
+              <img
+                src={s.src}
+                alt={s.alt}
+                className="w-full h-full object-cover"
+                loading="eager"
+              />
+            )
 
-          return (
-            <SwiperSlide key={`${s.src}-${i}`} className="w-full h-full">
-              {s.href ? (
-                s.href.startsWith("http") ? (
-                  <a
-                    href={s.href}
-                    aria-label={s.alt}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full h-full"
-                  >
-                    {media}
-                  </a>
+            return (
+              <SwiperSlide key={`${s.src}-${i}`} className="w-full h-full">
+                {s.href ? (
+                  s.href.startsWith("http") ? (
+                    <a
+                      href={s.href}
+                      aria-label={s.alt}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full h-full"
+                    >
+                      {media}
+                    </a>
+                  ) : (
+                    <Link
+                      href={s.href}
+                      aria-label={s.alt}
+                      className="block w-full h-full"
+                    >
+                      {media}
+                    </Link>
+                  )
                 ) : (
-                  <Link
-                    href={s.href}
-                    aria-label={s.alt}
-                    className="block w-full h-full"
-                  >
-                    {media}
-                  </Link>
-                )
-              ) : (
-                media
-              )}
-            </SwiperSlide>
-          )
-        })}
-      </Swiper>
+                  media
+                )}
+              </SwiperSlide>
+            )
+          })}
+        </Swiper>
+      </div>
       {/* Navigation buttons for this instance */}
       <div className="pointer-events-none absolute inset-y-0 left-0 right-0 z-40 flex items-center justify-between px-2 sm:px-4">
         <button
@@ -223,9 +225,9 @@ export default function HeroSlider() {
   const mobileSlides = slides.filter((s) => s.isForMobile)
   const desktopSlides = slides.filter((s) => !s.isForMobile)
 
-  // Defaults; change to your desired heights
-  const MOBILE_HEIGHT = "h-[400px]"
-  const DESKTOP_HEIGHT = "h-[600px]"
+  // Distinct aspect ratios per breakpoint; adjust as needed
+  const MOBILE_ASPECT = "aspect-[3/4]" // Taller on mobile
+  const DESKTOP_ASPECT = "aspect-[8/3]" // 16:9 on desktop
 
   if (mobileSlides.length > 0) {
     return (
@@ -234,14 +236,14 @@ export default function HeroSlider() {
           <VideoSwiper
             slides={mobileSlides}
             navId="mobile"
-            heightClass={MOBILE_HEIGHT}
+            aspectRatioClass={MOBILE_ASPECT}
           />
         </div>
         <div className="hidden sm:block">
           <VideoSwiper
             slides={desktopSlides}
             navId="desktop"
-            heightClass={DESKTOP_HEIGHT}
+            aspectRatioClass={DESKTOP_ASPECT}
           />
         </div>
       </>
@@ -252,7 +254,7 @@ export default function HeroSlider() {
     <VideoSwiper
       slides={desktopSlides}
       navId="all"
-      heightClass={`${MOBILE_HEIGHT} sm:${DESKTOP_HEIGHT}`}
+      aspectRatioClass={`${MOBILE_ASPECT} sm:${DESKTOP_ASPECT}`}
     />
   )
 }

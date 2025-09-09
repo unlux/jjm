@@ -153,7 +153,7 @@ const Navbar = ({
           {/* Logo centered at top */}
           <div className="flex justify-center p-4">
             <LocalizedClientLink href="/">
-              <Image src="/logo.png" alt="logo" width={120} height={60} />
+              <Image src="/logo.png" alt="logo" width={180} height={120} />
             </LocalizedClientLink>
           </div>
 

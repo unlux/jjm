@@ -52,9 +52,11 @@ export default function FloatingShowcase({
 
   return (
     <div
-      className={`relative w-full mx-auto overflow-x-hidden ${className}`.trim()}
+      className={`relative z-50 w-full mx-auto ${className}`.trim()}
       style={{ maxWidth: mainImageWidth }}
     >
+      {/* Clip only on the left/right edges; keep top/bottom visible */}
+      <div className="relative [clip-path:inset(-100vmax_0_-100vmax_0)]">
       {/* Main image */}
       <Container {...containerProps} className="block">
         <Image
@@ -139,6 +141,7 @@ export default function FloatingShowcase({
           )}
         </div>
       ) : null}
+      </div>
     </div>
   )
 }
