@@ -103,7 +103,7 @@ export default function CategoriesAndAges({ resolvedCategoryIds = {} }: Props) {
                 src={item.image}
                 alt={item.age}
                 fill
-                sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw"
+                sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100%"
                 className="object-cover group-hover:brightness-75 transition-transform duration-500 group-hover:scale-110"
               />
             </div>

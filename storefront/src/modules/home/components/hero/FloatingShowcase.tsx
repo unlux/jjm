@@ -52,11 +52,9 @@ export default function FloatingShowcase({
 
   return (
     <div
-      className={`relative z-50 w-full mx-auto ${className}`.trim()}
+      className={`relative w-full mx-auto overflow-y-visible large:overflow-y-visible isolate [overflow-x:clip] [overscroll-behavior-x:contain] ${className}`.trim()}
       style={{ maxWidth: mainImageWidth }}
     >
-      {/* Clip only on the left/right edges; keep top/bottom visible */}
-      <div className="relative [clip-path:inset(-100vmax_0_-100vmax_0)]">
       {/* Main image */}
       <Container {...containerProps} className="block">
         <Image
@@ -64,7 +62,7 @@ export default function FloatingShowcase({
           alt={mainImageAlt}
           width={mainImageWidth}
           height={mainImageHeight}
-          sizes="(max-width: 600px) 100vw, 521px"
+          sizes={`(max-width: 768px) 100%, ${mainImageWidth}px`}
           className="h-auto w-full object-contain rounded-3xl"
           priority={false}
         />
@@ -75,7 +73,7 @@ export default function FloatingShowcase({
         <div
           className={
             primaryWrapperClassName ||
-            "pointer-events-auto absolute -top-6 -left-6 md:-top-10 md:-left-10 z-10"
+            "pointer-events-auto absolute -top-6 -left-6 md:-top-10 md:-left-10 z-10 w-[88px] h-[88px] md:w-[124px] md:h-[124px] lg:w-[148px] lg:h-[148px] [contain:layout_paint] animate-spin [animation-duration:12s] origin-center"
           }
         >
           {primaryIconHref ? (
@@ -85,10 +83,7 @@ export default function FloatingShowcase({
                 alt={primaryIconAlt}
                 width={148}
                 height={148}
-                className={
-                  primaryImageClassName ||
-                  "h-auto w-[88px] md:w-[124px] lg:w-[148px] animate-[spin_12s_linear_infinite]"
-                }
+                className={primaryImageClassName || "h-full w-full"}
               />
             </Link>
           ) : (
@@ -97,10 +92,7 @@ export default function FloatingShowcase({
               alt={primaryIconAlt}
               width={148}
               height={148}
-              className={
-                primaryImageClassName ||
-                "h-auto w-[88px] md:w-[124px] lg:w-[148px] animate-[spin_12s_linear_infinite]"
-              }
+              className={primaryImageClassName || "h-full w-full"}
             />
           )}
         </div>
@@ -111,7 +103,7 @@ export default function FloatingShowcase({
         <div
           className={
             secondaryWrapperClassName ||
-            "pointer-events-auto absolute bottom-6 -right-6 md:bottom-10 md:-right-10 z-20"
+            "pointer-events-auto absolute bottom-6 -right-6 md:bottom-10 md:-right-10 z-20 w-[64px] h-[64px] md:w-[84px] md:h-[84px] lg:w-[99px] lg:h-[99px] [contain:layout_paint]"
           }
         >
           {secondaryIconHref ? (
@@ -121,10 +113,7 @@ export default function FloatingShowcase({
                 alt={secondaryIconAlt}
                 width={99}
                 height={99}
-                className={
-                  secondaryImageClassName ||
-                  "h-auto w-[64px] md:w-[84px] lg:w-[99px]"
-                }
+                className={secondaryImageClassName || "h-full w-full"}
               />
             </Link>
           ) : (
@@ -133,15 +122,11 @@ export default function FloatingShowcase({
               alt={secondaryIconAlt}
               width={99}
               height={99}
-              className={
-                secondaryImageClassName ||
-                "h-auto w-[64px] md:w-[84px] lg:w-[99px]"
-              }
+              className={secondaryImageClassName || "h-full w-full"}
             />
           )}
         </div>
       ) : null}
-      </div>
     </div>
   )
 }

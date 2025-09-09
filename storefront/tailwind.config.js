@@ -3,6 +3,17 @@ const path = require("path")
 module.exports = {
   darkMode: "class",
   presets: [require("@medusajs/ui-preset")],
+  // Safelist aspect-ratio utilities used via variables/props so JIT includes them
+  safelist: [
+    "aspect-video",
+    "sm:aspect-video",
+    "aspect-[4/5]",
+    "sm:aspect-[4/5]",
+    "aspect-[16/9]",
+    "sm:aspect-[16/9]",
+    "aspect-[8/3]",
+    "sm:aspect-[8/3]",
+  ],
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx}",
     "./src/pages/**/*.{js,ts,jsx,tsx}",
