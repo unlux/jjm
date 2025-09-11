@@ -12,6 +12,9 @@ export default function ContactPage() {
         message: "",
         agreementChecked: false,
     });
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -24,22 +27,46 @@ export default function ContactPage() {
         setFormData({ ...formData, agreementChecked: e.target.checked });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Form submission logic would go here
-        console.log("Form submitted:", formData);
-        // Reset form after submission
+    const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    setSubmitting(true);
+
+    try {
+      // POST to Next.js route handler in the storefront
+      const resp = await fetch(`/api/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+        }),
+      });
+
+      if (resp.ok) {
+        setSuccess("Thank you for your message! We'll get back to you soon.");
         setFormData({
-            name: "",
-            email: "",
-            phone: "",
-            subject: "",
-            message: "",
-            agreementChecked: false,
+          name: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: "",
+          agreementChecked: false,
         });
-        // Show success message
-        alert("Thank you for your message! We'll get back to you soon.");
-    };
+      } else {
+        const data = await resp.json().catch(() => null);
+        setError(data?.details?.[0] || data?.error || "Something went wrong. Please try again.");
+      }
+    } catch (err: any) {
+      setError(
+        err?.message || "Unable to send your message right now. Please try again later."
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
     return (
         <section className="bg-gray-50 py-16 px-4 md:px-10 lg:px-20">
@@ -70,6 +97,16 @@ export default function ContactPage() {
                     {/* Right side - Form */}
                     <div>
                         <form onSubmit={handleSubmit} className="space-y-4">
+                            {error && (
+                              <div className="rounded-md border border-red-200 bg-red-50 text-red-700 px-4 py-2 text-sm">
+                                {error}
+                              </div>
+                            )}
+                            {success && (
+                              <div className="rounded-md border border-green-200 bg-green-50 text-green-700 px-4 py-2 text-sm">
+                                {success}
+                              </div>
+                            )}
                             <div className="grid md:grid-cols-2 gap-4">
                                 {/* Name field */}
                                 <div className="relative">
@@ -201,32 +238,35 @@ export default function ContactPage() {
                             </div>
 
                             {/* Agreement checkbox */}
-                            <div className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    id="agreement"
-                                    checked={formData.agreementChecked}
-                                    onChange={handleCheckboxChange}
-                                    className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300 rounded"
-                                    required
-                                />
+                            <div className="flex items-start space-x-3 mt-2">
+                                <div className="flex items-center h-5 mt-0.5">
+                                    <input
+                                        type="checkbox"
+                                        id="agreement"
+                                        checked={formData.agreementChecked}
+                                        onChange={handleCheckboxChange}
+                                        className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors duration-150 cursor-pointer"
+                                        required
+                                    />
+                                </div>
                                 <label
                                     htmlFor="agreement"
-                                    className="ml-2 text-sm text-gray-600"
+                                    className="text-sm text-gray-700 leading-5"
                                 >
-                                    I agree that my submitted data is being{" "}
-                                    <span className="text-blue-500 hover:underline cursor-pointer">
+                                    I agree that my submitted data is being{' '}
+                                    <a href="/privacy" className="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-150">
                                         collected and stored
-                                    </span>
+                                    </a>
                                     .
                                 </label>
                             </div>
 
                             {/* Submit button */}
-                            <div>
+                            <div className="mt-2">
                                 <button
                                     type="submit"
-                                    className="inline-flex items-center px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-full transition-colors duration-200"
+                                    disabled={submitting}
+                                    className="w-full sm:w-auto inline-flex justify-center items-center px-8 py-3.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-200 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -236,7 +276,7 @@ export default function ContactPage() {
                                     >
                                         <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
                                     </svg>
-                                    Get In Touch
+                                    {submitting ? "Sending..." : "Get In Touch"}
                                 </button>
                             </div>
                         </form>
