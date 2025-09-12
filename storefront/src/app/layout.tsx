@@ -3,6 +3,7 @@ import { Metadata } from "next"
 import "styles/globals.css"
 import { Analytics } from "@vercel/analytics/next"
 import { Quicksand } from "next/font/google"
+import ClickSpark from "@/apne-component/ClickSpark"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
@@ -21,7 +22,10 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       <body
         className={`${quicksand.className} font-quicksand antialiased m-0 p-0 overflow-x-hidden group/nav`}
       >
-        <main className="relative">{props.children}</main>
+        <main className="relative">
+          {props.children}
+          <ClickSpark />
+        </main>
         <Analytics />
       </body>
     </html>
