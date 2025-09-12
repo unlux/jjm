@@ -12,6 +12,7 @@ type ThumbnailProps = {
   isFeatured?: boolean
   className?: string
   "data-testid"?: string
+  discountPercentage?: number
 }
 
 const Thumbnail: React.FC<ThumbnailProps> = ({
@@ -21,6 +22,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   isFeatured,
   className,
   "data-testid": dataTestid,
+  discountPercentage,
 }) => {
   const initialImage = thumbnail || images?.[0]?.url
 
@@ -40,6 +42,20 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       data-testid={dataTestid}
     >
       <ImageOrPlaceholder image={initialImage} size={size} />
+      {discountPercentage && (
+        <div
+          className="
+      absolute top-2 left-2
+      bg-red-500/90 text-white text-xs sm:text-sm font-semibold
+      px-2.5 py-1 rounded-full
+      z-10 backdrop-blur-xl shadow-md
+      transition-all duration-300 ease-in-out
+      hover:opacity-0 hover:scale-90
+    "
+        >
+          -{discountPercentage}%
+        </div>
+      )}
     </Container>
   )
 }

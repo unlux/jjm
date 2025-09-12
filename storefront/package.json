@@ -26,6 +26,7 @@
     "@stripe/stripe-js": "^1.29.0",
     "@vercel/analytics": "^1.5.0",
     "algoliasearch": "^5.34.1",
+    "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",

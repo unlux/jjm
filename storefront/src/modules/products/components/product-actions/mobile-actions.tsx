@@ -55,7 +55,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
   return (
     <>
       <div
-        className={clx("lg:hidden inset-x-0 bottom-0 fixed", {
+        className={clx("lg:hidden inset-x-0 bottom-0 fixed z-50", {
           "pointer-events-none": !show,
         })}
       >
@@ -70,32 +70,33 @@ const MobileActions: React.FC<MobileActionsProps> = ({
           leaveTo="opacity-0"
         >
           <div
-            className="bg-white flex flex-col gap-y-3 justify-center items-center text-large-regular p-4 h-full w-full border-t border-gray-200"
+            className="bg-white flex flex-col gap-y-3 p-4 h-full w-full border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]"
             data-testid="mobile-actions"
           >
-            <div className="flex items-center gap-x-2">
-              <span data-testid="mobile-title">{product.title}</span>
-              <span>—</span>
-              {selectedPrice ? (
-                <div className="flex items-end gap-x-2 text-ui-fg-base">
-                  {selectedPrice.price_type === "sale" && (
-                    <p>
-                      <span className="line-through text-small-regular">
-                        {selectedPrice.original_price}
-                      </span>
-                    </p>
-                  )}
+            <div className="w-full flex flex-col gap-1">
+              <h3 className="text-base font-medium text-ui-fg-base" data-testid="mobile-title">
+                {product.title}
+              </h3>
+              {selectedPrice && (
+                <div className="flex items-baseline gap-2">
                   <span
-                    className={clx({
-                      "text-ui-fg-interactive":
-                        selectedPrice.price_type === "sale",
+                    className={clx("text-lg font-semibold", {
+                      "text-red-600": selectedPrice.price_type === "sale",
                     })}
                   >
                     {selectedPrice.calculated_price}
                   </span>
+                  {selectedPrice.price_type === "sale" && (
+                    <>
+                      <span className="line-through text-ui-fg-muted text-sm">
+                        {selectedPrice.original_price}
+                      </span>
+                      <span className="ml-1 bg-red-50 text-red-700 text-xs font-medium px-2 py-0.5 rounded-full">
+                        -{selectedPrice.percentage_diff}%
+                      </span>
+                    </>
+                  )}
                 </div>
-              ) : (
-                <div></div>
               )}
             </div>
             <div className={clx("grid grid-cols-2 w-full gap-x-4", {
