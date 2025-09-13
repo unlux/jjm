@@ -114,19 +114,3 @@
 body.search-open {
   overflow: hidden;
 }
-
-/* Stabilize scrollbar width to prevent layout shift/flicker when content changes */
-html,
-body {
-  scrollbar-gutter: stable both-edges;
-}
-
-/* Prevent accidental horizontal scrollbars across the app */
-body {
-  overflow-x: hidden;
-}
-
-/* Fallback to always reserve vertical scrollbar space (for browsers without scrollbar-gutter) */
-html {
-  overflow-y: scroll;
-}

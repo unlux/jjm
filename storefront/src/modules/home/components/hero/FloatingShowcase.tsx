@@ -24,6 +24,10 @@ type FloatingShowcaseProps = {
   secondaryImageClassName?: string
 
   className?: string
+
+  // New unified badge (e.g., rotating circular text with center icon)
+  badge?: React.ReactNode
+  badgeWrapperClassName?: string
 }
 
 export default function FloatingShowcase({
@@ -46,13 +50,15 @@ export default function FloatingShowcase({
   secondaryImageClassName,
 
   className = "",
+  badge,
+  badgeWrapperClassName,
 }: FloatingShowcaseProps) {
   const Container: React.ElementType = mainImageHref ? Link : "div"
   const containerProps = mainImageHref ? { href: mainImageHref } : {}
 
   return (
     <div
-      className={`relative w-full mx-auto overflow-y-visible large:overflow-y-visible isolate [overflow-x:clip] [overscroll-behavior-x:contain] ${className}`.trim()}
+      className={`relative w-full mx-auto overflow-y-visible large:overflow-y-visible overflow-x-visible isolate [overscroll-behavior-x:contain] ${className}`.trim()}
       style={{ maxWidth: mainImageWidth }}
     >
       {/* Main image */}
@@ -68,8 +74,20 @@ export default function FloatingShowcase({
         />
       </Container>
 
+      {/* Unified Badge takes precedence if provided */}
+      {badge ? (
+        <div
+          className={
+            badgeWrapperClassName ||
+            "pointer-events-auto absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 z-20"
+          }
+        >
+          {badge}
+        </div>
+      ) : null}
+
       {/* Primary floating icon (rotating) */}
-      {primaryIconSrc ? (
+      {!badge && primaryIconSrc ? (
         <div
           className={
             primaryWrapperClassName ||
@@ -99,7 +117,7 @@ export default function FloatingShowcase({
       ) : null}
 
       {/* Secondary floating icon */}
-      {secondaryIconSrc ? (
+      {!badge && secondaryIconSrc ? (
         <div
           className={
             secondaryWrapperClassName ||

@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import FloatingShowcase from "./FloatingShowcase"
+import RotatingBadge from "./RotatingBadge"
 
 export default function AboutSection() {
   return (
@@ -14,15 +15,18 @@ export default function AboutSection() {
             mainImageAlt="Character Flashcards"
             mainImageWidth={600}
             mainImageHeight={600}
-            primaryIconSrc="/about-us.svg"
-            primaryIconHref="/about-us"
-            primaryWrapperClassName="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 z-10 w-[110px] h-[110px] md:w-[128px] md:h-[128px] lg:w-[148px] lg:h-[148px] [contain:paint] animate-spin [animation-duration:12s] origin-center"
-            primaryImageClassName="w-full h-full transform-gpu will-change-transform origin-center rounded-full [backface-visibility:hidden]"
-            secondaryIconSrc="/smile.svg"
-            secondaryIconHref="/about-us"
-            secondaryWrapperClassName="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 z-20 -translate-x-7 -translate-y-7 md:-translate-x-8 md:-translate-y-8 lg:-translate-x-6 lg:-translate-y-6 w-[55px] h-[55px] md:w-[65px] md:h-[65px] lg:w-[100px] lg:h-[100px] [contain:paint]"
-            secondaryImageClassName="w-full h-full transform-gpu will-change-transform origin-center [backface-visibility:hidden]"
             className="w-full"
+            badgeWrapperClassName="absolute -bottom-6 -right-2 md:-bottom-10 md:-right-10 z-50"
+            badge={
+              <RotatingBadge
+                href="/about-us"
+                centerIconSrc="/smile.svg"
+                centerIconAlt="About us"
+                text="ABOUT US"
+                diameterClassName="w-[110px] h-[110px] md:w-[128px] md:h-[128px] lg:w-[148px] lg:h-[148px]"
+                spinDurationSec={12}
+              />
+            }
           />
         </div>
 

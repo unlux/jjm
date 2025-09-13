@@ -20,7 +20,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" data-mode="light">
       <body
-        className={`${quicksand.className} font-quicksand antialiased m-0 p-0 overflow-x-hidden group/nav`}
+        className={`${quicksand.className} font-quicksand antialiased m-0 p-0 group/nav`}
       >
         <main className="relative">
           {props.children}
