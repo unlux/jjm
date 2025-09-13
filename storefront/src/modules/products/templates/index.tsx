@@ -29,24 +29,23 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   return (
     <>
       <div
-        className="content-container flex flex-col small:flex-row small:items-start py-6 relative"
+        className="max-w-8xl w-full mx-auto px-6 py-6 relative grid gap-8 items-start grid-cols-1 lg:[grid-template-columns:400px_minmax(0,1fr)_360px]"
         data-testid="product-container"
       >
-        {/* Product Info - Left Sidebar */}
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
+        {/* Left: Product Info only */}
+        <div className="flex flex-col lg:sticky lg:top-48 self-start w-full py-6 gap-y-6">
           <ProductInfo product={product} />
-          <ProductTabs product={product} />
         </div>
 
-        {/* Image Gallery - Middle Content (Scrollable) */}
-        <div className="flex-1 w-full">
-          <div className="block w-full relative">
+        {/* Center: Image Gallery perfectly centered */}
+        <div className="w-full flex max-w-3xl justify-center">
+          <div className="w-full ">
             <ImageGallery images={product?.images || []} />
           </div>
         </div>
 
-        {/* Product Actions - Right Sidebar */}
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
+        {/* Right: Product Actions, then ProductTabs (shipping/returns etc.) */}
+        <div className="flex flex-col lg:sticky lg:top-96 self-start w-full py-6 gap-y-12">
           <ProductOnboardingCta />
           <Suspense
             fallback={
@@ -59,6 +58,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           >
             <ProductActionsWrapper id={product.id} region={region} />
           </Suspense>
+          <ProductTabs product={product} />
         </div>
       </div>
       <div
