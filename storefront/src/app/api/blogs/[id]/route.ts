@@ -6,7 +6,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = await params.id
+    const id = params.id
     const blog = await getBlogById(id)
     if (!blog) {
       return NextResponse.json({ error: "Not found" }, { status: 404 })

@@ -5,6 +5,7 @@ import { listCategories } from "@/lib/data/categories"
 import { homeCategories } from "@/apna-context/categories.config"
 import FeatureStrip from "./FeatureStrip"
 import HeroSlider from "./HeroSlider"
+import RevalidateButton from "@/components/RevalidateButton"
 import PopularProducts from "./PopularProducts"
 import Testimonials from "./TestimonialSection"
 import WhatsAppButton from "./WhatsAppButton"
@@ -52,6 +53,11 @@ const Hero = async ({ region }: { region: HttpTypes.StoreRegion }) => {
   return (
     <main className="w-full">
       <HeroSlider />
+      {process.env.NODE_ENV !== "production" && (
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <RevalidateButton tags="all" />
+        </div>
+      )}
       <CategoriesAndAges resolvedCategoryIds={resolvedMap} />
       <AboutSection />
       <PopularProducts region={region} />

@@ -16,7 +16,26 @@ export async function GET(req: NextRequest) {
         case "products":
           revalidatePath("/[countryCode]/(main)/store", "page")
           revalidatePath("/[countryCode]/(main)/products/[handle]", "page")
-        // TODO add for other tags
+          break
+        case "blogs":
+          // Blogs listing and blog detail pages (route patterns)
+          revalidatePath("/[countryCode]/(main)/blogs", "page")
+          revalidatePath("/[countryCode]/(main)/blogs/[id]", "page")
+          break
+        case "hero":
+          // Home page uses HeroSlider with SSR
+          revalidatePath("/[countryCode]/(main)", "page")
+          break
+        case "all":
+          // Revalidate everything relevant in one go
+          revalidatePath("/[countryCode]/(main)", "page")
+          revalidatePath("/[countryCode]/(main)/blogs", "page")
+          revalidatePath("/[countryCode]/(main)/blogs/[id]", "page")
+          revalidatePath("/[countryCode]/(main)/store", "page")
+          revalidatePath("/[countryCode]/(main)/products/[handle]", "page")
+          break
+        default:
+          break
       }
     })
   )

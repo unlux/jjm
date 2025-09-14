@@ -10,7 +10,7 @@ export default async function BlogDetailPage({
 }: {
   params: { id: string }
 }) {
-  const id = await params.id
+  const id = params.id
   const blog = await getBlogById(id)
   if (!blog) {
     return (
