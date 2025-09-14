@@ -1,21 +1,24 @@
-"use client"
-
-import React, { useState } from "react"
+import React from "react"
 import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { blogs } from "@/apna-data/blogs"
+import { listBlogs } from "@/lib/repos/blogs"
 
-export default function BlogsPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-
-  // Extract unique categories
+export const revalidate = 86400 // 24 hours
+export default async function BlogsPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) {
+  const selectedCategory = (searchParams?.category as string) || null
+  const blogs = await listBlogs({ category: selectedCategory || undefined, limit: 500 })
   const categories = Array.from(new Set(blogs.map((blog) => blog.category)))
-
-  // Filter blogs by category if selected
-  const filteredBlogs = selectedCategory
-    ? blogs.filter((blog) => blog.category === selectedCategory)
-    : blogs
-
+  const filteredBlogs = blogs
+  const formatDate = (iso: string) =>
+    new Date(iso).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
   return (
     <div className="bg-[#f9f9f9] min-h-screen">
       {/* Hero Section */}
@@ -33,8 +36,8 @@ export default function BlogsPage() {
       <div className="py-6 bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-hide">
-            <button
-              onClick={() => setSelectedCategory(null)}
+            <LocalizedClientLink
+              href={`/blogs`}
               className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
                 selectedCategory === null
                   ? "bg-[#262b5f] text-white"
@@ -42,26 +45,33 @@ export default function BlogsPage() {
               }`}
             >
               All Posts
-            </button>
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                  selectedCategory === category
-                    ? "bg-[#262b5f] text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
+            </LocalizedClientLink>
+            {categories.map((category) => {
+              const href = `/blogs?category=${encodeURIComponent(category)}`
+              const isActive = selectedCategory === category
+              return (
+                <LocalizedClientLink
+                  key={category}
+                  href={href}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                    isActive
+                      ? "bg-[#262b5f] text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  {category}
+                </LocalizedClientLink>
+              )
+            })}
           </div>
         </div>
       </div>
 
       {/* Blog Grid */}
       <div className="max-w-7xl mx-auto px-6 py-16">
+        {filteredBlogs.length === 0 && (
+          <div className="text-center text-gray-600">No blogs found.</div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredBlogs.map((blog) => (
             <LocalizedClientLink href={`/blogs/${blog.id}`} key={blog.id}>
@@ -83,7 +93,7 @@ export default function BlogsPage() {
                 <div className="p-5 flex flex-col flex-grow">
                   <p className="text-xs text-gray-500 mb-2 flex items-center">
                     <span className="inline-block w-4 h-[2px] bg-[#262b5f] mr-2"></span>
-                    {blog.date}
+                    {formatDate(blog.publishedAt)}
                   </p>
                   <h3 className="text-xl font-bold text-[#1e1e3f] leading-snug group-hover:text-[#262b5f] transition-colors mb-3">
                     {blog.title}
@@ -143,3 +153,4 @@ export default function BlogsPage() {
     </div>
   )
 }
+

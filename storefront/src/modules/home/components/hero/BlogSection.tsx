@@ -1,14 +1,35 @@
 "use client"
 
-import { blogs } from "@/apna-data/blogs"
 import "keen-slider/keen-slider.min.css"
 import { useKeenSlider } from "keen-slider/react"
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function BlogCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [blogs, setBlogs] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const controller = new AbortController()
+    async function load() {
+      try {
+        setLoading(true)
+        const res = await fetch(`/api/blogs?limit=10`, { signal: controller.signal })
+        if (!res.ok) throw new Error(`Failed to fetch blogs (${res.status})`)
+        const data = await res.json()
+        setBlogs(data.blogs || [])
+      } catch (e: any) {
+        if (e.name !== "AbortError") setError(e.message || "Failed to load blogs")
+      } finally {
+        setLoading(false)
+      }
+    }
+    load()
+    return () => controller.abort()
+  }, [])
 
   const [sliderRef, instanceRef] = useKeenSlider(
     {
@@ -83,8 +104,15 @@ export default function BlogCarousel() {
           for your children
         </p>
 
-        <div ref={sliderRef} className="keen-slider">
-          {blogs.map((blog, i) => (
+        {loading && (
+          <div className="text-center text-gray-600">Loading…</div>
+        )}
+        {!loading && error && (
+          <div className="text-center text-red-600">{error}</div>
+        )}
+        {!loading && !error && (
+          <div ref={sliderRef} className="keen-slider">
+          {blogs.map((blog: any, i: number) => (
             <div key={i} className="keen-slider__slide">
               <Link href={`/blogs/${blog.id}`} className="block h-full">
                 <div className="bg-white rounded-2xl overflow-hidden transition-all duration-300 group h-[400px] flex flex-col">
@@ -115,7 +143,8 @@ export default function BlogCarousel() {
               </Link>
             </div>
           ))}
-        </div>
+          </div>
+        )}
 
         {/* Navigation */}
         <div className="flex items-center justify-center mt-10 gap-6">
