@@ -1,4 +1,7 @@
 import React, { Suspense } from "react"
+import { PlayCircle } from "lucide-react"
+import { HttpTypes } from "@medusajs/types"
+import { notFound } from "next/navigation"
 
 import ImageGallery from "@modules/products/components/image-gallery"
 import ProductActions from "@modules/products/components/product-actions"
@@ -7,9 +10,12 @@ import ProductTabs from "@modules/products/components/product-tabs"
 import RelatedProducts from "@modules/products/components/related-products"
 import ProductInfo from "@modules/products/templates/product-info"
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products"
-import { notFound } from "next/navigation"
 import ProductActionsWrapper from "./product-actions-wrapper"
-import { HttpTypes } from "@medusajs/types"
+import { Sour_Gummy } from "next/font/google"
+
+// IMPORTANT: Assuming your new parser function is in a utility file
+import { parseProductDescription } from "@lib/util/parse-product-description"
+import InfoCard from "@modules/products/components/product-tabs/InfoCard"
 
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
@@ -26,26 +32,52 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
     return notFound()
   }
 
+  // 1. Call the new, robust parser once
+  const { description, coolThings, howToPlay } = parseProductDescription(
+    product.description || ""
+  )
+
   return (
-    <>
+    <div className="min-h-screen">
       <div
         className="max-w-8xl w-full mx-auto px-6 py-6 relative grid gap-8 items-start grid-cols-1 lg:[grid-template-columns:400px_minmax(0,1fr)_360px]"
         data-testid="product-container"
       >
-        {/* Left: Product Info only */}
-        <div className="flex flex-col lg:sticky lg:top-48 self-start w-full py-6 gap-y-6">
-          <ProductInfo product={product} />
+        {/* Left Column - Sticky */}
+        <div className="flex flex-col lg:sticky lg:top-48 self-start w-full">
+          <ProductInfo
+            product={product}
+            description={description}
+            coolThings={Array.isArray(coolThings) ? coolThings : []}
+            howToPlay={howToPlay}
+          />
         </div>
 
-        {/* Center: Image Gallery perfectly centered */}
-        <div className="w-full flex max-w-3xl justify-center">
-          <div className="w-full ">
+        {/* Center Column */}
+        <div className="w-full flex justify-center">
+          <div className="w-full max-w-3xl">
             <ImageGallery images={product?.images || []} />
           </div>
         </div>
 
-        {/* Right: Product Actions, then ProductTabs (shipping/returns etc.) */}
-        <div className="flex flex-col lg:sticky lg:top-96 self-start w-full py-6 gap-y-12">
+        {/* Right Column - Sticky */}
+        <div className="flex flex-col lg:sticky lg:top-48 self-start w-full py-6 gap-y-8">
+          <div className="hidden sm:block">
+            {howToPlay && (
+              <InfoCard
+                icon={<PlayCircle className="w-5 h-5" />}
+                title="How to Play"
+                color="yellow"
+                bg="bg-yellow-50"
+              >
+                <p className="leading-relaxed whitespace-pre-line">
+                  {howToPlay}
+                </p>
+              </InfoCard>
+            )}
+          </div>
+
+          {/* <ProductTabs product={product} /> */}
           <ProductOnboardingCta />
           <Suspense
             fallback={
@@ -58,7 +90,6 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           >
             <ProductActionsWrapper id={product.id} region={region} />
           </Suspense>
-          <ProductTabs product={product} />
         </div>
       </div>
       <div
@@ -69,7 +100,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           <RelatedProducts product={product} countryCode={countryCode} />
         </Suspense>
       </div>
-    </>
+    </div>
   )
 }
 

@@ -25,7 +25,7 @@ export default function ProductPrice({
     <div className="flex flex-col gap-2 text-ui-fg-base">
       <div className="flex items-baseline gap-3">
         <span
-          className={clx("text-2xl-semi md:text-3xl-semi tracking-tight", {
+          className={clx("text-3xl", {
             "text-red-600 font-semibold": selectedPrice.price_type === "sale",
             "font-normal": selectedPrice.price_type !== "sale",
           })}
@@ -62,7 +62,7 @@ export default function ProductPrice({
 
       {selectedPrice.price_type === "sale" ? (
         <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
-          <p className="text-sm sm:text-base">
+          <p className="text-base">
             <span className="text-ui-fg-subtle">Original: </span>
             <span
               className="line-through"
