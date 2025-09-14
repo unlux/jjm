@@ -17,9 +17,9 @@ type SlideItem = {
 }
 
 const slides: SlideItem[] = [
-  { src: "/hero1.mp4", alt: "Hero video 1", href: "/in/customkit" },
-  { src: "/hero2.mp4", alt: "Hero video 2", href: "/in/contact" },
-  { src: "/hero3.mp4", alt: "Hero video 3", href: "/in/partnership-program" },
+  { src: "/hero1.mp4", alt: "Hero video 1", href: "/customkit" },
+  { src: "/hero2.mp4", alt: "Hero video 2", href: "/contact" },
+  { src: "/hero3.mp4", alt: "Hero video 3", href: "/partnership-program" },
 ]
 
 // Helper to detect if a slide is a video based on file extension
