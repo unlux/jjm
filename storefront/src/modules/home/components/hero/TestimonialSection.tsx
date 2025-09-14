@@ -213,17 +213,33 @@ export default function TestimonialSection() {
                     <span className="text-green-600 text-3xl leading-none group-hover:text-white transition-colors">
                       ❝
                     </span>
-                    <h3 className="font-semibold text-lg group-hover:text-white transition-colors">
-                      {testimonial.quote}
-                    </h3>
-                    <p className="text-sm text-gray-700 group-hover:text-white transition-colors flex-grow line-clamp-3 md:line-clamp-none">
-                      {testimonial.quote}
-                    </p>
+                    {(() => {
+                      const parts = (testimonial.quote || "")
+                        .split("\n")
+                        .map((s) => s.trim())
+                        .filter(Boolean)
+                      const title = parts[0] || ""
+                      const body = parts.slice(1).join(" ")
+                      return (
+                        <div className="space-y-2">
+                          {title && (
+                            <h3 className="font-semibold text-lg group-hover:text-white transition-colors">
+                              {title}
+                            </h3>
+                          )}
+                          {body && (
+                            <p className="text-sm text-gray-700 group-hover:text-white transition-colors flex-grow line-clamp-3 md:line-clamp-none">
+                              {body}
+                            </p>
+                          )}
+                        </div>
+                      )
+                    })()}
 
                     <div className="flex items-center gap-3 mt-auto pt-3">
                       {testimonial.image ? (
                         <Image
-                          src="/avatar.jpg"
+                          src={"/avatar.jpg"}
                           alt={testimonial.author}
                           width={40}
                           height={40}
