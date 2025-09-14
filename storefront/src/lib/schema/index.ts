@@ -31,3 +31,19 @@ export const heroSlides = pgTable("hero_slides", {
 
 export type HeroSlideRow = typeof heroSlides.$inferSelect
 export type NewHeroSlideRow = typeof heroSlides.$inferInsert
+
+// Testimonials schema
+export const testimonials = pgTable("testimonials", {
+  id: text("id").primaryKey(),
+  quote: text("quote").notNull(),
+  author: text("author").notNull(),
+  role: text("role"),
+  image: text("image"),
+  rating: integer("rating").notNull(), // 1-5
+  isFeatured: boolean("is_featured").default(false).notNull(),
+  sortOrder: integer("sort_order").default(0).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: false }).notNull(),
+})
+
+export type TestimonialRow = typeof testimonials.$inferSelect
+export type NewTestimonialRow = typeof testimonials.$inferInsert

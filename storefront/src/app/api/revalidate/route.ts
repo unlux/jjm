@@ -13,6 +13,10 @@ export async function GET(req: NextRequest) {
   await Promise.all(
     tagsArray.map(async (tag) => {
       switch (tag) {
+        case "testimonials":
+          revalidatePath("/[countryCode]/(main)") // Home page where testimonials are shown
+          revalidatePath("/api/testimonials") // API route
+          break
         case "products":
           revalidatePath("/[countryCode]/(main)/store", "page")
           revalidatePath("/[countryCode]/(main)/products/[handle]", "page")
@@ -33,6 +37,7 @@ export async function GET(req: NextRequest) {
           revalidatePath("/[countryCode]/(main)/blogs/[id]", "page")
           revalidatePath("/[countryCode]/(main)/store", "page")
           revalidatePath("/[countryCode]/(main)/products/[handle]", "page")
+          revalidatePath("/api/testimonials")
           break
         default:
           break

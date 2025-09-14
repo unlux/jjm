@@ -15,6 +15,13 @@
       "when": 1757862284440,
       "tag": "0001_legal_robbie_robertson",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1757866113128,
+      "tag": "0002_workable_scalphunter",
+      "breakpoints": true
     }
   ]
 }

@@ -51,6 +51,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "r2-jj.unlux.dev",
       },
+      {
+        protocol: "https",
+        hostname: "unsplash.com",
+      },
     ],
   },
 }

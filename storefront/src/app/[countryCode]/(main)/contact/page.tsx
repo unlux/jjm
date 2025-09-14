@@ -42,10 +42,13 @@ export default function ContactPage() {
 
     if (name.length < 2) errs.name = "Please enter your full name."
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
-    if (!emailRegex.test(email)) errs.email = "Please enter a valid email address."
-    if (phone && !/^[0-9+()\-\s]{7,}$/.test(phone)) errs.phone = "Please enter a valid phone number."
+    if (!emailRegex.test(email))
+      errs.email = "Please enter a valid email address."
+    if (phone && !/^[0-9+()\-\s]{7,}$/.test(phone))
+      errs.phone = "Please enter a valid phone number."
     if (subject && subject.length < 2) errs.subject = "Subject is too short."
-    if (message.length < 10) errs.message = "Please share a bit more detail (min 10 characters)."
+    if (message.length < 10)
+      errs.message = "Please share a bit more detail (min 10 characters)."
 
     setFieldErrors(errs)
     return Object.keys(errs).length === 0
@@ -116,7 +119,7 @@ export default function ContactPage() {
   return (
     <section className="relative bg-white">
       {/* Hero header */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-14 md:pt-20">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-14">
         <div className="text-center mb-8 md:mb-12">
           <span className="inline-flex items-center text-xs md:text-sm font-semibold uppercase tracking-wider text-[#181D4E] bg-[#181D4E]/10 px-3 py-1 rounded-full">
             Contact us
@@ -134,36 +137,15 @@ export default function ContactPage() {
           <div className="grid md:grid-cols-2 gap-10 items-start">
             {/* Left side - Image / info */}
             <div className="w-full">
-              <div className="relative rounded-2xl overflow-hidden ring-1 ring-gray-100 shadow-sm bg-gray-50">
+              <div className="relative rounded-2xl overflow-hidden ring-1 ring-gray-100 shadow-sm bg-gray-50 max-w-[400px] mx-auto">
                 <Image
                   src="/contactus-pic.jpg"
                   alt="Contact The Joy Junction"
-                  width={1200}
-                  height={900}
+                  width={400}
+                  height={400}
                   className="w-full h-auto object-cover"
                   priority
                 />
-              </div>
-              {/* Quick info */}
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <a
-                  href="tel:+919321791644"
-                  className="rounded-xl ring-1 ring-gray-200 p-4 bg-white hover:shadow-sm transition-shadow"
-                >
-                  <div className="text-sm text-gray-500">Call us</div>
-                  <div className="font-semibold text-[#1E2A4A]">
-                    +91 9321791644
-                  </div>
-                </a>
-                <a
-                  href="mailto:support@thejoyjunction.com"
-                  className="rounded-xl ring-1 ring-gray-200 p-4 bg-white hover:shadow-sm transition-shadow"
-                >
-                  <div className="text-sm text-gray-500">Email</div>
-                  <div className="font-semibold text-[#1E2A4A]">
-                    support@thejoyjunction.com
-                  </div>
-                </a>
               </div>
             </div>
 
@@ -174,12 +156,20 @@ export default function ContactPage() {
                 className="space-y-4 rounded-2xl ring-1 ring-gray-100 bg-white p-5 md:p-6 shadow-sm"
               >
                 {error && (
-                  <div ref={alertRef} role="alert" className="rounded-md border border-red-200 bg-red-50 text-red-700 px-4 py-2 text-sm">
+                  <div
+                    ref={alertRef}
+                    role="alert"
+                    className="rounded-md border border-red-200 bg-red-50 text-red-700 px-4 py-2 text-sm"
+                  >
                     {error}
                   </div>
                 )}
                 {success && (
-                  <div ref={alertRef} role="status" className="rounded-md border border-green-200 bg-green-50 text-green-700 px-4 py-2 text-sm">
+                  <div
+                    ref={alertRef}
+                    role="status"
+                    className="rounded-md border border-green-200 bg-green-50 text-green-700 px-4 py-2 text-sm"
+                  >
                     {success}
                   </div>
                 )}
@@ -207,7 +197,9 @@ export default function ContactPage() {
                       value={formData.name}
                       onChange={handleChange}
                       aria-invalid={!!fieldErrors.name}
-                      aria-describedby={fieldErrors.name ? "name-error" : undefined}
+                      aria-describedby={
+                        fieldErrors.name ? "name-error" : undefined
+                      }
                       className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
                       required
                     />
@@ -238,7 +230,9 @@ export default function ContactPage() {
                       value={formData.email}
                       onChange={handleChange}
                       aria-invalid={!!fieldErrors.email}
-                      aria-describedby={fieldErrors.email ? "email-error" : undefined}
+                      aria-describedby={
+                        fieldErrors.email ? "email-error" : undefined
+                      }
                       className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
                       required
                     />
@@ -270,7 +264,9 @@ export default function ContactPage() {
                       value={formData.phone}
                       onChange={handleChange}
                       aria-invalid={!!fieldErrors.phone}
-                      aria-describedby={fieldErrors.phone ? "phone-error" : undefined}
+                      aria-describedby={
+                        fieldErrors.phone ? "phone-error" : undefined
+                      }
                       className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
                     />
                     {fieldErrors.phone && (
@@ -303,11 +299,16 @@ export default function ContactPage() {
                       value={formData.subject}
                       onChange={handleChange}
                       aria-invalid={!!fieldErrors.subject}
-                      aria-describedby={fieldErrors.subject ? "subject-error" : undefined}
+                      aria-describedby={
+                        fieldErrors.subject ? "subject-error" : undefined
+                      }
                       className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
                     />
                     {fieldErrors.subject && (
-                      <p id="subject-error" className="mt-1 text-xs text-red-600">
+                      <p
+                        id="subject-error"
+                        className="mt-1 text-xs text-red-600"
+                      >
                         {fieldErrors.subject}
                       </p>
                     )}
@@ -337,7 +338,9 @@ export default function ContactPage() {
                     onChange={handleChange}
                     rows={5}
                     aria-invalid={!!fieldErrors.message}
-                    aria-describedby={fieldErrors.message ? "message-error" : undefined}
+                    aria-describedby={
+                      fieldErrors.message ? "message-error" : undefined
+                    }
                     className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
                     required
                   />
@@ -388,6 +391,27 @@ export default function ContactPage() {
                   </Button>
                 </div>
               </form>
+              {/* Quick info */}
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a
+                  href="tel:+919321791644"
+                  className="rounded-xl ring-1 ring-gray-200 p-4 bg-white hover:shadow-sm transition-shadow"
+                >
+                  <div className="text-sm text-gray-500">Call us</div>
+                  <div className="font-semibold text-[#1E2A4A]">
+                    +91 9321791644
+                  </div>
+                </a>
+                <a
+                  href="mailto:support@thejoyjunction.com"
+                  className="rounded-xl ring-1 ring-gray-200 p-4 bg-white hover:shadow-sm transition-shadow"
+                >
+                  <div className="text-sm text-gray-500">Email</div>
+                  <div className="font-semibold text-[#1E2A4A]">
+                    support@thejoyjunction.com
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
