@@ -1,3 +1,4 @@
+"use client"
 import { HttpTypes } from "@medusajs/types"
 import { Heading, Text } from "@medusajs/ui"
 import { Info, PlayCircle, Sparkles } from "lucide-react"
@@ -5,9 +6,12 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import InfoCard from "@modules/products/components/product-tabs/InfoCard"
 import { Modak } from "next/font/google"
 import { Comic_Neue } from "next/font/google"
+import { Sour_Gummy } from "next/font/google"
+import { useRef } from "react"
+import GlareHover from "@modules/products/components/product-tabs/glare-hover"
 const comicNeue = Comic_Neue({ subsets: ["latin"], weight: ["400"] })
 const modak = Modak({ subsets: ["latin"], weight: ["400"] })
-
+const sour = Sour_Gummy({ subsets: ["latin"], weight: ["400"] })
 type ProductInfoProps = {
   product: HttpTypes.StoreProduct
   description: string
@@ -22,6 +26,7 @@ const ProductInfo = ({
   coolThings,
   howToPlay,
 }: ProductInfoProps) => {
+  const containerRef = useRef<HTMLDivElement>(null)
   return (
     <div id="product-info">
       <div className="flex flex-col gap-y-8 lg:max-w-[700px] mx-auto">
@@ -34,16 +39,51 @@ const ProductInfo = ({
           </LocalizedClientLink>
         )}
 
+        <div className="flex justify-center">
+          <GlareHover
+            glareColor="#ffffff"
+            glareOpacity={0.5}
+            glareAngle={-30}
+            glareSize={300}
+            transitionDuration={800}
+            playOnce={false}
+            className="w-auto max-w-full"
+          >
+            <h2
+              className={`text-4xl md:text-4xl font-black px-6 py-4 text-center break-words bg-gradient-to-r from-blue-50 to-blue-100 rounded-full shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 whitespace-normal text-[#181D4E]/80 ${sour.className}`}
+              style={{
+                maxWidth: "100%",
+                wordWrap: "break-word",
+                lineHeight: "1",
+              }}
+            >
+              {product.title}
+            </h2>
+          </GlareHover>
+        </div>
+
         {/* heading */}
-        <div className="inline-flex justify-center items-center bg-blue-50 rounded-full px-8 py-3 mx-auto">
+        {/* <div
+          className="inline-flex justify-center items-center bg-gradient-to-r from-blue-50 to-blue-100 rounded-full px-8 py-3 mx-auto shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105"
+          ref={containerRef}
+        >
           <Heading
             level="h2"
-            className={`text-4xl text-center font-medium tracking-wide text-[#61A2C9] ${modak.className}`}
+            className={`text-4xl text-center font-medium tracking-wide text-[#61A2C9] ${modak.className} animate-float`}
             data-testid="product-title"
           >
+            <VariableProximity
+              label={product.title}
+              className={"variable-proximity-demo"}
+              fromFontVariationSettings="'wght' 400, 'opsz' 9"
+              toFontVariationSettings="'wght' 1000, 'opsz' 40"
+              containerRef={containerRef}
+              radius={100}
+              falloff="linear"
+            />
             {product.title}
           </Heading>
-        </div>
+        </div> */}
 
         {/* description */}
         <div className="space-y-8 pt-4">

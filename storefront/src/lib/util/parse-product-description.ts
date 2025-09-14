@@ -21,30 +21,45 @@ export const parseProductDescription = (description: string) => {
   const MARK_COOL = /\n?\s*Cool things mastered with this:/i
   const MARK_PLAY = /\n?\s*How to Play:/i
 
-  let remainingText = description || ""
+  // Find both markers with their index
+  const coolMatch = MARK_COOL.exec(description)
+  const playMatch = MARK_PLAY.exec(description)
 
-  // Initialize parts to `false`. They will only get a value if their marker is found.
+  let descriptionPart = description
   let howToPlayPart: string | false = false
   let coolThingsPart: string[] | false = false
 
-  // 1. Find and slice off the "How to Play" section.
-  const playSplit = remainingText.split(MARK_PLAY, 2)
-  if (playSplit.length === 2) {
-    remainingText = playSplit[0]
-    // Assign the string content if the marker was found
-    howToPlayPart = playSplit[1].trim()
-  }
+  // Figure out which marker comes first
+  const positions = [
+    coolMatch ? { type: "cool", index: coolMatch.index } : null,
+    playMatch ? { type: "play", index: playMatch.index } : null,
+  ].filter(Boolean) as { type: "cool" | "play"; index: number }[]
 
-  // 2. From the remainder, find and slice off the "Cool Things" section.
-  const coolSplit = remainingText.split(MARK_COOL, 2)
-  if (coolSplit.length === 2) {
-    remainingText = coolSplit[0]
-    // Assign the tokenized list if the marker was found
-    coolThingsPart = toTokens(coolSplit[1])
-  }
+  // Sort by position in the string
+  positions.sort((a, b) => a.index - b.index)
 
-  // 3. Whatever is left is the main description.
-  const descriptionPart = remainingText.trim()
+  if (positions.length > 0) {
+    // Description is always before the first marker
+    descriptionPart = description.slice(0, positions[0].index).trim()
+
+    // For each marker, slice content until the next marker (or end of string)
+    positions.forEach((pos, i) => {
+      const start = pos.index
+      const end = positions[i + 1]?.index ?? description.length
+      const rawSection = description.slice(start, end)
+
+      if (pos.type === "cool") {
+        const content = rawSection.replace(MARK_COOL, "").trim()
+        coolThingsPart = toTokens(content)
+      } else if (pos.type === "play") {
+        const content = rawSection.replace(MARK_PLAY, "").trim()
+        howToPlayPart = content
+      }
+    })
+  } else {
+    // No markers at all → everything is description
+    descriptionPart = description.trim()
+  }
 
   return {
     description: descriptionPart,

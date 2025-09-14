@@ -44,13 +44,15 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
         data-testid="product-container"
       >
         {/* Left Column - Sticky */}
-        <div className="flex flex-col lg:sticky lg:top-48 self-start w-full">
-          <ProductInfo
-            product={product}
-            description={description}
-            coolThings={Array.isArray(coolThings) ? coolThings : []}
-            howToPlay={howToPlay}
-          />
+        <div className="lg:sticky lg:top-12 self-start w-full">
+          <div className="mt-2">
+            <ProductInfo
+              product={product}
+              description={description}
+              coolThings={Array.isArray(coolThings) ? coolThings : []}
+              howToPlay={howToPlay}
+            />
+          </div>
         </div>
 
         {/* Center Column */}
