@@ -6,8 +6,9 @@ export type ContactEmailPayload = {
   message: string
 }
 
+const safe = (v?: string) => String(v ?? "").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+
 export const renderContactEmailHtml = (data: ContactEmailPayload) => {
-  const safe = (v?: string) => String(v ?? "").replace(/</g, "&lt;").replace(/>/g, "&gt;")
   return `
   <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; padding: 24px; color: #111827;">
     <h2 style="margin: 0 0 12px;">New Contact Form Submission</h2>
@@ -37,10 +38,10 @@ export const renderContactEmailHtml = (data: ContactEmailPayload) => {
 }
 
 export const renderContactConfirmationEmailHtml = (data: ContactEmailPayload) => {
-  const safe = (v?: string) => String(v ?? "")
+  const s = (v?: string) => String(v ?? "")
   return `
   <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; padding: 24px; color: #111827;">
-    <h2 style="margin: 0 0 12px;">Thanks for reaching out, ${safe(data.name) || "there"}!</h2>
+    <h2 style="margin: 0 0 12px;">Thanks for reaching out, ${s(data.name) || "there"}!</h2>
     <p style="margin: 0 0 16px; color: #374151;">We’ve received your message and our team at The Joy Junction will get back to you as soon as possible.</p>
 
     <div style="margin-top: 20px;">

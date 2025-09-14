@@ -82,6 +82,10 @@ module.exports = {
         ],
       },
       keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
         ring: {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(360deg)" },
@@ -153,10 +157,12 @@ module.exports = {
         },
       },
       animation: {
-        ring: "ring 2.2s cubic-bezier(0.5, 0, 0.5, 1) infinite",
-        "fade-in-right":
-          "fade-in-right 0.3s cubic-bezier(0.5, 0, 0.5, 1) forwards",
-        "fade-in-top": "fade-in-top 0.2s cubic-bezier(0.5, 0, 0.5, 1) forwards",
+        marquee: "marquee 35s linear infinite",
+        ring: "ring 4s linear infinite",
+        "fade-in-right": "fade-in-right 0.3s ease-in-out",
+        "fade-in-top": "fade-in-top 0.3s ease-in-out",
+        "fade-in-bottom": "fade-in-bottom 0.3s ease-in-out",
+        "fade-in-left": "fade-in-left 0.3s ease-in-out",
         "fade-out-top":
           "fade-out-top 0.2s cubic-bezier(0.5, 0, 0.5, 1) forwards",
         "accordion-open":

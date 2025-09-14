@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "@medusajs/ui"
 
 export default function ContactPage() {
@@ -16,6 +16,40 @@ export default function ContactPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const [fieldErrors, setFieldErrors] = useState<{
+    name?: string
+    email?: string
+    phone?: string
+    subject?: string
+    message?: string
+  }>({})
+
+  const alertRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    if ((error || success) && alertRef.current) {
+      alertRef.current.scrollIntoView({ behavior: "smooth", block: "center" })
+    }
+  }, [error, success])
+
+  const validate = () => {
+    const errs: typeof fieldErrors = {}
+    const name = formData.name.trim()
+    const email = formData.email.trim()
+    const phone = formData.phone.trim()
+    const subject = formData.subject.trim()
+    const message = formData.message.trim()
+
+    if (name.length < 2) errs.name = "Please enter your full name."
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+    if (!emailRegex.test(email)) errs.email = "Please enter a valid email address."
+    if (phone && !/^[0-9+()\-\s]{7,}$/.test(phone)) errs.phone = "Please enter a valid phone number."
+    if (subject && subject.length < 2) errs.subject = "Subject is too short."
+    if (message.length < 10) errs.message = "Please share a bit more detail (min 10 characters)."
+
+    setFieldErrors(errs)
+    return Object.keys(errs).length === 0
+  }
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -35,6 +69,11 @@ export default function ContactPage() {
     setSubmitting(true)
 
     try {
+      // client-side validation first
+      if (!validate()) {
+        setSubmitting(false)
+        return
+      }
       // POST to Next.js route handler in the storefront
       const resp = await fetch(`/api/contact`, {
         method: "POST",
@@ -135,12 +174,12 @@ export default function ContactPage() {
                 className="space-y-4 rounded-2xl ring-1 ring-gray-100 bg-white p-5 md:p-6 shadow-sm"
               >
                 {error && (
-                  <div className="rounded-md border border-red-200 bg-red-50 text-red-700 px-4 py-2 text-sm">
+                  <div ref={alertRef} role="alert" className="rounded-md border border-red-200 bg-red-50 text-red-700 px-4 py-2 text-sm">
                     {error}
                   </div>
                 )}
                 {success && (
-                  <div className="rounded-md border border-green-200 bg-green-50 text-green-700 px-4 py-2 text-sm">
+                  <div ref={alertRef} role="status" className="rounded-md border border-green-200 bg-green-50 text-green-700 px-4 py-2 text-sm">
                     {success}
                   </div>
                 )}
@@ -167,9 +206,16 @@ export default function ContactPage() {
                       placeholder="Name"
                       value={formData.name}
                       onChange={handleChange}
+                      aria-invalid={!!fieldErrors.name}
+                      aria-describedby={fieldErrors.name ? "name-error" : undefined}
                       className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
                       required
                     />
+                    {fieldErrors.name && (
+                      <p id="name-error" className="mt-1 text-xs text-red-600">
+                        {fieldErrors.name}
+                      </p>
+                    )}
                   </div>
 
                   {/* Email field */}
@@ -191,9 +237,16 @@ export default function ContactPage() {
                       placeholder="Email Address"
                       value={formData.email}
                       onChange={handleChange}
+                      aria-invalid={!!fieldErrors.email}
+                      aria-describedby={fieldErrors.email ? "email-error" : undefined}
                       className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
                       required
                     />
+                    {fieldErrors.email && (
+                      <p id="email-error" className="mt-1 text-xs text-red-600">
+                        {fieldErrors.email}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -216,8 +269,15 @@ export default function ContactPage() {
                       placeholder="Phone"
                       value={formData.phone}
                       onChange={handleChange}
+                      aria-invalid={!!fieldErrors.phone}
+                      aria-describedby={fieldErrors.phone ? "phone-error" : undefined}
                       className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
                     />
+                    {fieldErrors.phone && (
+                      <p id="phone-error" className="mt-1 text-xs text-red-600">
+                        {fieldErrors.phone}
+                      </p>
+                    )}
                   </div>
 
                   {/* Subject field */}
@@ -242,8 +302,15 @@ export default function ContactPage() {
                       placeholder="Subject"
                       value={formData.subject}
                       onChange={handleChange}
+                      aria-invalid={!!fieldErrors.subject}
+                      aria-describedby={fieldErrors.subject ? "subject-error" : undefined}
                       className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
                     />
+                    {fieldErrors.subject && (
+                      <p id="subject-error" className="mt-1 text-xs text-red-600">
+                        {fieldErrors.subject}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -269,9 +336,16 @@ export default function ContactPage() {
                     value={formData.message}
                     onChange={handleChange}
                     rows={5}
+                    aria-invalid={!!fieldErrors.message}
+                    aria-describedby={fieldErrors.message ? "message-error" : undefined}
                     className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
                     required
-                  ></textarea>
+                  />
+                  {fieldErrors.message && (
+                    <p id="message-error" className="mt-1 text-xs text-red-600">
+                      {fieldErrors.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Agreement checkbox */}
@@ -308,7 +382,7 @@ export default function ContactPage() {
                     variant="primary"
                     className="h-11 px-6"
                     isLoading={submitting}
-                    disabled={submitting}
+                    disabled={submitting || !formData.agreementChecked}
                   >
                     {submitting ? "Sending..." : "Get In Touch"}
                   </Button>

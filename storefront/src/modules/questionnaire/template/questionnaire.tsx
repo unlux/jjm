@@ -13,6 +13,7 @@ type FormState = {
   struggles: string[]
   extra: string
   phone: string
+  email: string
 }
 
 export default function JoyfulQuestionnaire() {
@@ -26,11 +27,14 @@ export default function JoyfulQuestionnaire() {
     struggles: [],
     extra: "",
     phone: "",
+    email: "",
   })
   const [submitted, setSubmitted] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
   const totalSteps = 4
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -75,6 +79,8 @@ export default function JoyfulQuestionnaire() {
     if (step === 4) {
       if (!/^\d{10}$/.test(form.phone))
         stepErrors.phone = "Phone must be exactly 10 digits"
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+      if (!emailRegex.test(form.email)) stepErrors.email = "Please enter a valid email address"
     }
 
     setErrors(stepErrors)
@@ -91,10 +97,27 @@ export default function JoyfulQuestionnaire() {
     setCurrentStep((s) => Math.max(1, s - 1))
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!validateStep(4)) return
-    setSubmitted(true)
+    setSubmitting(true)
+    setSubmitError(null)
+    try {
+      const resp = await fetch("/api/customkit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form }),
+      })
+      if (!resp.ok) {
+        const data = await resp.json().catch(() => null)
+        throw new Error(data?.details?.[0] || data?.error || "Unable to submit. Please try again.")
+      }
+      setSubmitted(true)
+    } catch (err: any) {
+      setSubmitError(err?.message || "Something went wrong. Please try again.")
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -380,6 +403,26 @@ export default function JoyfulQuestionnaire() {
                   )}
                 </div>
 
+                {/* 10. Email (Mandatory) */}
+                <div>
+                  <label className="block font-bold text-lg mb-2" htmlFor="email">
+                    10. Your Email Address <span className="text-pink-300">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="Enter your email address..."
+                    className="w-full rounded-lg px-4 py-3 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300"
+                    required
+                  />
+                  {errors.email && (
+                    <p className="mt-1 text-pink-300 text-sm">{errors.email}</p>
+                  )}
+                </div>
+
                 {/* Summary Preview */}
                 <div className="bg-white/10 rounded-lg p-4">
                   <p className="font-semibold mb-2">Quick recap</p>
@@ -447,9 +490,10 @@ export default function JoyfulQuestionnaire() {
               ) : (
                 <button
                   type="submit"
-                  className="px-8 py-2 rounded-full font-bold bg-cyan-400 hover:bg-cyan-500 text-white shadow-lg text-lg"
+                  disabled={submitting}
+                  className="px-8 py-2 rounded-full font-bold bg-cyan-400 hover:bg-cyan-500 disabled:opacity-60 disabled:cursor-not-allowed text-white shadow-lg text-lg"
                 >
-                  Send
+                  {submitting ? "Sending..." : "Send"}
                 </button>
               )}
             </div>
@@ -466,6 +510,13 @@ export default function JoyfulQuestionnaire() {
               get started on your Joy Box!
             </p>
             <span className="text-4xl mt-6 block">🎁✨</span>
+          </div>
+        )}
+        {!submitted && submitError && (
+          <div className="text-center py-4">
+            <p className="text-sm text-red-200 bg-red-900/30 inline-block px-3 py-2 rounded-md border border-red-500/40">
+              {submitError}
+            </p>
           </div>
         )}
       </div>
