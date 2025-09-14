@@ -11,6 +11,8 @@ import { useParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
+import { useWishlist } from "@/apna-context/WishlistContext"
+import { Heart } from "lucide-react"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -34,6 +36,7 @@ export default function ProductActions({
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
   const countryCode = useParams().countryCode as string
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist()
 
   // If there is only 1 variant, preselect the options
   useEffect(() => {
@@ -113,6 +116,23 @@ export default function ProductActions({
     setIsAdding(false)
   }
 
+  const wishlistSelected = isInWishlist(product.id)
+
+  const handleToggleWishlist = () => {
+    const item = {
+      id: product.id,
+      name: product.title ?? "",
+      image: product.thumbnail ?? undefined,
+      url: `/products/${product.handle}`,
+      variantId: selectedVariant?.id,
+    }
+    if (wishlistSelected) {
+      removeFromWishlist(product.id)
+    } else {
+      addToWishlist(item)
+    }
+  }
+
   return (
     <>
       <div className="flex flex-col gap-y-2" ref={actionsRef}>
@@ -140,26 +160,49 @@ export default function ProductActions({
 
         <ProductPrice product={product} variant={selectedVariant} />
 
-        <Button
-          onClick={handleAddToCart}
-          disabled={
-            !inStock ||
-            !selectedVariant ||
-            !!disabled ||
-            isAdding ||
-            !isValidVariant
-          }
-          variant="primary"
-          className="w-full h-10"
-          isLoading={isAdding}
-          data-testid="add-product-button"
-        >
-          {!selectedVariant && !options
-            ? "Select variant"
-            : !inStock || !isValidVariant
-            ? "Out of stock"
-            : "Add to cart"}
-        </Button>
+        <div className="grid grid-cols-4 w-full gap-2 flex-nowrap items-stretch">
+          <Button
+            onClick={handleAddToCart}
+            disabled={
+              !inStock ||
+              !selectedVariant ||
+              !!disabled ||
+              isAdding ||
+              !isValidVariant
+            }
+            variant="primary"
+            className="col-span-3 h-10 w-full basis-[70%] min-w-0"
+            isLoading={isAdding}
+            data-testid="add-product-button"
+          >
+            {!selectedVariant && !options
+              ? "Select variant"
+              : !inStock || !isValidVariant
+              ? "Out of stock"
+              : "Add to cart"}
+          </Button>
+
+          <Button
+            onClick={handleToggleWishlist}
+            variant={wishlistSelected ? "secondary" : "secondary"}
+            className={`col-span-1 h-10 w-full basis-[30%] min-w-0 px-0 ${
+              wishlistSelected ? "border-pink-500 text-pink-600" : ""
+            }`}
+            data-testid="add-wishlist-button"
+            title={
+              wishlistSelected ? "Remove from wishlist" : "Add to wishlist"
+            }
+            aria-label={
+              wishlistSelected ? "Remove from wishlist" : "Add to wishlist"
+            }
+          >
+            <Heart
+              size={18}
+              className={wishlistSelected ? "fill-pink-500 text-pink-500" : ""}
+            />
+          </Button>
+        </div>
+
         <MobileActions
           product={product}
           variant={selectedVariant}
