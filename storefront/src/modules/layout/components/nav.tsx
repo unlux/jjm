@@ -83,10 +83,17 @@ const Navbar = ({
       <Marquee />
       <nav id="main-nav" className="bg-[#181D4E] text-white">
         {/* Desktop Layout */}
-        <div className="hidden md:flex items-center justify-between p-4 ">
+        <div className="hidden md:flex items-center justify-between px-4 py-3 md:h-32">
           <div className="flex-1 flex justify-start">
             <LocalizedClientLink href="/">
-              <Image src="/logo.png" alt="logo" width={150} height={150} />
+              <Image
+                src="/logo.png"
+                alt="logo"
+                width={150}
+                height={150}
+                priority
+                className="h-24 w-auto object-contain"
+              />
             </LocalizedClientLink>
           </div>
           <div className="flex items-center space-x-6 relative">
@@ -151,13 +158,20 @@ const Navbar = ({
         {/* Mobile Layout */}
         <div className="md:hidden">
           {/* Logo centered at top */}
-          <div className="flex justify-center p-4">
+          <div className="flex justify-center px-4 py-6">
             <LocalizedClientLink href="/">
-              <Image src="/logo.png" alt="logo" width={180} height={120} />
+              <Image
+                src="/logo.png"
+                alt="logo"
+                width={180}
+                height={120}
+                priority
+                className="h-24 w-auto object-contain"
+              />
             </LocalizedClientLink>
           </div>
 
-          {/* Navigation icons: Shop, Search, Cart, Account, Sidebar */}
+          {/* Navigation icons: Shop, Search, Cart, Wishlist, Account, Sidebar */}
           <div className="flex justify-center items-center gap-5 pb-4">
             <LocalizedClientLink
               href="/store"
@@ -184,6 +198,19 @@ const Navbar = ({
               {totalItems > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {totalItems}
+                </span>
+              )}
+            </LocalizedClientLink>
+
+            <LocalizedClientLink
+              href="/wishlist"
+              className="relative cursor-pointer hover:text-blue-300 transition-colors"
+              aria-label="Wishlist"
+            >
+              <Heart size={24} />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {wishlistCount}
                 </span>
               )}
             </LocalizedClientLink>
