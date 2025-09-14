@@ -25,6 +25,14 @@ export default function RevalidatePage() {
           </div>
 
           <div>
+            <h2 className="text-xl font-semibold text-[#1e1e3f] mb-2">Testimonials</h2>
+            <p className="text-gray-600 mb-3 text-sm">
+              Revalidates the home page testimonials section and the testimonials API cache.
+            </p>
+            <RevalidateButton tags="testimonials" />
+          </div>
+
+          <div>
             <h2 className="text-xl font-semibold text-[#1e1e3f] mb-2">Hero Slider (Home)</h2>
             <p className="text-gray-600 mb-3 text-sm">Revalidates the home page that renders the hero slider.</p>
             <RevalidateButton tags="hero" />
@@ -43,6 +51,7 @@ export default function RevalidatePage() {
           <h3 className="text-lg font-semibold text-[#1e1e3f] mb-2">cURL examples</h3>
           <pre className="bg-[#0b1027] text-white p-4 rounded-lg overflow-auto text-sm">
 {`curl "http://localhost:8000/api/revalidate?tags=blogs"
+curl "http://localhost:8000/api/revalidate?tags=testimonials"
 curl "http://localhost:8000/api/revalidate?tags=hero"
 curl "http://localhost:8000/api/revalidate?tags=all"`}
           </pre>

@@ -3,6 +3,7 @@ import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getBlogById, listBlogs } from "@/lib/repos/blogs"
 import ShareButtons from "./ShareButtons.client"
+import { markdownToHtml } from "@/lib/markdown"
 export const revalidate = 86400 // 24 hours
 
 export default async function BlogDetailPage({
@@ -39,6 +40,8 @@ export default async function BlogDetailPage({
     excludeId: blog.id,
     limit: 3,
   })
+  // Convert Markdown content to safe HTML (excerpt remains plain for cards)
+  const contentHtml = await markdownToHtml(blog.content || "")
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString(undefined, {
       year: "numeric",
@@ -83,8 +86,8 @@ export default async function BlogDetailPage({
           </div>
           <div className="p-6 md:p-10">
             <div
-              className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-[#1e1e3f] prose-p:text-gray-700"
-              dangerouslySetInnerHTML={{ __html: blog.content }}
+              className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-[#1e1e3f] prose-p:text-gray-700 prose-a:text-[#1e4ed8] hover:prose-a:underline prose-hr:my-8 prose-strong:text-[#1e1e3f] prose-blockquote:border-l-[#262b5f] prose-ul:list-disc prose-ol:list-decimal prose-li:marker:text-[#262b5f] prose-h1:text-4xl md:prose-h1:text-5xl prose-h2:text-3xl md:prose-h2:text-4xl prose-h3:text-2xl"
+              dangerouslySetInnerHTML={{ __html: contentHtml }}
             />{" "}
             {/* Author Section */}
             <div className="mt-12 pt-8 border-t border-gray-200 flex items-center">
