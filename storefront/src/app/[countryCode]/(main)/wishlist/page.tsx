@@ -62,8 +62,12 @@ export default function WishlistPage() {
       {/* Branded header */}
       <div className="bg-[#181D4E] text-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">My Wishlist</h1>
-          <p className="mt-3 text-white/80 text-lg md:text-xl">Items you've saved for later</p>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+            My Wishlist
+          </h1>
+          <p className="mt-3 text-white/80 text-lg md:text-xl">
+            Items you've saved for later
+          </p>
         </div>
       </div>
 
@@ -74,7 +78,10 @@ export default function WishlistPage() {
             /* Skeleton grid */
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {Array.from({ length: 8 }).map((_, idx) => (
-                <div key={idx} className="rounded-xl bg-white/90 ring-1 ring-gray-100 p-4">
+                <div
+                  key={idx}
+                  className=" rounded-xl bg-white/90 ring-1 ring-gray-100 p-4"
+                >
                   <div className="h-60 w-full bg-gray-200 animate-pulse rounded-lg" />
                   <div className="mt-4 h-5 w-3/4 bg-gray-200 animate-pulse rounded" />
                   <div className="mt-2 h-4 w-1/2 bg-gray-200 animate-pulse rounded" />
@@ -103,10 +110,18 @@ export default function WishlistPage() {
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                   </svg>
                 </div>
-                <h2 className="text-3xl font-bold text-[#1e1e3f] mb-2">Your wishlist is empty</h2>
-                <p className="text-gray-600 mb-8 text-lg">Found something you like? Add it to your wishlist by clicking the heart icon.</p>
+                <h2 className="text-3xl font-bold text-[#1e1e3f] mb-2">
+                  Your wishlist is empty
+                </h2>
+                <p className="text-gray-600 mb-8 text-lg">
+                  Found something you like? Add it to your wishlist by clicking
+                  the heart icon.
+                </p>
                 <LocalizedClientLink href="/store">
-                  <Button variant="primary" className="inline-flex items-center gap-2 h-12 px-6 text-base">
+                  <Button
+                    variant="primary"
+                    className="inline-flex items-center gap-2 h-12 px-6 text-base"
+                  >
                     Explore Products <ArrowRight size={16} />
                   </Button>
                 </LocalizedClientLink>
@@ -120,7 +135,9 @@ export default function WishlistPage() {
                   key={item.id}
                   className="group bg-white rounded-xl shadow-sm ring-1 ring-gray-100 overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
                 >
-                  <LocalizedClientLink href={item.url || `/products/${item.id}`}>
+                  <LocalizedClientLink
+                    href={item.url || `/products/${item.id}`}
+                  >
                     <div className="h-60 relative">
                       <Image
                         src={item.image || "/placeholder.png"}
@@ -136,21 +153,33 @@ export default function WishlistPage() {
                     </div>
                   </LocalizedClientLink>
                   <div className="p-4">
-                    <h3 className="font-semibold text-[#1e1e3f] mb-1 line-clamp-1 text-lg md:text-xl">{item.name}</h3>
+                    <h3 className="font-semibold text-[#1e1e3f] mb-1 line-clamp-1 text-lg md:text-xl">
+                      {item.name}
+                    </h3>
                     {item.category && (
-                      <p className="text-base text-gray-500 mb-2 line-clamp-1">{item.category}</p>
+                      <p className="text-base text-gray-500 mb-2 line-clamp-1">
+                        {item.category}
+                      </p>
                     )}
                     {typeof item.price === "number" && (
                       <div className="flex items-center gap-2 mt-2">
                         {item.discount && item.discount > 0 ? (
                           <>
-                            <span className="text-sm text-gray-500 line-through">{formatPrice(item.price)}</span>
+                            <span className="text-sm text-gray-500 line-through">
+                              {formatPrice(item.price)}
+                            </span>
                             <span className="text-2xl font-bold text-[#181D4E]">
-                              {formatPrice(Math.round(item.price * (1 - (item.discount || 0) / 100)))}
+                              {formatPrice(
+                                Math.round(
+                                  item.price * (1 - (item.discount || 0) / 100)
+                                )
+                              )}
                             </span>
                           </>
                         ) : (
-                          <span className="text-2xl font-bold text-[#181D4E]">{formatPrice(item.price)}</span>
+                          <span className="text-2xl font-bold text-[#181D4E]">
+                            {formatPrice(item.price)}
+                          </span>
                         )}
                       </div>
                     )}
@@ -164,7 +193,11 @@ export default function WishlistPage() {
                           <Button
                             onClick={() => handleAddToCart(item.id as number)}
                             variant={isAdded ? "secondary" : "primary"}
-                            className={(isAdded ? "border-green-500 text-green-600 " : "") + "h-11 px-5 text-sm"}
+                            className={
+                              (isAdded
+                                ? "border-green-500 text-green-600 "
+                                : "") + "h-11 px-5 text-sm"
+                            }
                             aria-label="Add to cart"
                             isLoading={isAdding}
                             disabled={isAdding}
