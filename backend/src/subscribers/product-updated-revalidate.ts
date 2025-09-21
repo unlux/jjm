@@ -1,12 +1,10 @@
 import type { SubscriberArgs, SubscriberConfig } from "@medusajs/framework";
+import { revalidateProductsWithCooldown } from "./_shared/revalidate-products";
 
 export default async function productUpdatedHandler({
   event: { data },
 }: SubscriberArgs<{ id: string }>) {
-  // send request to next.js storefront to revalidate cache
-  await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/revalidate?tags=products`
-  );
+  await revalidateProductsWithCooldown()
 }
 
 export const config: SubscriberConfig = {

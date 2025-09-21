@@ -6,6 +6,16 @@ export async function GET(req: NextRequest) {
   const tags = searchParams.get("tags") as string
   const simpleHeroTag = searchParams.get("tag") as string | null
 
+  // Optional auth: require shared secret if configured
+  const expected = process.env.REVALIDATE_SECRET
+  if (expected) {
+    const provided = req.headers.get("x-revalidate-secret") || ""
+    if (provided !== expected) {
+      console.warn("[revalidate] unauthorized request")
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+  }
+
   console.log("[revalidate] incoming", {
     url: req.nextUrl.pathname + req.nextUrl.search,
     mode: simpleHeroTag ? "simple" : tags ? "multi" : "invalid",
