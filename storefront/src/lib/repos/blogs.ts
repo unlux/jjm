@@ -2,6 +2,7 @@ import "server-only"
 import { and, desc, eq } from "drizzle-orm"
 import { db } from "@/lib/db"
 import { blogs as blogsTable, type BlogRow } from "@/lib/schema"
+import { unstable_cache } from "next/cache"
 
 export type Blog = {
   id: string
@@ -55,4 +56,39 @@ export async function getBlogById(id: string): Promise<Blog | null> {
   const rows = await db.select().from(blogsTable).where(eq(blogsTable.id, id)).limit(1)
   const row = rows[0]
   return row ? toBlog(row) : null
+}
+
+// Cached variants with ISR and tag-based revalidation
+export async function listBlogsCached(params?: {
+  category?: string
+  limit?: number
+  excludeId?: string
+}): Promise<Blog[]> {
+  const categoryKey = params?.category ?? "all"
+  const limitKey = String(params?.limit ?? 50)
+  const excludeKey = params?.excludeId ? `ex:${params.excludeId}` : "ex:none"
+  const keyParts = ["blogs", categoryKey, limitKey, excludeKey]
+
+  const tags = [
+    "blogs",
+    categoryKey === "all" ? "blogs:all" : `blogs:cat:${categoryKey}`,
+  ]
+
+  const cached = unstable_cache(
+    async (p?: { category?: string; limit?: number; excludeId?: string }) => listBlogs(p),
+    keyParts,
+    { revalidate: 3600, tags }
+  )
+
+  return cached(params)
+}
+
+export async function getBlogByIdCached(id: string): Promise<Blog | null> {
+  const keyParts = ["blogs:by-id", id]
+  const tags = ["blogs", `blogs:id:${id}`]
+  const cached = unstable_cache(async (i: string) => getBlogById(i), keyParts, {
+    revalidate: 3600,
+    tags,
+  })
+  return cached(id)
 }

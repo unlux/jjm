@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { listBlogs } from "@/lib/repos/blogs"
+import { listBlogsCached } from "@/lib/repos/blogs"
 
 export async function GET(req: NextRequest) {
   try {
@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
       : undefined
     const excludeId = searchParams.get("excludeId") || undefined
 
-    const rows = await listBlogs({ category, limit, excludeId })
+    const rows = await listBlogsCached({ category, limit, excludeId })
 
     // Shape for UI compatibility: include a human readable date field
     const data = rows.map((b) => ({

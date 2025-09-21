@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { listTestimonials } from "@/lib/repos/testimonials"
+import { listTestimonialsCached } from "@/lib/repos/testimonials"
 
 export const revalidate = 3600 // 1 hour
 
@@ -17,7 +17,7 @@ export async function GET(req: Request) {
     const isFeatured = params.isFeatured ? params.isFeatured === 'true' : undefined
     const limit = params.limit ? parseInt(params.limit, 10) : undefined
     
-    const testimonials = await listTestimonials({
+    const testimonials = await listTestimonialsCached({
       isFeatured,
       limit,
       orderBy: params.orderBy

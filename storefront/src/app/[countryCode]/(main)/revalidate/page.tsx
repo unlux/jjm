@@ -21,7 +21,7 @@ export default function RevalidatePage() {
             <p className="text-gray-600 mb-3 text-sm">
               Revalidates blogs listing and individual blog detail pages.
             </p>
-            <RevalidateButton tags="blogs" />
+            <RevalidateButton tag="blogs" />
           </div>
 
           <div>
@@ -29,13 +29,21 @@ export default function RevalidatePage() {
             <p className="text-gray-600 mb-3 text-sm">
               Revalidates the home page testimonials section and the testimonials API cache.
             </p>
-            <RevalidateButton tags="testimonials" />
+            <RevalidateButton tag="testimonials" />
           </div>
 
           <div>
             <h2 className="text-xl font-semibold text-[#1e1e3f] mb-2">Hero Slider (Home)</h2>
             <p className="text-gray-600 mb-3 text-sm">Revalidates the home page that renders the hero slider.</p>
-            <RevalidateButton tags="hero" />
+            <RevalidateButton tag="hero" />
+          </div>
+
+          <div>
+            <h2 className="text-xl font-semibold text-[#1e1e3f] mb-2">Products</h2>
+            <p className="text-gray-600 mb-3 text-sm">
+              Revalidates the store listing and all product detail pages.
+            </p>
+            <RevalidateButton tag="products" />
           </div>
 
           <div>
@@ -43,17 +51,18 @@ export default function RevalidatePage() {
             <p className="text-gray-600 mb-3 text-sm">
               Revalidates home, blogs listing/detail, and product pages.
             </p>
-            <RevalidateButton tags="all" />
+            <RevalidateButton tag="all" />
           </div>
         </div>
 
         <div className="mt-10">
           <h3 className="text-lg font-semibold text-[#1e1e3f] mb-2">cURL examples</h3>
           <pre className="bg-[#0b1027] text-white p-4 rounded-lg overflow-auto text-sm">
-{`curl "http://localhost:8000/api/revalidate?tags=blogs"
-curl "http://localhost:8000/api/revalidate?tags=testimonials"
-curl "http://localhost:8000/api/revalidate?tags=hero"
-curl "http://localhost:8000/api/revalidate?tags=all"`}
+{`curl "http://localhost:8000/api/revalidate?tag=blogs"
+curl "http://localhost:8000/api/revalidate?tag=testimonials"
+curl "http://localhost:8000/api/revalidate?tag=hero"
+curl "http://localhost:8000/api/revalidate?tag=products"
+curl "http://localhost:8000/api/revalidate?tag=all"`}
           </pre>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { asc, desc, eq, and, or, isNull, isNotNull } from "drizzle-orm"
 import { db } from "@/lib/db"
 import { testimonials as testimonialsTable, type TestimonialRow, type NewTestimonialRow } from "@/lib/schema"
+import { unstable_cache } from "next/cache"
 
 export type TestimonialItem = Pick<TestimonialRow, 'id' | 'quote' | 'author' | 'role' | 'image' | 'rating' | 'isFeatured'>
 
@@ -38,6 +39,41 @@ export async function listTestimonials(params?: {
     .limit(limit)
     
   return rows
+}
+
+// Cached variant with ISR and tags for testimonials
+export async function listTestimonialsCached(params?: {
+  isFeatured?: boolean
+  limit?: number
+  orderBy?: 'newest' | 'rating' | 'sortOrder'
+}): Promise<TestimonialItem[]> {
+  const isFeaturedKey =
+    typeof params?.isFeatured === 'undefined'
+      ? 'all'
+      : params?.isFeatured
+      ? 'featured:true'
+      : 'featured:false'
+  const limitKey = String(params?.limit ?? 50)
+  const orderKey = params?.orderBy ?? 'sortOrder'
+  const keyParts = ['testimonials', isFeaturedKey, limitKey, orderKey]
+
+  const tags = [
+    'testimonials',
+    typeof params?.isFeatured === 'undefined'
+      ? 'testimonials:all'
+      : params?.isFeatured
+      ? 'testimonials:featured:true'
+      : 'testimonials:featured:false',
+  ]
+
+  const cached = unstable_cache(
+    async (p?: { isFeatured?: boolean; limit?: number; orderBy?: 'newest' | 'rating' | 'sortOrder' }) =>
+      listTestimonials(p),
+    keyParts,
+    { revalidate: 3600, tags }
+  )
+
+  return cached(params)
 }
 
 export async function getTestimonialById(id: string): Promise<TestimonialItem | null> {

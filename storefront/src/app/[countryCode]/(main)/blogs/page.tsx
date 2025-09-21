@@ -1,7 +1,7 @@
 import React from "react"
 import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { listBlogs } from "@/lib/repos/blogs"
+import { listBlogsCached } from "@/lib/repos/blogs"
 
 export const revalidate = 86400 // 24 hours
 export default async function BlogsPage({
@@ -10,7 +10,7 @@ export default async function BlogsPage({
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
   const selectedCategory = (searchParams?.category as string) || null
-  const blogs = await listBlogs({ category: selectedCategory || undefined, limit: 500 })
+  const blogs = await listBlogsCached({ category: selectedCategory || undefined, limit: 500 })
   const categories = Array.from(new Set(blogs.map((blog) => blog.category)))
   const filteredBlogs = blogs
   const formatDate = (iso: string) =>

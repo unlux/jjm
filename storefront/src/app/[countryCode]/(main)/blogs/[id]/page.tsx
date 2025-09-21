@@ -1,7 +1,7 @@
 import React from "react"
 import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { getBlogById, listBlogs } from "@/lib/repos/blogs"
+import { getBlogByIdCached, listBlogsCached } from "@/lib/repos/blogs"
 import ShareButtons from "./ShareButtons.client"
 import { markdownToHtml } from "@/lib/markdown"
 export const revalidate = 86400 // 24 hours
@@ -12,7 +12,7 @@ export default async function BlogDetailPage({
   params: { id: string }
 }) {
   const id = params.id
-  const blog = await getBlogById(id)
+  const blog = await getBlogByIdCached(id)
   if (!blog) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#f9f9f9] px-6">
@@ -35,7 +35,7 @@ export default async function BlogDetailPage({
     )
   }
 
-  const relatedBlogs = await listBlogs({
+  const relatedBlogs = await listBlogsCached({
     category: blog.category,
     excludeId: blog.id,
     limit: 3,

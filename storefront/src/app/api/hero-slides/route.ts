@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { listHeroSlides } from "@/lib/repos/heroSlides"
+import { listHeroSlidesCached } from "@/lib/repos/heroSlides"
 
 export const revalidate = 86400 // 24 hours
 
@@ -19,7 +19,7 @@ export async function GET(req: Request) {
       ? Number(searchParams.get("limit"))
       : undefined
 
-    const slides = await listHeroSlides({ isForMobile, limit })
+    const slides = await listHeroSlidesCached({ isForMobile, limit })
     return NextResponse.json({ slides })
   } catch (e: any) {
     console.error("GET /api/hero-slides error", e)
