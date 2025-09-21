@@ -26,9 +26,20 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
       (promotion) => promotion.code !== code
     )
 
-    await applyPromotions(
-      validPromotions.filter((p) => p.code !== undefined).map((p) => p.code!)
-    )
+    try {
+      await applyPromotions(
+        validPromotions.filter((p) => p.code !== undefined).map((p) => p.code!)
+      )
+    } catch (e: any) {
+      const msg = String(e?.message || "")
+      if (msg.toLowerCase().includes("invalid")) {
+        setErrorMessage(
+          `Oops! That promo code ("${code.toUpperCase()}") isn’t valid. Please check the code and try again.`
+        )
+      } else {
+        setErrorMessage(msg || "Failed to update promotions")
+      }
+    }
   }
 
   const addPromotionCode = async (formData: FormData) => {
@@ -47,7 +58,16 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
     try {
       await applyPromotions(codes)
     } catch (e: any) {
-      setErrorMessage(e.message)
+      const msg = String(e?.message || "")
+      if (msg.toLowerCase().includes("invalid")) {
+        setErrorMessage(
+          `That promo code ("${String(
+            code
+          ).toUpperCase()}") isn’t valid. Please check the code and try again.`
+        )
+      } else {
+        setErrorMessage(msg || "Failed to apply promotion code")
+      }
     }
 
     if (input) {
