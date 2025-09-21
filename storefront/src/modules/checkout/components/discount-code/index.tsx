@@ -1,7 +1,7 @@
 "use client"
 
 import { Badge, Heading, Input, Label, Text } from "@medusajs/ui"
-import React from "react";
+import React from "react"
 
 import { applyPromotions } from "@lib/data/cart"
 import { convertToLocale } from "@lib/util/money"
@@ -132,7 +132,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                               "percentage"
                                 ? `${promotion.application_method.value}%`
                                 : convertToLocale({
-                                    amount: promotion.application_method.value,
+                                    amount: +promotion.application_method.value,
                                     currency_code:
                                       promotion.application_method
                                         .currency_code,

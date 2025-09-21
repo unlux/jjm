@@ -18,11 +18,7 @@ export const listCartShippingMethods = async (cartId: string) => {
       `/store/shipping-options`,
       {
         method: "GET",
-        query: {
-          cart_id: cartId,
-          fields:
-            "+service_zone.fulfllment_set.type,*service_zone.fulfillment_set.location.address",
-        },
+        query: { cart_id: cartId },
         headers,
         next,
         cache: "force-cache",
