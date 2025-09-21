@@ -60,3 +60,11 @@ Join our [Discord server](https://discord.com/invite/medusajs) to meet other com
 - [Twitter](https://twitter.com/medusajs)
 - [LinkedIn](https://www.linkedin.com/company/medusajs)
 - [Medusa Blog](https://medusajs.com/blog/)
+
+## Storefront Revalidation
+
+This project includes backend subscribers that trigger cache revalidation in the Next.js storefront whenever products, variants, price lists, or inventory change. The revalidation is performed via a single storefront endpoint (`/api/revalidate?tag=products`) which refreshes the store listing and product detail pages.
+
+For a complete explanation of what we did, why we did it, the exact subscriber files and events, environment variables, cooldown behavior, and test steps, see:
+
+- `src/subscribers/REVALIDATION.md`
