@@ -20,12 +20,15 @@ jobs:
           script: |
             cd ~/jjm/storefront
 
+            echo ">>> clearing out nextjs cache"
+            rm -rf .next
+
             echo ">>> Pulling latest code"
             git fetch origin main
             git reset --hard origin/main
 
             echo ">>> Installing deps"
-            yarn install --frozen-lockfile
+            yarn install --immutable
 
             echo ">>> Building Next.js app"
             yarn run build
