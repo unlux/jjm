@@ -38,3 +38,4 @@ export const InfoCard = ({
 )
 
 export default InfoCard
+

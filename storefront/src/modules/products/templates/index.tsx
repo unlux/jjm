@@ -43,8 +43,8 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
         className="max-w-8xl w-full mx-auto px-6 py-6 relative grid gap-8 items-start grid-cols-1 lg:[grid-template-columns:400px_minmax(0,1fr)_360px]"
         data-testid="product-container"
       >
-        {/* Left Column - Sticky */}
-        <div className="lg:sticky lg:top-12 self-start w-full">
+        {/* Left Column - Sticky - DESKTOP*/}
+        <div className="hidden lg:block lg:sticky lg:top-12 self-start w-full">
           <div className="mt-2">
             <ProductInfo
               product={product}
@@ -52,6 +52,13 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
               coolThings={Array.isArray(coolThings) ? coolThings : []}
               howToPlay={howToPlay}
             />
+          </div>
+        </div>
+
+        {/* Show only title on mobile */}
+        <div className="block lg:hidden self-start w-full">
+          <div className="mt-2">
+            <ProductInfo product={product} showTitle={true} />
           </div>
         </div>
 
@@ -63,7 +70,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
         </div>
 
         {/* Right Column - Sticky */}
-        <div className="flex flex-col lg:sticky lg:top-48 self-start w-full py-6 gap-y-8">
+        <div className="flex flex-col lg:sticky lg:top-12 self-start w-full py-6 gap-y-8">
           <div className="hidden sm:block">
             {howToPlay && (
               <InfoCard
@@ -77,6 +84,19 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
                 </p>
               </InfoCard>
             )}
+          </div>
+
+          {/* Show description, cool things and how to play on mobile after image gallery */}
+          <div className="block lg:hidden w-full">
+            <div className="mt-2">
+              <ProductInfo
+                product={product}
+                description={description}
+                coolThings={Array.isArray(coolThings) ? coolThings : []}
+                howToPlay={howToPlay}
+                showTitle={false}
+              />
+            </div>
           </div>
 
           {/* <ProductTabs product={product} /> */}

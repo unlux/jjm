@@ -14,10 +14,12 @@ const modak = Modak({ subsets: ["latin"], weight: ["400"] })
 const sour = Sour_Gummy({ subsets: ["latin"], weight: ["400"] })
 type ProductInfoProps = {
   product: HttpTypes.StoreProduct
-  description: string
-  // Updated to handle 'false' if the section is missing
-  coolThings: string[] | false
-  howToPlay: string[] | false
+  description?: string
+  // Optional: omit to hide the section
+  coolThings?: string[] | false
+  // Accept string or string[] or false; omit to hide
+  howToPlay?: string | string[] | false
+  showTitle?: boolean
 }
 
 const ProductInfo = ({
@@ -25,6 +27,7 @@ const ProductInfo = ({
   description,
   coolThings,
   howToPlay,
+  showTitle = true,
 }: ProductInfoProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   return (
@@ -39,28 +42,31 @@ const ProductInfo = ({
           </LocalizedClientLink>
         )}
 
-        <div className="flex justify-center">
-          <GlareHover
-            glareColor="#ffffff"
-            glareOpacity={0.5}
-            glareAngle={-30}
-            glareSize={300}
-            transitionDuration={800}
-            playOnce={false}
-            className="w-auto max-w-full"
-          >
-            <h2
-              className={`text-4xl md:text-4xl font-black px-6 py-4 text-center break-words bg-gradient-to-r from-blue-50 to-blue-100 rounded-full shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 whitespace-normal text-[#181D4E]/80 ${sour.className}`}
-              style={{
-                maxWidth: "100%",
-                wordWrap: "break-word",
-                lineHeight: "1",
-              }}
+        {/* product title */}
+        {showTitle && (
+          <div className="flex justify-center">
+            <GlareHover
+              glareColor="#ffffff"
+              glareOpacity={0.5}
+              glareAngle={-30}
+              glareSize={300}
+              transitionDuration={800}
+              playOnce={false}
+              className="w-auto max-w-full"
             >
-              {product.title}
-            </h2>
-          </GlareHover>
-        </div>
+              <h2
+                className={`text-4xl md:text-4xl font-black px-6 py-4 text-center break-words bg-gradient-to-r from-blue-50 to-blue-100 rounded-full shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 whitespace-normal text-[#181D4E]/80 ${sour.className}`}
+                style={{
+                  maxWidth: "100%",
+                  wordWrap: "break-word",
+                  lineHeight: "1",
+                }}
+              >
+                {product.title}
+              </h2>
+            </GlareHover>
+          </div>
+        )}
 
         {/* heading */}
         {/* <div
@@ -103,8 +109,8 @@ const ProductInfo = ({
             </InfoCard>
           )}
 
-          {/* This now checks for a non-false value before rendering */}
-          {coolThings && coolThings.length > 0 && (
+          {/* Cool Things Section*/}
+          {coolThings && Array.isArray(coolThings) && coolThings.length > 0 && (
             <InfoCard
               icon={<Sparkles className="w-5 h-5" />}
               title="Cool Things You’ll Learn"
@@ -129,7 +135,7 @@ const ProductInfo = ({
                 bg="bg-yellow-50"
               >
                 <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                  {howToPlay}
+                  {Array.isArray(howToPlay) ? howToPlay.join("\n") : howToPlay}
                 </p>
               </InfoCard>
             )}
