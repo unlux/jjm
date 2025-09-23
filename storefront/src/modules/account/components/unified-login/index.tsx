@@ -22,6 +22,7 @@ import {
 } from "@lib/data/cookies"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import AdditionalInfo from "./additional-info"
+import { track } from "@/lib/analytics"
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
@@ -69,6 +70,9 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
           const cacheTag = await getCacheTag("customers")
           await revalidateCustomerCache(cacheTag)
           await transferCart()
+          try {
+            track("user_signed_in" as any, { method: "google_oauth" })
+          } catch {}
         })
         .catch((error) => {
           console.error("Error during Google authentication callback:", error)
@@ -196,7 +200,19 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                 </div>
 
                 {isLogin ? (
-                  <form action={loginAction}>
+                  <form
+                    action={loginAction}
+                    onSubmit={(e) => {
+                      try {
+                        const email = (e.currentTarget.elements.namedItem("email") as HTMLInputElement)?.value
+                        const email_domain = email?.split("@")[1]
+                        track("user_signed_in" as any, {
+                          method: "password",
+                          email_domain,
+                        })
+                      } catch {}
+                    }}
+                  >
                     <div className="space-y-5">
                       <div className="mt-0">
                         <button
@@ -302,7 +318,19 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                     </div>
                   </form>
                 ) : (
-                  <form action={signupAction}>
+                  <form
+                    action={signupAction}
+                    onSubmit={(e) => {
+                      try {
+                        const email = (e.currentTarget.elements.namedItem("email") as HTMLInputElement)?.value
+                        const email_domain = email?.split("@")[1]
+                        track("user_signed_up" as any, {
+                          method: "password",
+                          email_domain,
+                        })
+                      } catch {}
+                    }}
+                  >
                     <input
                       type="hidden"
                       name="first_name"

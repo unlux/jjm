@@ -8,6 +8,7 @@ import CartMismatchBanner from "@modules/layout/components/cart-mismatch-banner"
 import Footer from "@modules/layout/templates/footer"
 import Nav from "@modules/layout/templates/nav"
 import FreeShippingPriceNudge from "@modules/shipping/components/free-shipping-price-nudge"
+import IdentifyUser from "@/modules/analytics/IdentifyUser"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
@@ -27,6 +28,9 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Nav />
+
+      {/* Analytics: identify user if logged in */}
+      <IdentifyUser customer={customer} />
 
       {customer && cart && (
         <CartMismatchBanner customer={customer} cart={cart} />

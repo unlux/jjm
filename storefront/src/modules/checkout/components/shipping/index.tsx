@@ -12,6 +12,7 @@ import Divider from "@modules/common/components/divider"
 import MedusaRadio from "@modules/common/components/radio"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
+import { track } from "@/lib/analytics"
 
 const PICKUP_OPTION_ON = "__PICKUP_ON"
 const PICKUP_OPTION_OFF = "__PICKUP_OFF"
@@ -105,6 +106,18 @@ const Shipping: React.FC<ShippingProps> = ({
       setShowPickupOptions(PICKUP_OPTION_ON)
     }
   }, [availableShippingMethods])
+
+  // Analytics: step view
+  useEffect(() => {
+    if (!isOpen || !cart) return
+    const itemCount = cart.items?.reduce((acc, it) => acc + (it.quantity || 0), 0) || 0
+    track("delivery_step_view" as any, {
+      cart_id: cart.id,
+      item_count: itemCount,
+      cart_value: cart.total,
+      currency: cart.currency_code,
+    })
+  }, [isOpen, cart?.id])
 
   const handleEdit = () => {
     router.push(pathname + "?step=delivery", { scroll: false })

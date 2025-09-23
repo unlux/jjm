@@ -3,6 +3,7 @@ import { listProducts } from "@lib/data/products"
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import ProductClickLink from "@/modules/products/components/ProductClickLink"
 import Thumbnail from "../thumbnail"
 import PreviewPrice from "./price"
 
@@ -11,11 +12,15 @@ export default async function ProductPreview({
   isFeatured,
   region,
   size = "full",
+  position,
+  listId,
 }: {
   product: HttpTypes.StoreProduct
   isFeatured?: boolean
   region: HttpTypes.StoreRegion
   size?: "full" | "square"
+  position?: number
+  listId?: string
 }) {
   // const pricedProduct = await listProducts({
   //   regionId: region.id,
@@ -31,7 +36,12 @@ export default async function ProductPreview({
   })
 
   return (
-    <LocalizedClientLink href={`/products/${product.handle}`} className="group">
+    <ProductClickLink
+      product={product}
+      href={`/products/${product.handle}`}
+      position={position}
+      list_id={listId}
+    >
       <div data-testid="product-wrapper">
         <Thumbnail
           thumbnail={product.thumbnail}
@@ -56,6 +66,6 @@ export default async function ProductPreview({
           </div>
         </div>
       </div>
-    </LocalizedClientLink>
+    </ProductClickLink>
   )
 }

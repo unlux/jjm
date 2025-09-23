@@ -5,6 +5,7 @@ import { getRegion } from "@lib/data/regions"
 import ProductPreview from "@modules/products/components/product-preview"
 import { Pagination } from "@modules/store/components/pagination"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+import ProductListViewTrack from "@/modules/products/components/ProductListViewTrack"
 
 // Single source of truth for pagination page size
 const LIMIT = 12
@@ -119,16 +120,33 @@ export default async function PaginatedProducts({
 
   const totalPages = Math.ceil(count / LIMIT)
 
+  // Build a stable list_id from filters for analytics attribution
+  const listIdParts = [
+    collectionId ? `collection:${collectionId}` : undefined,
+    categoryId ? `category:${categoryId}` : undefined,
+    age ? `age:${age}` : undefined,
+    sortBy ? `sort:${sortBy}` : undefined,
+  ].filter(Boolean)
+  const listId = listIdParts.join("|") || "all_products"
+
   return (
     <>
+      {/* Analytics: product list view */}
+      <ProductListViewTrack products={products} list_id={listId} page={page} />
       <ul
         className="grid grid-cols-1 2xsmall:grid-cols-2 small:grid-cols-2 medium:grid-cols-3 gap-x-6 gap-y-8 w-full"
         data-testid="products-list"
       >
-        {products.map((p) => {
+        {products.map((p, idx) => {
           return (
             <li key={p.id}>
-              <ProductPreview product={p} region={region} size="square" />
+              <ProductPreview
+                product={p}
+                region={region}
+                size="square"
+                position={(page - 1) * LIMIT + idx + 1}
+                listId={listId}
+              />
             </li>
           )
         })}

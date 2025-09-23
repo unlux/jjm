@@ -12,6 +12,7 @@ import PaymentContainer, {
 import Divider from "@modules/common/components/divider"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
+import { track } from "@/lib/analytics"
 
 const Payment = ({
   cart,
@@ -105,6 +106,18 @@ const Payment = ({
   useEffect(() => {
     setError(null)
   }, [isOpen])
+
+  // Analytics: step view
+  useEffect(() => {
+    if (!isOpen || !cart) return
+    const itemCount = cart.items?.reduce((acc: number, it: any) => acc + (it.quantity || 0), 0) || 0
+    track("payment_step_view" as any, {
+      cart_id: cart.id,
+      item_count: itemCount,
+      cart_value: cart.total,
+      currency: cart.currency_code,
+    })
+  }, [isOpen, cart?.id])
 
   return (
     <div className="bg-white">

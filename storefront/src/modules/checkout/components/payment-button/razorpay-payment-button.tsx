@@ -174,7 +174,7 @@ export const RazorpayPaymentButton = ({
   console.log("[RazorpayPaymentButton] orderData", orderData)
 
   return (
-    <>
+    <div data-ph-no-capture>
       <Button
         data-testid="razorpay-payment-button"
         disabled={
@@ -197,6 +197,6 @@ export const RazorpayPaymentButton = ({
           {errorMessage}
         </div>
       )}
-    </>
+    </div>
   )
 }

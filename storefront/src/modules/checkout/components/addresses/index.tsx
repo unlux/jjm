@@ -13,6 +13,8 @@ import BillingAddress from "../billing_address"
 import ErrorMessage from "../error-message"
 import ShippingAddress from "../shipping-address"
 import { SubmitButton } from "../submit-button"
+import { useEffect } from "react"
+import { track } from "@/lib/analytics"
 
 const Addresses = ({
   cart,
@@ -38,6 +40,17 @@ const Addresses = ({
   }
 
   const [message, formAction] = useActionState(setAddresses, null)
+
+  useEffect(() => {
+    if (!isOpen || !cart) return
+    const itemCount = cart.items?.reduce((acc, it) => acc + (it.quantity || 0), 0) || 0
+    track("address_step_view" as any, {
+      cart_id: cart.id,
+      item_count: itemCount,
+      cart_value: cart.total,
+      currency: cart.currency_code,
+    })
+  }, [isOpen, cart?.id])
 
   return (
     <div className="bg-white">

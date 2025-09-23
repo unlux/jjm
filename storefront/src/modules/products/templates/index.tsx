@@ -12,6 +12,7 @@ import ProductInfo from "@modules/products/templates/product-info"
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products"
 import ProductActionsWrapper from "./product-actions-wrapper"
 import { Sour_Gummy } from "next/font/google"
+import ProductViewTrack from "@/modules/products/components/ProductViewTrack"
 
 // IMPORTANT: Assuming your new parser function is in a utility file
 import { parseProductDescription } from "@lib/util/parse-product-description"
@@ -39,6 +40,8 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
 
   return (
     <div className="min-h-screen">
+      {/* Analytics: product_view */}
+      <ProductViewTrack product={product} region={region} countryCode={countryCode} />
       <div
         className="max-w-8xl w-full mx-auto px-6 py-6 relative grid gap-8 items-start grid-cols-1 lg:[grid-template-columns:400px_minmax(0,1fr)_360px]"
         data-testid="product-container"

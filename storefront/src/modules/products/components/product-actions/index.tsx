@@ -13,6 +13,7 @@ import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
 import { useWishlist } from "@/apna-context/WishlistContext"
 import { Heart } from "lucide-react"
+import { track } from "@/lib/analytics"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -112,6 +113,22 @@ export default function ProductActions({
       quantity: 1,
       countryCode,
     })
+      .then(() => {
+        try {
+          const price = (selectedVariant as any)?.calculated_price || (selectedVariant as any)?.prices?.[0]?.amount
+          track("add_to_cart", {
+            product_id: product.id,
+            variant_id: selectedVariant.id,
+            title: product.title,
+            quantity: 1,
+            price,
+            currency: (product as any)?.currency_code,
+            in_stock: inStock,
+            options: options,
+            category: product.collection_id,
+          })
+        } catch (_) {}
+      })
 
     setIsAdding(false)
   }

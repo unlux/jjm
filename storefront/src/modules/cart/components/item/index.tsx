@@ -13,6 +13,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import Spinner from "@modules/common/icons/spinner"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { useState } from "react"
+import { track } from "@/lib/analytics"
 
 type ItemProps = {
   item: HttpTypes.StoreCartLineItem
@@ -28,6 +29,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
     setError(null)
     setUpdating(true)
 
+    const previous_quantity = item.quantity
     await updateLineItem({
       lineId: item.id,
       quantity,
@@ -38,6 +40,22 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       .finally(() => {
         setUpdating(false)
       })
+
+    try {
+      const delta = (quantity || 0) - (previous_quantity || 0)
+      if (delta !== 0) {
+        track("cart_quantity_updated", {
+          line_item_id: item.id,
+          product_id: item.variant?.product_id,
+          variant_id: item.variant_id,
+          title: item.product_title,
+          previous_quantity,
+          new_quantity: quantity,
+          delta,
+          currency: currencyCode,
+        })
+      }
+    } catch (_) {}
   }
 
   // TODO: Update this to grab the actual max inventory
@@ -75,7 +93,22 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       {type === "full" && (
         <Table.Cell>
           <div className="flex gap-2 items-center w-28">
-            <DeleteButton id={item.id} data-testid="product-delete-button" />
+            <DeleteButton
+              id={item.id}
+              data-testid="product-delete-button"
+              onDelete={async () => {
+                try {
+                  track("remove_from_cart", {
+                    line_item_id: item.id,
+                    product_id: item.variant?.product_id,
+                    variant_id: item.variant_id,
+                    title: item.product_title,
+                    quantity_removed: item.quantity,
+                    currency: currencyCode,
+                  })
+                } catch (_) {}
+              }}
+            />
             <CartItemSelect
               value={item.quantity}
               onChange={(value) => changeQuantity(parseInt(value.target.value))}

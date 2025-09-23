@@ -4,6 +4,8 @@ import { Heading, Text, clx } from "@medusajs/ui"
 
 import PaymentButton from "../payment-button"
 import { useSearchParams } from "next/navigation"
+import { useEffect } from "react"
+import { track } from "@/lib/analytics"
 
 const Review = ({ cart }: { cart: any }) => {
   const searchParams = useSearchParams()
@@ -17,6 +19,17 @@ const Review = ({ cart }: { cart: any }) => {
     cart.shipping_address &&
     cart.shipping_methods.length > 0 &&
     (cart.payment_collection || paidByGiftcard)
+
+  useEffect(() => {
+    if (!isOpen || !cart) return
+    const itemCount = cart.items?.reduce((acc: number, it: any) => acc + (it.quantity || 0), 0) || 0
+    track("review_step_view" as any, {
+      cart_id: cart.id,
+      item_count: itemCount,
+      cart_value: cart.total,
+      currency: cart.currency_code,
+    })
+  }, [isOpen, cart?.id])
 
   return (
     <div className="bg-white">
