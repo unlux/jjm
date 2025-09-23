@@ -7,6 +7,11 @@ const requiredEnvs = [
     description:
       "Learn how to create a publishable key: https://docs.medusajs.com/v2/resources/storefront-development/publishable-api-keys",
   },
+  {
+    key: "NEXT_PUBLIC_POSTHOG_KEY",
+    description:
+      "Find your PostHog Project API key in Project settings → Project variables. If using EU residency, keep our first-party proxy at /ingest.",
+  },
 ]
 
 function checkEnvVariables() {
