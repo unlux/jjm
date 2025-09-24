@@ -4,16 +4,13 @@
 
 import React from "react"
 
-// Define your messages here for easy updating.
-const messages = [
-  "🎉 Win a free gift on orders above ₹1499",
-  "✨ New arrivals every week — explore now",
-  //   "🚚 Free shipping on all prepaid orders",
-]
+type MarqueeProps = {
+  messages: string[]
+}
 
-export default function TopMarquee() {
+export default function TopMarquee({ messages }: MarqueeProps) {
   // Return null if there are no messages to prevent rendering an empty bar.
-  if (messages.length === 0) {
+  if (!messages || messages.length === 0) {
     return null
   }
 

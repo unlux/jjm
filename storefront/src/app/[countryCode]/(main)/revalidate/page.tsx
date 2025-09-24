@@ -37,6 +37,13 @@ export default function RevalidatePage() {
             <p className="text-gray-600 mb-3 text-sm">Revalidates the home page that renders the hero slider.</p>
             <RevalidateButton tag="hero" />
           </div>
+          <div>
+            <h2 className="text-xl font-semibold text-[#1e1e3f] mb-2">Offers Marquee (Top Bar)</h2>
+            <p className="text-gray-600 mb-3 text-sm">
+              Revalidates the cached offers shown in the top marquee and the offers API cache.
+            </p>
+            <RevalidateButton tag="offers" />
+          </div>
 
           <div>
             <h2 className="text-xl font-semibold text-[#1e1e3f] mb-2">Products</h2>
@@ -61,6 +68,7 @@ export default function RevalidatePage() {
 {`curl "http://localhost:8000/api/revalidate?tag=blogs"
 curl "http://localhost:8000/api/revalidate?tag=testimonials"
 curl "http://localhost:8000/api/revalidate?tag=hero"
+curl "http://localhost:8000/api/revalidate?tag=offers"
 curl "http://localhost:8000/api/revalidate?tag=products"
 curl "http://localhost:8000/api/revalidate?tag=all"`}
           </pre>

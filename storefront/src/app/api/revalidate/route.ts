@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
   })
 
   // Simple mode: allow GET /api/revalidate?tag=<value>
-  // Supported values: hero, testimonials, blogs, products, all
+  // Supported values: hero, testimonials, blogs, products, offers, all
   if (simpleHeroTag) {
     const tag = simpleHeroTag.toLowerCase()
     console.log("[revalidate] simple tag mode ->", tag)
@@ -54,6 +54,16 @@ export async function GET(req: NextRequest) {
         // We cannot know specific [id] to tag; path-level will refresh index and detail on next request
         return NextResponse.json({ message: "Revalidated blogs" }, { status: 200 })
       }
+      case "offers": {
+        console.log("[revalidate] offers -> tags offers*, path home + /api/offers")
+        revalidateTag("offers")
+        revalidateTag("offers:all")
+        revalidateTag("offers:active:true")
+        revalidateTag("offers:active:false")
+        revalidatePath("/[countryCode]/(main)", "page")
+        revalidatePath("/api/offers")
+        return NextResponse.json({ message: "Revalidated offers" }, { status: 200 })
+      }
       case "products": {
         console.log("[revalidate] products -> paths store + product detail")
         revalidatePath("/[countryCode]/(main)/store", "page")
@@ -61,7 +71,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ message: "Revalidated products" }, { status: 200 })
       }
       case "all": {
-        console.log("[revalidate] all -> hero + testimonials + blogs + products")
+        console.log("[revalidate] all -> hero + testimonials + blogs + products + offers")
         // Hero
         revalidateTag("hero-slides")
         revalidateTag("hero-slides:all")
@@ -76,6 +86,12 @@ export async function GET(req: NextRequest) {
         revalidateTag("blogs")
         revalidateTag("blogs:all")
         revalidatePath("/[countryCode]/(main)/blogs", "page")
+        // Offers
+        revalidateTag("offers")
+        revalidateTag("offers:all")
+        revalidateTag("offers:active:true")
+        revalidateTag("offers:active:false")
+        revalidatePath("/api/offers")
         // Products
         revalidatePath("/[countryCode]/(main)/store", "page")
         revalidatePath("/[countryCode]/(main)/products/[handle]", "page")
@@ -130,6 +146,18 @@ export async function GET(req: NextRequest) {
           // Home page uses HeroSlider with SSR
           revalidatePath("/[countryCode]/(main)", "page")
           break
+        case "offers":
+          revalidateTag("offers")
+          revalidateTag("offers:all")
+          revalidatePath("/[countryCode]/(main)", "page")
+          revalidatePath("/api/offers")
+          break
+        case "offers:active:true":
+          revalidateTag("offers:active:true")
+          break
+        case "offers:active:false":
+          revalidateTag("offers:active:false")
+          break
         case "all":
           // Revalidate everything relevant in one go
           revalidatePath("/[countryCode]/(main)", "page")
@@ -142,6 +170,11 @@ export async function GET(req: NextRequest) {
           revalidateTag("hero-slides:all")
           revalidateTag("hero-slides:mobile:true")
           revalidateTag("hero-slides:mobile:false")
+          revalidateTag("offers")
+          revalidateTag("offers:all")
+          revalidateTag("offers:active:true")
+          revalidateTag("offers:active:false")
+          revalidatePath("/api/offers")
           break
         default:
           console.warn("[revalidate] unknown tag in multi mode", tag)
