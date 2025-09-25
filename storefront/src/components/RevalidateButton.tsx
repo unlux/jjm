@@ -15,7 +15,8 @@ export default function RevalidateButton({ tag, tags }: { tag?: string; tags?: s
         : tags
         ? `?tags=${encodeURIComponent(tags)}`
         : "?tag=hero"
-      const res = await fetch(`/api/revalidate${qs}`)
+      // Call server proxy which injects x-revalidate-secret if configured
+      const res = await fetch(`/api/revalidate/trigger${qs}`)
       const json = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(json?.error || `Status ${res.status}`)
       setStatus(json?.message || "Revalidated")
