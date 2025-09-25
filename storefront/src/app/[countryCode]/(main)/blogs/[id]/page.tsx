@@ -11,7 +11,7 @@ export default async function BlogDetailPage({
 }: {
   params: { id: string }
 }) {
-  const id = params.id
+  const id = await params.id
   const blog = await getBlogByIdCached(id)
   if (!blog) {
     return (
