@@ -1,7 +1,6 @@
 // components/RefundPolicy.tsx
 // Server component: static content only
-
-import React from "react"
+export const dynamic = "force-static"
 
 const RefundPolicy = () => {
   return (

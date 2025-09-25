@@ -1,13 +1,16 @@
-import React from "react";
-import Image from "next/image";
-import { ShoppingBag, Pencil, Clock, Megaphone } from "lucide-react";
-import LocalizedClientLink from "@modules/common/components/localized-client-link";
+// components/PartnershipProgram.tsx
+// Server component: static content only
+export const dynamic = "force-static"
+
+import Image from "next/image"
+import { ShoppingBag, Pencil, Clock, Megaphone } from "lucide-react"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 export const metadata = {
   title: "Preschool Partnership Program | The Joy Junction",
   description:
     "Special pricing and exclusive benefits for preschools and educational institutions",
-};
+}
 
 export default function PartnershipProgramPage() {
   return (
@@ -129,5 +132,5 @@ export default function PartnershipProgramPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

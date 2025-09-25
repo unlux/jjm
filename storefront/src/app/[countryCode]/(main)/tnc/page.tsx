@@ -1,7 +1,6 @@
 // components/TermsAndConditions.tsx
 // Server component: static content only
-
-import React from "react"
+export const dynamic = "force-static"
 
 const TermsAndConditions = () => {
   return (
