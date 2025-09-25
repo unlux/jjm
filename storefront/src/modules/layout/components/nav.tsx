@@ -20,7 +20,6 @@ import {
 import Image from "next/image"
 import { useWishlist } from "@/apna-context/WishlistContext" // Assuming this path is correct
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import MarqueeLoader from "./MarqueeLoader"
 import SearchOverlay from "@modules/search/components/search-overlay"
 import CartDropdown from "@modules/layout/components/cart-dropdown"
 import { StoreCart } from "@medusajs/types"
@@ -80,7 +79,6 @@ const Navbar = ({
   }, [isMenuOpen, categories, isLoadingCats])
   return (
     <>
-      <MarqueeLoader />
       <nav id="main-nav" className="bg-[#181D4E] text-white">
         {/* Desktop Layout */}
         <div className="hidden md:flex items-center justify-between px-4 py-3 md:h-32">
