@@ -1,0 +1,33 @@
+# Frontend
+frontend domain {
+        reverse_proxy localhost:8000
+
+        tls <tls email>
+
+        encode gzip zstd
+
+        header {
+                Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+                Referrer-Policy "no-referrer"
+                X-Content-Type-Options "nosniff"
+                X-Frame-Options "DENY"
+                X-XSS-Protection "1; mode=block"
+        }
+}
+
+# Backend API
+backend domain {
+        reverse_proxy localhost:9000
+
+        tls <tls email>
+
+        encode gzip zstd
+
+        header {
+                Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+                Referrer-Policy "no-referrer"
+                X-Content-Type-Options "nosniff"
+                X-Frame-Options "DENY"
+                X-XSS-Protection "1; mode=block"
+        }
+}
