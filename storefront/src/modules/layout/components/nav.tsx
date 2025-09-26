@@ -1,6 +1,5 @@
 "use client"
-import { useRouter } from "next/navigation"
-import { useEffect, useState, Suspense } from "react"
+import { useEffect, useState } from "react"
 import {
   Menu,
   ShoppingCart,
@@ -10,7 +9,6 @@ import {
   X,
   Phone,
   Mail,
-  ArrowRight,
   Home,
   Store,
   Info,
@@ -18,7 +16,7 @@ import {
   HelpCircle,
 } from "lucide-react"
 import Image from "next/image"
-import { useWishlist } from "@/apna-context/WishlistContext" // Assuming this path is correct
+import { useWishlist } from "@/apna-context/WishlistContext"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import SearchOverlay from "@modules/search/components/search-overlay"
 import CartDropdown from "@modules/layout/components/cart-dropdown"
@@ -34,11 +32,9 @@ const Navbar = ({
 }: {
   cart: Omit<StoreCart, "refundable_amount" | "refunded_total"> | null
 }) => {
-  const router = useRouter()
   const { wishlistCount } = useWishlist()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [categories, setCategories] = useState<FooterCategory[] | null>(null)
-  const [isLoadingCats, setIsLoadingCats] = useState(false)
 
   const toggleBodyClass = (className: string, force?: boolean) => {
     document.body.classList.toggle(className, force)
@@ -50,12 +46,11 @@ const Navbar = ({
       0
     ) || 0
 
-  // Lazy-load categories when opening the sidebar
+  // Fetch categories on mount (eagerly), not tied to opening the sidebar
   useEffect(() => {
-    if (!isMenuOpen || categories || isLoadingCats) return
+    let cancelled = false
     const load = async () => {
       try {
-        setIsLoadingCats(true)
         const { product_categories } = await sdk.client.fetch<{
           product_categories: any[]
         }>("/store/product-categories", {
@@ -68,15 +63,18 @@ const Navbar = ({
         const tops = (product_categories || []).filter(
           (c: any) => !c?.parent_category
         )
-        setCategories(tops as FooterCategory[])
+        if (!cancelled) setCategories(tops as FooterCategory[])
       } catch (e) {
         // no-op; keep menu working even if categories fail
-      } finally {
-        setIsLoadingCats(false)
       }
     }
     load()
-  }, [isMenuOpen, categories, isLoadingCats])
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  // Render
   return (
     <>
       <nav id="main-nav" className="bg-[#181D4E] text-white">
@@ -293,7 +291,7 @@ const Navbar = ({
                   <Home size={18} className="md:h-5 md:w-5" />
                   Home
                 </LocalizedClientLink>
-                {/* Replace Products link with flush accordion */}
+                {/* Categories accordion (fetched on mount, rendered when ready) */}
                 {categories && categories.length > 0 ? (
                   <ShopCategoriesAccordion
                     categories={categories}
@@ -302,9 +300,7 @@ const Navbar = ({
                     className="w-full"
                   />
                 ) : (
-                  <div className="text-xs md:text-sm text-gray-500">
-                    {isLoadingCats ? "Loading..." : ""}
-                  </div>
+                  <div className="text-xs md:text-sm text-gray-500"></div>
                 )}
                 <LocalizedClientLink
                   href="/cart"
