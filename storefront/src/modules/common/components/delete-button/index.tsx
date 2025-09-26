@@ -1,4 +1,5 @@
 import { deleteLineItem } from "@lib/data/cart"
+import { deleteLineItemWithToast } from "@/lib/client/cart-toasts"
 import { Spinner, Trash } from "@medusajs/icons"
 import { clx } from "@medusajs/ui"
 import { useState } from "react"
@@ -23,9 +24,10 @@ const DeleteButton = ({
         await onDelete()
       }
     } catch (_) {}
-    await deleteLineItem(id).catch((err) => {
+    const ok = await deleteLineItemWithToast(id)
+    if (!ok) {
       setIsDeleting(false)
-    })
+    }
   }
 
   return (

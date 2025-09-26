@@ -7,14 +7,14 @@ import { Button } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
 import { isEqual } from "lodash"
-import { useParams, useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
 import { useWishlist } from "@/apna-context/WishlistContext"
 import { Heart } from "lucide-react"
 import { track } from "@/lib/analytics"
-import { toast } from "sonner"
+import { addToCartWithToast } from "@/lib/client/cart-toasts"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -102,7 +102,6 @@ export default function ProductActions({
   const actionsRef = useRef<HTMLDivElement>(null)
 
   const inView = useIntersection(actionsRef, "0px")
-  const router = useRouter()
 
   // add the selected variant to the cart
   const handleAddToCart = async () => {
@@ -110,46 +109,31 @@ export default function ProductActions({
 
     setIsAdding(true)
     try {
-      await addToCart({
+      const ok = await addToCartWithToast({
         variantId: selectedVariant.id,
         quantity: 1,
         countryCode,
+        productTitle: product.title,
       })
 
-      // Toast success (fun + playful)
-      const emojis = ["🧸", "🎉", "🎈", "✨", "🚀", "🦄"]
-      const emoji = emojis[Math.floor(Math.random() * emojis.length)]
-      toast.success(`${emoji} Added to cart!`, {
-        description: `${product.title} is now in your cart.`,
-        action: {
-          label: "View cart",
-          onClick: () =>
-            router.push(countryCode ? `/${countryCode}/cart` : "/cart"),
-        },
-        duration: 2200,
-      })
-
-      // Track analytics (best-effort)
-      try {
-        const price =
-          (selectedVariant as any)?.calculated_price ||
-          (selectedVariant as any)?.prices?.[0]?.amount
-        track("add_to_cart", {
-          product_id: product.id,
-          variant_id: selectedVariant.id,
-          title: product.title,
-          quantity: 1,
-          price,
-          currency: (product as any)?.currency_code,
-          in_stock: inStock,
-          options: options,
-          category: product.collection_id,
-        })
-      } catch (_) {}
-    } catch (e) {
-      toast.error("Uh‑oh! The toy ran away 😅", {
-        description: "Couldn't add to cart. Please try again.",
-      })
+      if (ok) {
+        try {
+          const price =
+            (selectedVariant as any)?.calculated_price ||
+            (selectedVariant as any)?.prices?.[0]?.amount
+          track("add_to_cart", {
+            product_id: product.id,
+            variant_id: selectedVariant.id,
+            title: product.title,
+            quantity: 1,
+            price,
+            currency: (product as any)?.currency_code,
+            in_stock: inStock,
+            options: options,
+            category: product.collection_id,
+          })
+        } catch (_) {}
+      }
     } finally {
       setIsAdding(false)
     }
