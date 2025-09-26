@@ -16,7 +16,7 @@ import {
   HelpCircle,
 } from "lucide-react"
 import Image from "next/image"
-import { useWishlist } from "@/apna-context/WishlistContext"
+import { useWishlist } from "@/lib/context/WishlistContext"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import SearchOverlay from "@modules/search/components/search-overlay"
 import CartDropdown from "@modules/layout/components/cart-dropdown"

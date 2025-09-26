@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import { homeCategories } from "@/apna-context/categories.config"
+import { homeCategories } from "@/lib/context/categories.config"
 
 const categories = homeCategories
 

@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { blogs as blogsTable } from "@/lib/schema"
-import { blogs as staticBlogs } from "@/apna-data/blogs"
+import { blogs as staticBlogs } from "@/lib/data/blog-seed"
 
 export async function POST() {
   try {
     if (process.env.NODE_ENV === "production") {
-      return NextResponse.json({ error: "Disabled in production" }, { status: 403 })
+      return NextResponse.json(
+        { error: "Disabled in production" },
+        { status: 403 }
+      )
     }
 
     const rows = staticBlogs.map((b) => ({

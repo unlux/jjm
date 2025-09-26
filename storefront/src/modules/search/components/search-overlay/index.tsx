@@ -15,7 +15,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import {
   homeCategories,
   type HomeCategory,
-} from "@/apna-context/categories.config"
+} from "@/lib/context/categories.config"
 import { sdk } from "@/lib/config"
 
 type HitProps = {

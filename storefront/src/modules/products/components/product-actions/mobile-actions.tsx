@@ -10,7 +10,7 @@ import { getProductPrice } from "@lib/util/get-product-price"
 import OptionSelect from "./option-select"
 import { HttpTypes } from "@medusajs/types"
 import { isSimpleProduct } from "@lib/util/product"
-import { useWishlist } from "@/apna-context/WishlistContext"
+import { useWishlist } from "@/lib/context/WishlistContext"
 import { Heart } from "lucide-react"
 
 type MobileActionsProps = {
@@ -91,7 +91,10 @@ const MobileActions: React.FC<MobileActionsProps> = ({
             data-testid="mobile-actions"
           >
             <div className="w-full flex flex-col gap-1">
-              <h3 className="text-base font-medium text-ui-fg-base" data-testid="mobile-title">
+              <h3
+                className="text-base font-medium text-ui-fg-base"
+                data-testid="mobile-title"
+              >
                 {product.title}
               </h3>
               {selectedPrice && (
@@ -116,7 +119,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 </div>
               )}
             </div>
-            <div className={clx("grid w-full gap-x-4 grid-cols-10")}> 
+            <div className={clx("grid w-full gap-x-4 grid-cols-10")}>
               <Button
                 onClick={() => {
                   if (!variant) {
@@ -130,9 +133,19 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 className={clx("w-full col-span-7")}
                 isLoading={isAdding}
                 data-testid="mobile-cart-button"
-                title={!variant ? "Select options" : inStock ? "Add to cart" : "Out of stock"}
+                title={
+                  !variant
+                    ? "Select options"
+                    : inStock
+                    ? "Add to cart"
+                    : "Out of stock"
+                }
               >
-                {!variant ? "Select options" : !inStock ? "Out of stock" : "Add to cart"}
+                {!variant
+                  ? "Select options"
+                  : !inStock
+                  ? "Out of stock"
+                  : "Add to cart"}
               </Button>
               <Button
                 onClick={handleToggleWishlist}
@@ -141,14 +154,20 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                   "w-full col-span-3",
                   wishlistSelected
                     ? "border-pink-500 text-pink-600"
-                    : "text-ui-fg-muted",
+                    : "text-ui-fg-muted"
                 )}
-                aria-label={wishlistSelected ? "Remove from wishlist" : "Add to wishlist"}
-                title={wishlistSelected ? "Remove from wishlist" : "Add to wishlist"}
+                aria-label={
+                  wishlistSelected ? "Remove from wishlist" : "Add to wishlist"
+                }
+                title={
+                  wishlistSelected ? "Remove from wishlist" : "Add to wishlist"
+                }
               >
                 <Heart
                   size={18}
-                  className={wishlistSelected ? "fill-pink-500 text-pink-500" : ""}
+                  className={
+                    wishlistSelected ? "fill-pink-500 text-pink-500" : ""
+                  }
                 />
               </Button>
             </div>

@@ -3,9 +3,9 @@ import { Metadata } from "next"
 import "styles/globals.css"
 import { Analytics } from "@vercel/analytics/next"
 import { Quicksand } from "next/font/google"
-import ClickSpark from "@/apne-component/ClickSpark"
-import Providers from "@/apna-context/Providers"
-import ResponsiveToaster from "@/apne-component/ResponsiveToaster"
+import ClickSpark from "@/components/ui/ClickSpark"
+import Providers from "@/lib/context/Providers"
+import ResponsiveToaster from "@/components/ui/ResponsiveToaster"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),

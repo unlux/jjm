@@ -5,7 +5,7 @@ import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { ShoppingCart, Trash2, ArrowRight } from "lucide-react"
 import { Button } from "@medusajs/ui"
-import { useWishlist } from "../../../../apna-context/WishlistContext"
+import { useWishlist } from "@/lib/context/WishlistContext"
 import { addToCart as serverAddToCart } from "@/lib/data/cart"
 import { useParams, useRouter } from "next/navigation"
 
