@@ -3,7 +3,8 @@ import { Container } from "@medusajs/ui"
 import Checkbox from "@modules/common/components/checkbox"
 import Input from "@modules/common/components/input"
 import { mapKeys } from "lodash"
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
+import { toast } from "sonner"
 import AddressSelect from "../address-select"
 import CountrySelect from "../country-select"
 
@@ -30,6 +31,8 @@ const ShippingAddress = ({
     "shipping_address.phone": cart?.shipping_address?.phone || "",
     email: cart?.email || "",
   })
+  const [isFetchingPincode, setIsFetchingPincode] = useState(false)
+  const lastToastedPincodeRef = useRef<string | null>(null)
 
   const countriesInRegion = useMemo(
     () => cart?.region?.countries?.map((c) => c.iso_2),
@@ -92,6 +95,89 @@ const ShippingAddress = ({
     })
   }
 
+  // Autofill city and state/province based on Indian postal code (PIN)
+  // Uses public API: https://api.postalpincode.in/pincode/{pincode}
+  // Debounced to avoid firing on every keystroke.
+  useEffect(() => {
+    const pincode: string = (
+      formData["shipping_address.postal_code"] || ""
+    ).trim()
+
+    // Only fetch when pincode is exactly 6 digits
+    if (!/^[0-9]{6}$/.test(pincode)) {
+      // ensure loader is not shown when user clears/edits to an invalid pincode
+      setIsFetchingPincode(false)
+      return
+    }
+
+    const controller = new AbortController()
+
+    const timeoutId = setTimeout(async () => {
+      try {
+        setIsFetchingPincode(true)
+        const res = await fetch(
+          `https://api.postalpincode.in/pincode/${encodeURIComponent(pincode)}`,
+          { signal: controller.signal }
+        )
+
+        if (!res.ok) return
+
+        const data = await res.json()
+
+        // API most commonly returns an array with { PostOffice: [...] }
+        // but we also guard for an object shape.
+        let postOffice: any | undefined
+        if (Array.isArray(data)) {
+          const first = data[0]
+          if (
+            first &&
+            Array.isArray(first.PostOffice) &&
+            first.PostOffice.length
+          ) {
+            postOffice = first.PostOffice[0]
+          }
+        } else if (data && data.PostOffice) {
+          postOffice = Array.isArray(data.PostOffice)
+            ? data.PostOffice[0]
+            : data.PostOffice
+        }
+
+        if (postOffice) {
+          setFormData((prev) => ({
+            ...prev,
+            // District is typically the city for Indian addresses
+            "shipping_address.city":
+              postOffice.District || prev["shipping_address.city"],
+            // State is the province/state field
+            "shipping_address.province":
+              postOffice.State || prev["shipping_address.province"],
+          }))
+          // Show a toast once per pincode to confirm autofill
+          if (lastToastedPincodeRef.current !== pincode) {
+            lastToastedPincodeRef.current = pincode
+            const city = postOffice.District || ""
+            const state = postOffice.State || ""
+            toast.success(
+              "WE LOVE YOU ❤️ so we auto‑filled the rest from pincode",
+              {
+                duration: 5000,
+              }
+            )
+          }
+        }
+      } catch (_) {
+        // Silently ignore fetch errors; user can still input manually
+      } finally {
+        setIsFetchingPincode(false)
+      }
+    }, 500)
+
+    return () => {
+      clearTimeout(timeoutId)
+      controller.abort()
+    }
+  }, [formData["shipping_address.postal_code"]])
+
   return (
     <>
       {customer && (addressesInRegion?.length || 0) > 0 && (
@@ -146,15 +232,23 @@ const ShippingAddress = ({
           autoComplete="organization"
           data-testid="shipping-company-input"
         />
-        <Input
-          label="Postal code"
-          name="shipping_address.postal_code"
-          autoComplete="postal-code"
-          value={formData["shipping_address.postal_code"]}
-          onChange={handleChange}
-          required
-          data-testid="shipping-postal-code-input"
-        />
+        <div className="relative">
+          <Input
+            label="Postal code"
+            name="shipping_address.postal_code"
+            autoComplete="postal-code"
+            value={formData["shipping_address.postal_code"]}
+            onChange={handleChange}
+            required
+            data-testid="shipping-postal-code-input"
+          />
+          {isFetchingPincode && (
+            <span
+              aria-label="Loading pincode details"
+              className="absolute right-3 top-3 inline-block h-4 w-4 animate-spin rounded-full border-2 border-ui-border-base border-t-transparent"
+            />
+          )}
+        </div>
         <Input
           label="City"
           name="shipping_address.city"
