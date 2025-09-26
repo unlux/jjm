@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server"
 import { listOffersCached } from "@/lib/repos/offers"
 
-export const revalidate = 3600 // 1 hour
+export const dynamic = "force-dynamic"
+export const revalidate = 86400 // 24 hours
 
 export async function GET(req: Request) {
   try {
@@ -15,12 +16,17 @@ export async function GET(req: Request) {
         : isActiveParam === "false"
         ? false
         : undefined
-    const limit = searchParams.get("limit") ? Number(searchParams.get("limit")) : undefined
+    const limit = searchParams.get("limit")
+      ? Number(searchParams.get("limit"))
+      : undefined
 
     const offers = await listOffersCached({ isActive, limit })
     return NextResponse.json({ offers })
   } catch (e: any) {
     console.error("GET /api/offers error", e)
-    return NextResponse.json({ error: "Failed to fetch offers" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Failed to fetch offers" },
+      { status: 500 }
+    )
   }
 }
