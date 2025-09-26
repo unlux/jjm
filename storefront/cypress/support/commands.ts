@@ -25,13 +25,13 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 // Custom iframe command
-Cypress.Commands.add('iframe', (iframeSelector: string) => {
+Cypress.Commands.add("iframe", (iframeSelector: string) => {
   return cy
     .get(iframeSelector)
-    .its('0.contentDocument')
-    .should('exist')
-    .its('body')
-    .should('not.be.undefined')
+    .its("0.contentDocument")
+    .should("exist")
+    .its("body")
+    .should("not.be.undefined")
     .then(($body) => {
       return cy.wrap($body)
     })
@@ -50,4 +50,4 @@ Cypress.Commands.add('iframe', (iframeSelector: string) => {
 // }
 
 // Prevent TypeScript from reading file as legacy script
-export {} 
+export {}

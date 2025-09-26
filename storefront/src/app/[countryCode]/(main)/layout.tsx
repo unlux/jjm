@@ -1,5 +1,3 @@
-import { Metadata } from "next"
-
 import { listCartOptions, retrieveCart } from "@lib/data/cart"
 import { retrieveCustomer } from "@lib/data/customer"
 import { getBaseURL } from "@lib/util/env"
@@ -8,6 +6,8 @@ import CartMismatchBanner from "@modules/layout/components/cart-mismatch-banner"
 import Footer from "@modules/layout/templates/footer"
 import Nav from "@modules/layout/templates/nav"
 import FreeShippingPriceNudge from "@modules/shipping/components/free-shipping-price-nudge"
+import { Metadata } from "next"
+
 import IdentifyUser from "@/modules/analytics/IdentifyUser"
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Nav />
 
       {/* Analytics: identify user if logged in */}

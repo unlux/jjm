@@ -18,12 +18,20 @@ export async function listHeroSlides(params?: {
 }): Promise<SlideItem[]> {
   const { isForMobile, limit = 50 } = params ?? {}
   const where = [] as any[]
-  if (typeof isForMobile === "boolean") where.push(eq(heroSlidesTable.isForMobile, isForMobile))
+  if (typeof isForMobile === "boolean")
+    where.push(eq(heroSlidesTable.isForMobile, isForMobile))
 
   const rows: HeroSlideRow[] = await db
     .select()
     .from(heroSlidesTable)
-    .where(where.length ? (where as any).reduce((acc: any, w: any) => (acc ? (acc as any).and(w) : w), undefined) : undefined)
+    .where(
+      where.length
+        ? (where as any).reduce(
+            (acc: any, w: any) => (acc ? (acc as any).and(w) : w),
+            undefined
+          )
+        : undefined
+    )
     .orderBy(asc(heroSlidesTable.sortOrder), asc(heroSlidesTable.createdAt))
     .limit(limit)
 

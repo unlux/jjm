@@ -4,13 +4,13 @@ export const dynamic = "force-static"
 
 const TermsAndConditions = () => {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 text-gray-800">
-      <h1 className="text-3xl font-bold mb-6 text-center">
+    <div className="mx-auto max-w-4xl px-4 py-10 text-gray-800">
+      <h1 className="mb-6 text-center text-3xl font-bold">
         Terms & Conditions
       </h1>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">1. Acceptance of Terms</h2>
+        <h2 className="mb-2 text-xl font-semibold">1. Acceptance of Terms</h2>
         <p>
           By using our website, you agree to be bound by these Terms and
           Conditions. If you do not agree, please do not use our services.
@@ -18,8 +18,8 @@ const TermsAndConditions = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">2. Use of Website</h2>
-        <ul className="list-disc pl-6 space-y-1">
+        <h2 className="mb-2 text-xl font-semibold">2. Use of Website</h2>
+        <ul className="list-disc space-y-1 pl-6">
           <li>You must be at least 13 years old to use this site</li>
           <li>Do not misuse or attempt to hack our website</li>
           <li>All content is for personal use only</li>
@@ -27,7 +27,7 @@ const TermsAndConditions = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">3. Product Information</h2>
+        <h2 className="mb-2 text-xl font-semibold">3. Product Information</h2>
         <p>
           We strive to ensure accurate product descriptions, but we do not
           guarantee that all information is error-free. Prices and availability
@@ -36,7 +36,7 @@ const TermsAndConditions = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">4. Intellectual Property</h2>
+        <h2 className="mb-2 text-xl font-semibold">4. Intellectual Property</h2>
         <p>
           All images, logos, and content on this site are the property of Joy
           Junction and may not be used without permission.
@@ -44,7 +44,7 @@ const TermsAndConditions = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">
+        <h2 className="mb-2 text-xl font-semibold">
           5. Limitation of Liability
         </h2>
         <p>
@@ -54,7 +54,7 @@ const TermsAndConditions = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">6. Governing Law</h2>
+        <h2 className="mb-2 text-xl font-semibold">6. Governing Law</h2>
         <p>
           These terms are governed by the laws of India. Any disputes will be
           subject to the jurisdiction of the courts of [Your City, India].
@@ -62,7 +62,7 @@ const TermsAndConditions = () => {
       </section>
 
       <section>
-        <h2 className="text-xl font-semibold mb-2">7. Contact</h2>
+        <h2 className="mb-2 text-xl font-semibold">7. Contact</h2>
         <p>
           For any queries regarding these terms, please contact us at{" "}
           <a
@@ -74,7 +74,7 @@ const TermsAndConditions = () => {
         </p>
       </section>
 
-      <p className="text-sm text-gray-500 mt-10 text-center">
+      <p className="mt-10 text-center text-sm text-gray-500">
         Last updated: July 17, 2025
       </p>
     </div>

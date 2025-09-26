@@ -80,7 +80,8 @@ export default function JoyfulQuestionnaire() {
       if (!/^\d{10}$/.test(form.phone))
         stepErrors.phone = "Phone must be exactly 10 digits"
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
-      if (!emailRegex.test(form.email)) stepErrors.email = "Please enter a valid email address"
+      if (!emailRegex.test(form.email))
+        stepErrors.email = "Please enter a valid email address"
     }
 
     setErrors(stepErrors)
@@ -110,7 +111,11 @@ export default function JoyfulQuestionnaire() {
       })
       if (!resp.ok) {
         const data = await resp.json().catch(() => null)
-        throw new Error(data?.details?.[0] || data?.error || "Unable to submit. Please try again.")
+        throw new Error(
+          data?.details?.[0] ||
+            data?.error ||
+            "Unable to submit. Please try again."
+        )
       }
       setSubmitted(true)
     } catch (err: any) {
@@ -405,8 +410,12 @@ export default function JoyfulQuestionnaire() {
 
                 {/* 10. Email (Mandatory) */}
                 <div>
-                  <label className="block font-bold text-lg mb-2" htmlFor="email">
-                    10. Your Email Address <span className="text-pink-300">*</span>
+                  <label
+                    className="block font-bold text-lg mb-2"
+                    htmlFor="email"
+                  >
+                    10. Your Email Address{" "}
+                    <span className="text-pink-300">*</span>
                   </label>
                   <input
                     type="email"

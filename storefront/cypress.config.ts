@@ -1,8 +1,8 @@
-import { defineConfig } from 'cypress'
+import { defineConfig } from "cypress"
 
 export default defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:8000',
+    baseUrl: "http://localhost:8000",
     viewportWidth: 1280,
     viewportHeight: 720,
     video: false,
@@ -11,12 +11,12 @@ export default defineConfig({
     chromeWebSecurity: false,
     experimentalModifyObstructiveThirdPartyCode: true,
     setupNodeEvents(on, config) {
-      on('task', {
+      on("task", {
         log(message) {
-          console.log(message);
-          return null;
+          console.log(message)
+          return null
         },
-      });
+      })
     },
   },
-}) 
+})

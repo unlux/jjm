@@ -48,12 +48,18 @@ export async function listBlogs(params?: {
     .limit(limit)
 
   // If excludeId is provided, filter it out client-side because Drizzle where already used eq for include.
-  const filtered = excludeId ? rows.filter((r: BlogRow) => r.id !== excludeId) : rows
+  const filtered = excludeId
+    ? rows.filter((r: BlogRow) => r.id !== excludeId)
+    : rows
   return filtered.map(toBlog)
 }
 
 export async function getBlogById(id: string): Promise<Blog | null> {
-  const rows = await db.select().from(blogsTable).where(eq(blogsTable.id, id)).limit(1)
+  const rows = await db
+    .select()
+    .from(blogsTable)
+    .where(eq(blogsTable.id, id))
+    .limit(1)
   const row = rows[0]
   return row ? toBlog(row) : null
 }
@@ -75,7 +81,8 @@ export async function listBlogsCached(params?: {
   ]
 
   const cached = unstable_cache(
-    async (p?: { category?: string; limit?: number; excludeId?: string }) => listBlogs(p),
+    async (p?: { category?: string; limit?: number; excludeId?: string }) =>
+      listBlogs(p),
     keyParts,
     { revalidate: 3600, tags }
   )

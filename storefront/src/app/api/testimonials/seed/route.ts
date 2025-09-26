@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+
 import { db } from "@/lib/db"
 import { testimonials as testimonialsTable } from "@/lib/schema"
 
@@ -16,7 +17,8 @@ export async function POST() {
     const rows = [
       {
         id: "testimonial-1",
-        quote: "The educational toys from The Joy Junction have been a game-changer for my classroom. The kids are more engaged than ever!",
+        quote:
+          "The educational toys from The Joy Junction have been a game-changer for my classroom. The kids are more engaged than ever!",
         author: "Priya Sharma",
         role: "Preschool Teacher",
         image: "/avatars/placeholder-avatar-1.jpg",
@@ -27,7 +29,8 @@ export async function POST() {
       },
       {
         id: "testimonial-2",
-        quote: "As a child psychologist, I highly recommend these toys. They're not just fun but also great for cognitive development.",
+        quote:
+          "As a child psychologist, I highly recommend these toys. They're not just fun but also great for cognitive development.",
         author: "Dr. Arjun Patel",
         role: "Child Psychologist",
         image: "/avatars/placeholder-avatar-2.jpg",
@@ -38,7 +41,8 @@ export async function POST() {
       },
       {
         id: "testimonial-3",
-        quote: "My daughter loves the STEM kits! She's learning so much while having fun. Worth every penny.",
+        quote:
+          "My daughter loves the STEM kits! She's learning so much while having fun. Worth every penny.",
         author: "Meera Krishnan",
         role: "Parent",
         image: "/avatars/placeholder-avatar-3.jpg",

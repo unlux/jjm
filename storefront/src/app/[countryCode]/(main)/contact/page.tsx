@@ -1,8 +1,8 @@
 "use client"
 
+import { Button } from "@medusajs/ui"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
-import { Button } from "@medusajs/ui"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -119,31 +119,31 @@ export default function ContactPage() {
   return (
     <section className="relative bg-white">
       {/* Hero header */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-14">
-        <div className="text-center mb-8 md:mb-12">
-          <span className="inline-flex items-center text-xs md:text-sm font-semibold uppercase tracking-wider text-[#181D4E] bg-[#181D4E]/10 px-3 py-1 rounded-full">
+      <div className="mx-auto max-w-7xl px-4 pt-14 md:px-8">
+        <div className="mb-8 text-center md:mb-12">
+          <span className="inline-flex items-center rounded-full bg-[#181D4E]/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#181D4E] md:text-sm">
             Contact us
           </span>
-          <h1 className="mt-3 text-4xl md:text-5xl font-extrabold text-[#1E2A4A] leading-tight">
+          <h1 className="mt-3 text-4xl font-extrabold leading-tight text-[#1E2A4A] md:text-5xl">
             Have questions? Get in touch.
           </h1>
-          <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
+          <p className="mx-auto mt-3 max-w-2xl text-gray-600">
             We’d love to hear from you. Send us a message and our team will
             respond as soon as possible.
           </p>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 md:px-8 pb-16">
-          <div className="grid md:grid-cols-2 gap-10 items-start">
+        <div className="mx-auto max-w-7xl px-4 pb-16 md:px-8">
+          <div className="grid items-start gap-10 md:grid-cols-2">
             {/* Left side - Image / info */}
             <div className="w-full">
-              <div className="relative rounded-2xl overflow-hidden ring-1 ring-gray-100 shadow-sm bg-gray-50 max-w-[400px] mx-auto">
+              <div className="relative mx-auto max-w-[400px] overflow-hidden rounded-2xl bg-gray-50 shadow-sm ring-1 ring-gray-100">
                 <Image
                   src="/contactus-pic.jpg"
                   alt="Contact The Joy Junction"
                   width={400}
                   height={400}
-                  className="w-full h-auto object-cover"
+                  className="h-auto w-full object-cover"
                   priority
                 />
               </div>
@@ -153,13 +153,13 @@ export default function ContactPage() {
             <div>
               <form
                 onSubmit={handleSubmit}
-                className="space-y-4 rounded-2xl ring-1 ring-gray-100 bg-white p-5 md:p-6 shadow-sm"
+                className="space-y-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100 md:p-6"
               >
                 {error && (
                   <div
                     ref={alertRef}
                     role="alert"
-                    className="rounded-md border border-red-200 bg-red-50 text-red-700 px-4 py-2 text-sm"
+                    className="rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700"
                   >
                     {error}
                   </div>
@@ -168,15 +168,15 @@ export default function ContactPage() {
                   <div
                     ref={alertRef}
                     role="status"
-                    className="rounded-md border border-green-200 bg-green-50 text-green-700 px-4 py-2 text-sm"
+                    className="rounded-md border border-green-200 bg-green-50 px-4 py-2 text-sm text-green-700"
                   >
                     {success}
                   </div>
                 )}
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid gap-4 md:grid-cols-2">
                   {/* Name field */}
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"
@@ -200,7 +200,7 @@ export default function ContactPage() {
                       aria-describedby={
                         fieldErrors.name ? "name-error" : undefined
                       }
-                      className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
+                      className="w-full rounded-full border border-gray-200 bg-white py-3 pl-10 pr-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#181D4E]"
                       required
                     />
                     {fieldErrors.name && (
@@ -212,7 +212,7 @@ export default function ContactPage() {
 
                   {/* Email field */}
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"
@@ -233,7 +233,7 @@ export default function ContactPage() {
                       aria-describedby={
                         fieldErrors.email ? "email-error" : undefined
                       }
-                      className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
+                      className="w-full rounded-full border border-gray-200 bg-white py-3 pl-10 pr-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#181D4E]"
                       required
                     />
                     {fieldErrors.email && (
@@ -244,10 +244,10 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid gap-4 md:grid-cols-2">
                   {/* Phone field */}
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"
@@ -267,7 +267,7 @@ export default function ContactPage() {
                       aria-describedby={
                         fieldErrors.phone ? "phone-error" : undefined
                       }
-                      className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
+                      className="w-full rounded-full border border-gray-200 bg-white py-3 pl-10 pr-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#181D4E]"
                     />
                     {fieldErrors.phone && (
                       <p id="phone-error" className="mt-1 text-xs text-red-600">
@@ -278,7 +278,7 @@ export default function ContactPage() {
 
                   {/* Subject field */}
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"
@@ -302,7 +302,7 @@ export default function ContactPage() {
                       aria-describedby={
                         fieldErrors.subject ? "subject-error" : undefined
                       }
-                      className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
+                      className="w-full rounded-full border border-gray-200 bg-white py-3 pl-10 pr-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#181D4E]"
                     />
                     {fieldErrors.subject && (
                       <p
@@ -341,7 +341,7 @@ export default function ContactPage() {
                     aria-describedby={
                       fieldErrors.message ? "message-error" : undefined
                     }
-                    className="w-full py-3 pl-10 pr-4 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#181D4E] focus:border-transparent"
+                    className="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-10 pr-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#181D4E]"
                     required
                   />
                   {fieldErrors.message && (
@@ -352,25 +352,25 @@ export default function ContactPage() {
                 </div>
 
                 {/* Agreement checkbox */}
-                <div className="flex items-start space-x-3 mt-2">
-                  <div className="flex items-center h-5 mt-0.5">
+                <div className="mt-2 flex items-start space-x-3">
+                  <div className="mt-0.5 flex h-5 items-center">
                     <input
                       type="checkbox"
                       id="agreement"
                       checked={formData.agreementChecked}
                       onChange={handleCheckboxChange}
-                      className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors duration-150 cursor-pointer"
+                      className="h-5 w-5 cursor-pointer rounded border-gray-300 text-blue-600 transition-colors duration-150 focus:ring-blue-500"
                       required
                     />
                   </div>
                   <label
                     htmlFor="agreement"
-                    className="text-sm text-gray-700 leading-5"
+                    className="text-sm leading-5 text-gray-700"
                   >
                     I agree that my submitted data is being{" "}
                     <a
                       href="/privacy-policy"
-                      className="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-150"
+                      className="text-blue-600 transition-colors duration-150 hover:text-blue-800 hover:underline"
                     >
                       collected and stored
                     </a>
@@ -392,10 +392,10 @@ export default function ContactPage() {
                 </div>
               </form>
               {/* Quick info */}
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <a
                   href="tel:+919321791644"
-                  className="rounded-xl ring-1 ring-gray-200 p-4 bg-white hover:shadow-sm transition-shadow"
+                  className="rounded-xl bg-white p-4 ring-1 ring-gray-200 transition-shadow hover:shadow-sm"
                 >
                   <div className="text-sm text-gray-500">Call us</div>
                   <div className="font-semibold text-[#1E2A4A]">
@@ -404,7 +404,7 @@ export default function ContactPage() {
                 </a>
                 <a
                   href="mailto:support@thejoyjunction.com"
-                  className="rounded-xl ring-1 ring-gray-200 p-4 bg-white hover:shadow-sm transition-shadow"
+                  className="rounded-xl bg-white p-4 ring-1 ring-gray-200 transition-shadow hover:shadow-sm"
                 >
                   <div className="text-sm text-gray-500">Email</div>
                   <div className="font-semibold text-[#1E2A4A]">
@@ -417,14 +417,14 @@ export default function ContactPage() {
         </div>
 
         {/* Map Section */}
-        <div className="max-w-7xl mx-auto px-4 md:px-8 pb-20">
-          <h2 className="text-2xl font-bold text-indigo-900 mb-6 text-center">
+        <div className="mx-auto max-w-7xl px-4 pb-20 md:px-8">
+          <h2 className="mb-6 text-center text-2xl font-bold text-indigo-900">
             Find Us in Jaipur
           </h2>
-          <div className="w-full h-96 rounded-lg overflow-hidden shadow-lg">
+          <div className="h-96 w-full overflow-hidden rounded-lg shadow-lg">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d227748.3825624477!2d75.65046970649679!3d26.88544791796718!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396c4adf4c57e281%3A0xce1c63a0cf22e09!2sJaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1625832766380!5m2!1sen!2sin"
-              className="w-full h-full border-0"
+              className="h-full w-full border-0"
               allowFullScreen={true}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -432,10 +432,10 @@ export default function ContactPage() {
               aria-label="Map showing our location in Jaipur, Rajasthan"
             ></iframe>
           </div>
-          <div className="flex items-center justify-center mt-4 text-gray-600">
+          <div className="mt-4 flex items-center justify-center text-gray-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-2 text-blue-500"
+              className="mr-2 h-5 w-5 text-blue-500"
               viewBox="0 0 20 20"
               fill="currentColor"
             >

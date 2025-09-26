@@ -204,7 +204,11 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                     action={loginAction}
                     onSubmit={(e) => {
                       try {
-                        const email = (e.currentTarget.elements.namedItem("email") as HTMLInputElement)?.value
+                        const email = (
+                          e.currentTarget.elements.namedItem(
+                            "email"
+                          ) as HTMLInputElement
+                        )?.value
                         const email_domain = email?.split("@")[1]
                         track("user_signed_in" as any, {
                           method: "password",
@@ -322,7 +326,11 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                     action={signupAction}
                     onSubmit={(e) => {
                       try {
-                        const email = (e.currentTarget.elements.namedItem("email") as HTMLInputElement)?.value
+                        const email = (
+                          e.currentTarget.elements.namedItem(
+                            "email"
+                          ) as HTMLInputElement
+                        )?.value
                         const email_domain = email?.split("@")[1]
                         track("user_signed_up" as any, {
                           method: "password",

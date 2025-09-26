@@ -33,9 +33,7 @@ export default function RotatingBadge({
   nudgeClassName = "",
 }: RotatingBadgeProps) {
   // Repeat text with separators to fill circle nicely
-  const repeated = Array(8)
-    .fill(`${text} • `)
-    .join("")
+  const repeated = Array(8).fill(`${text} • `).join("")
 
   // Smooth rotation using rAF to avoid animation restart on hover speed changes
   const svgGroupRef = useRef<SVGGElement | null>(null)
@@ -69,7 +67,7 @@ export default function RotatingBadge({
           <path
             id="rb-circle-path"
             d="M50,50 m-40,0 a40,40 0 1,1 80,0 a40,40 0 1,1 -80,0"
-            pathLength="251.2"  
+            pathLength="251.2"
           />
         </defs>
         <g ref={svgGroupRef}>

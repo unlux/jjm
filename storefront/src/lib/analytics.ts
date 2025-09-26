@@ -29,7 +29,8 @@ function getPageContext() {
   // Persist initial UTM
   try {
     const LS_KEY = "ph_initial_utm"
-    const existing = typeof window !== "undefined" ? localStorage.getItem(LS_KEY) : null
+    const existing =
+      typeof window !== "undefined" ? localStorage.getItem(LS_KEY) : null
     if (!existing) {
       const initial = {
         ...utm,
@@ -48,7 +49,8 @@ function getPageContext() {
     }
   } catch {
     return {
-      page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      page_path:
+        typeof window !== "undefined" ? window.location.pathname : undefined,
       page_title: typeof document !== "undefined" ? document.title : undefined,
       referrer: typeof document !== "undefined" ? document.referrer : undefined,
       ...utm,

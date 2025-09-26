@@ -7,7 +7,11 @@ export async function GET(req: NextRequest) {
     const tag = url.searchParams.get("tag")
     const tags = url.searchParams.get("tags")
 
-    const search = tag ? `?tag=${encodeURIComponent(tag)}` : tags ? `?tags=${encodeURIComponent(tags)}` : ""
+    const search = tag
+      ? `?tag=${encodeURIComponent(tag)}`
+      : tags
+        ? `?tags=${encodeURIComponent(tags)}`
+        : ""
 
     const target = new URL(`/api/revalidate${search}`, url.origin)
 
@@ -26,7 +30,9 @@ export async function GET(req: NextRequest) {
 
     const json = await res.json().catch(() => ({}))
     if (!res.ok) {
-      return NextResponse.json(json || { error: "Failed" }, { status: res.status })
+      return NextResponse.json(json || { error: "Failed" }, {
+        status: res.status,
+      })
     }
     return NextResponse.json(json)
   } catch (e: any) {

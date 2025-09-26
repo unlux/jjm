@@ -4,13 +4,13 @@ export const dynamic = "force-static"
 
 const RefundPolicy = () => {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 text-gray-800">
-      <h1 className="text-3xl font-bold mb-6 text-center">
+    <div className="mx-auto max-w-4xl px-4 py-10 text-gray-800">
+      <h1 className="mb-6 text-center text-3xl font-bold">
         Refund & Returns Policy
       </h1>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">1. Return Window</h2>
+        <h2 className="mb-2 text-xl font-semibold">1. Return Window</h2>
         <p>
           You can request a return within <strong>7 days of delivery</strong>{" "}
           for most items if they are unused and in original packaging.
@@ -18,10 +18,10 @@ const RefundPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">
+        <h2 className="mb-2 text-xl font-semibold">
           2. Eligibility for Returns
         </h2>
-        <ul className="list-disc pl-6 space-y-1">
+        <ul className="list-disc space-y-1 pl-6">
           <li>Product must be unused and in original condition</li>
           <li>Must include all original tags, labels, and accessories</li>
           <li>Proof of purchase (order ID or receipt) is required</li>
@@ -29,7 +29,7 @@ const RefundPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">3. Non-returnable Items</h2>
+        <h2 className="mb-2 text-xl font-semibold">3. Non-returnable Items</h2>
         <p>
           Items like personalized toys, gift cards, or clearance-sale items are
           non-returnable unless defective or damaged.
@@ -37,8 +37,8 @@ const RefundPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">4. Refund Process</h2>
-        <ul className="list-disc pl-6 space-y-1">
+        <h2 className="mb-2 text-xl font-semibold">4. Refund Process</h2>
+        <ul className="list-disc space-y-1 pl-6">
           <li>
             Once we receive and inspect the item, we’ll notify you via email
           </li>
@@ -54,7 +54,7 @@ const RefundPolicy = () => {
       </section>
 
       <section>
-        <h2 className="text-xl font-semibold mb-2">5. Contact</h2>
+        <h2 className="mb-2 text-xl font-semibold">5. Contact</h2>
         <p>
           For return-related issues, contact us at{" "}
           <a
@@ -66,7 +66,7 @@ const RefundPolicy = () => {
         </p>
       </section>
 
-      <p className="text-sm text-gray-500 mt-10 text-center">
+      <p className="mt-10 text-center text-sm text-gray-500">
         Last updated: July 17, 2025
       </p>
     </div>

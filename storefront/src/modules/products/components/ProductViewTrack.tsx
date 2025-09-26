@@ -24,7 +24,10 @@ export default function ProductViewTrack({
       collection_id: product.collection_id || undefined,
       currency: region?.currency_code,
       variant_count: variantCount,
-      in_stock: product.variants?.some((v) => (v.manage_inventory ? (v.inventory_quantity || 0) > 0 : true)) ?? true,
+      in_stock:
+        product.variants?.some((v) =>
+          v.manage_inventory ? (v.inventory_quantity || 0) > 0 : true
+        ) ?? true,
       image_count: product.images?.length || 0,
       country_code: countryCode,
     })

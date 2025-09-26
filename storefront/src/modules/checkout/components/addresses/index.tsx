@@ -43,7 +43,8 @@ const Addresses = ({
 
   useEffect(() => {
     if (!isOpen || !cart) return
-    const itemCount = cart.items?.reduce((acc, it) => acc + (it.quantity || 0), 0) || 0
+    const itemCount =
+      cart.items?.reduce((acc, it) => acc + (it.quantity || 0), 0) || 0
     track("address_step_view" as any, {
       cart_id: cart.id,
       item_count: itemCount,

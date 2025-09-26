@@ -2,9 +2,9 @@
 // Server component: static content only
 export const dynamic = "force-static"
 
-import Image from "next/image"
-import { ShoppingBag, Pencil, Clock, Megaphone } from "lucide-react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { Clock, Megaphone, Pencil, ShoppingBag } from "lucide-react"
+import Image from "next/image"
 
 export const metadata = {
   title: "Preschool Partnership Program | The Joy Junction",
@@ -14,11 +14,11 @@ export const metadata = {
 
 export default function PartnershipProgramPage() {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       {/* Hero section */}
       <div className="container mx-auto px-4 py-16 md:py-20">
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-          <div className="relative h-[400px] rounded-lg overflow-hidden shadow-lg">
+        <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12">
+          <div className="relative h-[400px] overflow-hidden rounded-lg shadow-lg">
             <Image
               src="/partner-pic.jpg"
               alt="Children doing creative activities"
@@ -29,7 +29,7 @@ export default function PartnershipProgramPage() {
           </div>
 
           <div className="space-y-6">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+            <h1 className="text-3xl font-bold text-gray-800 md:text-4xl">
               Preschool Partnership Program
             </h1>
 
@@ -43,7 +43,7 @@ export default function PartnershipProgramPage() {
             </p>
 
             <div className="pt-4">
-              <h2 className="text-xl font-semibold text-gray-800 mb-3">
+              <h2 className="mb-3 text-xl font-semibold text-gray-800">
                 Special Pricing
               </h2>
               <p className="text-gray-700">
@@ -55,7 +55,7 @@ export default function PartnershipProgramPage() {
             </div>
 
             <div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-3">
+              <h2 className="mb-3 text-xl font-semibold text-gray-800">
                 Exclusive Products
               </h2>
               <p className="text-gray-700">
@@ -65,7 +65,7 @@ export default function PartnershipProgramPage() {
             </div>
 
             <div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-3">
+              <h2 className="mb-3 text-xl font-semibold text-gray-800">
                 Benefits
               </h2>
               <p className="text-gray-700">
@@ -76,56 +76,56 @@ export default function PartnershipProgramPage() {
         </div>
 
         {/* Benefits cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
-          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
-            <div className="p-3 bg-blue-50 rounded-full mb-4">
+        <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md">
+            <div className="mb-4 rounded-full bg-blue-50 p-3">
               <ShoppingBag className="h-6 w-6 text-blue-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+            <h3 className="mb-2 text-lg font-semibold text-gray-800">
               Free shipping on orders over a certain amount
             </h3>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
-            <div className="p-3 bg-blue-50 rounded-full mb-4">
+          <div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md">
+            <div className="mb-4 rounded-full bg-blue-50 p-3">
               <Pencil className="h-6 w-6 text-blue-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+            <h3 className="mb-2 text-lg font-semibold text-gray-800">
               Customizable orders to suit your curriculum needs
             </h3>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
-            <div className="p-3 bg-blue-50 rounded-full mb-4">
+          <div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md">
+            <div className="mb-4 rounded-full bg-blue-50 p-3">
               <Clock className="h-6 w-6 text-blue-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+            <h3 className="mb-2 text-lg font-semibold text-gray-800">
               Priority access to new products
             </h3>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
-            <div className="p-3 bg-blue-50 rounded-full mb-4">
+          <div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md">
+            <div className="mb-4 rounded-full bg-blue-50 p-3">
               <Megaphone className="h-6 w-6 text-blue-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+            <h3 className="mb-2 text-lg font-semibold text-gray-800">
               Special promotions
             </h3>
           </div>
         </div>
 
         {/* Call to action */}
-        <div className="mt-16 bg-blue-50 p-8 rounded-lg text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+        <div className="mt-16 rounded-lg bg-blue-50 p-8 text-center">
+          <h2 className="mb-4 text-2xl font-bold text-gray-800">
             Ready to Join Our Partnership Program?
           </h2>
-          <p className="text-lg text-gray-700 mb-6">
+          <p className="mb-6 text-lg text-gray-700">
             Contact us today to learn more about how your preschool can benefit
             from our partnership program.
           </p>
           <LocalizedClientLink
             href="/contact"
-            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition-colors"
+            className="inline-block rounded-md bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
           >
             Get in Touch
           </LocalizedClientLink>

@@ -11,4 +11,4 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
     blockSelector: "[data-ph-no-capture]",
   },
   debug: process.env.NODE_ENV === "development",
-});
+})

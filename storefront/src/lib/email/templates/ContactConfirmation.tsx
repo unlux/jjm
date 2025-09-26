@@ -23,9 +23,12 @@ export const ContactConfirmation: React.FC<ContactConfirmationProps> = ({
         color: "#111827",
       }}
     >
-      <h2 style={{ margin: "0 0 12px" }}>Thanks for reaching out{safe(name) ? `, ${safe(name)}` : ""}!</h2>
+      <h2 style={{ margin: "0 0 12px" }}>
+        Thanks for reaching out{safe(name) ? `, ${safe(name)}` : ""}!
+      </h2>
       <p style={{ margin: 0, color: "#374151" }}>
-        We’ve received your message and our team at The Joy Junction will get back to you as soon as possible.
+        We’ve received your message and our team at The Joy Junction will get
+        back to you as soon as possible.
       </p>
 
       <div style={{ marginTop: 20 }}>

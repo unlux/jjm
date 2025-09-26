@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+
 import { listBlogsCached } from "@/lib/repos/blogs"
 
 export async function GET(req: NextRequest) {
@@ -25,6 +26,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ blogs: data })
   } catch (e: any) {
     console.error("GET /api/blogs error", e)
-    return NextResponse.json({ error: "Failed to fetch blogs" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Failed to fetch blogs" },
+      { status: 500 }
+    )
   }
 }

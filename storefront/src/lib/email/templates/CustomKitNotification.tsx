@@ -20,9 +20,14 @@ const Row = ({ label, value }: { label: string; value?: React.ReactNode }) => (
   </tr>
 )
 
-const safe = (v?: string) => String(v ?? "").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+const safe = (v?: string) =>
+  String(v ?? "")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
 
-export default function CustomKitNotification(props: CustomKitNotificationProps) {
+export default function CustomKitNotification(
+  props: CustomKitNotificationProps
+) {
   return (
     <div
       style={{
@@ -39,7 +44,12 @@ export default function CustomKitNotification(props: CustomKitNotificationProps)
 
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <tbody>
-          <Row label="Email" value={<a href={`mailto:${safe(props.email)}`}>{safe(props.email)}</a>} />
+          <Row
+            label="Email"
+            value={
+              <a href={`mailto:${safe(props.email)}`}>{safe(props.email)}</a>
+            }
+          />
           <Row label="Phone" value={safe(props.phone)} />
           <Row label="Age" value={safe(props.age)} />
           <Row label="Gender" value={safe(props.gender)} />
@@ -53,7 +63,9 @@ export default function CustomKitNotification(props: CustomKitNotificationProps)
 
       {props.extra?.trim() ? (
         <div style={{ marginTop: 20 }}>
-          <div style={{ fontWeight: 600, marginBottom: 8 }}>Additional Notes</div>
+          <div style={{ fontWeight: 600, marginBottom: 8 }}>
+            Additional Notes
+          </div>
           <div
             style={{
               whiteSpace: "pre-wrap",

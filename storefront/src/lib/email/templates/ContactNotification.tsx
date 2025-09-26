@@ -23,7 +23,10 @@ export const ContactNotification: React.FC<ContactNotificationProps> = ({
     </tr>
   )
 
-  const safe = (v?: string) => String(v ?? "").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+  const safe = (v?: string) =>
+    String(v ?? "")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
 
   return (
     <div
@@ -36,7 +39,8 @@ export const ContactNotification: React.FC<ContactNotificationProps> = ({
     >
       <h2 style={{ margin: "0 0 12px" }}>New Contact Form Submission</h2>
       <p style={{ margin: "0 0 20px", color: "#374151" }}>
-        You have received a new message from The Joy Junction website contact form.
+        You have received a new message from The Joy Junction website contact
+        form.
       </p>
 
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
@@ -44,7 +48,10 @@ export const ContactNotification: React.FC<ContactNotificationProps> = ({
           {row("Name", safe(name))}
           {row(
             "Email",
-            <a href={`mailto:${safe(email)}`} style={{ color: "#2563EB", textDecoration: "underline" }}>
+            <a
+              href={`mailto:${safe(email)}`}
+              style={{ color: "#2563EB", textDecoration: "underline" }}
+            >
               {safe(email)}
             </a>
           )}

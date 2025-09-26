@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server"
 import { revalidatePath, revalidateTag } from "next/cache"
+import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams
@@ -30,21 +30,31 @@ export async function GET(req: NextRequest) {
     console.log("[revalidate] simple tag mode ->", tag)
     switch (tag) {
       case "hero": {
-        console.log("[revalidate] hero -> tags hero-slides*, path /[countryCode]/(main)")
+        console.log(
+          "[revalidate] hero -> tags hero-slides*, path /[countryCode]/(main)"
+        )
         revalidateTag("hero-slides")
         revalidateTag("hero-slides:all")
         revalidateTag("hero-slides:mobile:true")
         revalidateTag("hero-slides:mobile:false")
         revalidatePath("/[countryCode]/(main)", "page")
-        return NextResponse.json({ message: "Revalidated hero" }, { status: 200 })
+        return NextResponse.json(
+          { message: "Revalidated hero" },
+          { status: 200 }
+        )
       }
       case "testimonials": {
-        console.log("[revalidate] testimonials -> tags testimonials*, paths home + /api/testimonials")
+        console.log(
+          "[revalidate] testimonials -> tags testimonials*, paths home + /api/testimonials"
+        )
         revalidateTag("testimonials")
         revalidateTag("testimonials:all")
         revalidatePath("/[countryCode]/(main)")
         revalidatePath("/api/testimonials")
-        return NextResponse.json({ message: "Revalidated testimonials" }, { status: 200 })
+        return NextResponse.json(
+          { message: "Revalidated testimonials" },
+          { status: 200 }
+        )
       }
       case "blogs": {
         console.log("[revalidate] blogs -> tags blogs*, path /blogs index")
@@ -52,26 +62,39 @@ export async function GET(req: NextRequest) {
         revalidateTag("blogs:all")
         revalidatePath("/[countryCode]/(main)/blogs", "page")
         // We cannot know specific [id] to tag; path-level will refresh index and detail on next request
-        return NextResponse.json({ message: "Revalidated blogs" }, { status: 200 })
+        return NextResponse.json(
+          { message: "Revalidated blogs" },
+          { status: 200 }
+        )
       }
       case "offers": {
-        console.log("[revalidate] offers -> tags offers*, path home + /api/offers")
+        console.log(
+          "[revalidate] offers -> tags offers*, path home + /api/offers"
+        )
         revalidateTag("offers")
         revalidateTag("offers:all")
         revalidateTag("offers:active:true")
         revalidateTag("offers:active:false")
         revalidatePath("/[countryCode]/(main)", "page")
         revalidatePath("/api/offers")
-        return NextResponse.json({ message: "Revalidated offers" }, { status: 200 })
+        return NextResponse.json(
+          { message: "Revalidated offers" },
+          { status: 200 }
+        )
       }
       case "products": {
         console.log("[revalidate] products -> paths store + product detail")
         revalidatePath("/[countryCode]/(main)/store", "page")
         revalidatePath("/[countryCode]/(main)/products/[handle]", "page")
-        return NextResponse.json({ message: "Revalidated products" }, { status: 200 })
+        return NextResponse.json(
+          { message: "Revalidated products" },
+          { status: 200 }
+        )
       }
       case "all": {
-        console.log("[revalidate] all -> hero + testimonials + blogs + products + offers")
+        console.log(
+          "[revalidate] all -> hero + testimonials + blogs + products + offers"
+        )
         // Hero
         revalidateTag("hero-slides")
         revalidateTag("hero-slides:all")
@@ -95,11 +118,17 @@ export async function GET(req: NextRequest) {
         // Products
         revalidatePath("/[countryCode]/(main)/store", "page")
         revalidatePath("/[countryCode]/(main)/products/[handle]", "page")
-        return NextResponse.json({ message: "Revalidated all" }, { status: 200 })
+        return NextResponse.json(
+          { message: "Revalidated all" },
+          { status: 200 }
+        )
       }
       default: {
         console.warn("[revalidate] unknown simple tag", tag)
-        return NextResponse.json({ error: `Unknown tag: ${tag}` }, { status: 400 })
+        return NextResponse.json(
+          { error: `Unknown tag: ${tag}` },
+          { status: 400 }
+        )
       }
     }
   }

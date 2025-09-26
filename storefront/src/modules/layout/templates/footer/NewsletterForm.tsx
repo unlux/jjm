@@ -33,7 +33,11 @@ export default function NewsletterForm() {
       })
       if (!resp.ok) {
         const data = await resp.json().catch(() => null)
-        throw new Error(data?.details?.[0] || data?.error || "Unable to subscribe. Please try again.")
+        throw new Error(
+          data?.details?.[0] ||
+            data?.error ||
+            "Unable to subscribe. Please try again."
+        )
       }
       setSuccess("Thanks! You’re on the list.")
       setEmail("")
@@ -128,8 +132,11 @@ export default function NewsletterForm() {
           </svg>
         </div>
         <span>
-          I agree to the {" "}
-          <a href="/privacy-policy" className="text-white hover:text-blue-300 underline transition">
+          I agree to the{" "}
+          <a
+            href="/privacy-policy"
+            className="text-white hover:text-blue-300 underline transition"
+          >
             Privacy Policy
           </a>
         </span>

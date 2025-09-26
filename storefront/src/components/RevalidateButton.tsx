@@ -2,7 +2,13 @@
 
 import React, { useState } from "react"
 
-export default function RevalidateButton({ tag, tags }: { tag?: string; tags?: string }) {
+export default function RevalidateButton({
+  tag,
+  tags,
+}: {
+  tag?: string
+  tags?: string
+}) {
   const [status, setStatus] = useState<string>("")
   const [loading, setLoading] = useState(false)
 

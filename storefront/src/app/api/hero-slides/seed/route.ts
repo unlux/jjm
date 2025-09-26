@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+
 import { db } from "@/lib/db"
 import { heroSlides as heroSlidesTable } from "@/lib/schema"
 
@@ -6,7 +7,10 @@ import { heroSlides as heroSlidesTable } from "@/lib/schema"
 export async function POST() {
   try {
     if (process.env.NODE_ENV === "production") {
-      return NextResponse.json({ error: "Disabled in production" }, { status: 403 })
+      return NextResponse.json(
+        { error: "Disabled in production" },
+        { status: 403 }
+      )
     }
 
     const now = new Date()
@@ -53,6 +57,9 @@ export async function POST() {
     return NextResponse.json({ ok: true, inserted: rows.length })
   } catch (e: any) {
     console.error("POST /api/hero-slides/seed error", e)
-    return NextResponse.json({ error: "Failed to seed hero slides" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Failed to seed hero slides" },
+      { status: 500 }
+    )
   }
 }

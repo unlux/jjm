@@ -1,6 +1,7 @@
-import React from "react"
-import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Image from "next/image"
+import React from "react"
+
 import { listBlogsCached } from "@/lib/repos/blogs"
 
 export const revalidate = 86400 // 24 hours
@@ -10,7 +11,10 @@ export default async function BlogsPage({
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
   const selectedCategory = (searchParams?.category as string) || null
-  const blogs = await listBlogsCached({ category: selectedCategory || undefined, limit: 500 })
+  const blogs = await listBlogsCached({
+    category: selectedCategory || undefined,
+    limit: 500,
+  })
   const categories = Array.from(new Set(blogs.map((blog) => blog.category)))
   const filteredBlogs = blogs
   const formatDate = (iso: string) =>
@@ -20,12 +24,12 @@ export default async function BlogsPage({
       day: "numeric",
     })
   return (
-    <div className="bg-[#f9f9f9] min-h-screen">
+    <div className="min-h-screen bg-[#f9f9f9]">
       {/* Hero Section */}
-      <div className="bg-[#262b5f] text-white py-20 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-6 font-baloo">Our Blog</h1>
-          <p className="text-lg max-w-2xl mx-auto opacity-90">
+      <div className="bg-[#262b5f] px-6 py-20 text-white">
+        <div className="mx-auto max-w-7xl text-center">
+          <h1 className="font-baloo mb-6 text-5xl font-bold">Our Blog</h1>
+          <p className="mx-auto max-w-2xl text-lg opacity-90">
             Discover insights and ideas to make playtime more educational and
             fun for your children
           </p>
@@ -33,12 +37,12 @@ export default async function BlogsPage({
       </div>
 
       {/* Category Filter */}
-      <div className="py-6 bg-white shadow-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-hide">
+      <div className="sticky top-0 z-10 bg-white py-6 shadow-sm">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="scrollbar-hide flex items-center gap-4 overflow-x-auto pb-2">
             <LocalizedClientLink
               href={`/blogs`}
-              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+              className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                 selectedCategory === null
                   ? "bg-[#262b5f] text-white"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -53,7 +57,7 @@ export default async function BlogsPage({
                 <LocalizedClientLink
                   key={category}
                   href={href}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                  className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                     isActive
                       ? "bg-[#262b5f] text-white"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -68,44 +72,44 @@ export default async function BlogsPage({
       </div>
 
       {/* Blog Grid */}
-      <div className="max-w-7xl mx-auto px-6 py-16">
+      <div className="mx-auto max-w-7xl px-6 py-16">
         {filteredBlogs.length === 0 && (
           <div className="text-center text-gray-600">No blogs found.</div>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {filteredBlogs.map((blog) => (
             <LocalizedClientLink href={`/blogs/${blog.id}`} key={blog.id}>
-              <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group h-full flex flex-col">
+              <div className="group flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-xl">
                 <div className="relative overflow-hidden">
                   <Image
                     src={blog.image}
                     alt={blog.title}
                     width={500}
                     height={300}
-                    className="w-full h-[220px] object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="h-[220px] w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
-                  <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                  <div className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 backdrop-blur-sm">
                     <span className="text-xs font-semibold text-[#262b5f]">
                       {blog.category}
                     </span>
                   </div>
                 </div>
-                <div className="p-5 flex flex-col flex-grow">
-                  <p className="text-xs text-gray-500 mb-2 flex items-center">
-                    <span className="inline-block w-4 h-[2px] bg-[#262b5f] mr-2"></span>
+                <div className="flex flex-grow flex-col p-5">
+                  <p className="mb-2 flex items-center text-xs text-gray-500">
+                    <span className="mr-2 inline-block h-[2px] w-4 bg-[#262b5f]"></span>
                     {formatDate(blog.publishedAt)}
                   </p>
-                  <h3 className="text-xl font-bold text-[#1e1e3f] leading-snug group-hover:text-[#262b5f] transition-colors mb-3">
+                  <h3 className="mb-3 text-xl font-bold leading-snug text-[#1e1e3f] transition-colors group-hover:text-[#262b5f]">
                     {blog.title}
                   </h3>
-                  <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                  <p className="mb-4 line-clamp-3 text-sm text-gray-600">
                     {blog.excerpt}
                   </p>
-                  <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center">
+                  <div className="mt-auto flex items-center justify-between border-t border-gray-100 pt-4">
                     <span className="text-xs font-medium text-[#262b5f]">
                       Read more
                     </span>
-                    <span className="w-8 h-8 rounded-full bg-[#f2f2f7] flex items-center justify-center group-hover:bg-[#262b5f] transition-colors">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f2f2f7] transition-colors group-hover:bg-[#262b5f]">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="14"
@@ -116,7 +120,7 @@ export default async function BlogsPage({
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className="text-[#262b5f] group-hover:text-white transition-colors"
+                        className="text-[#262b5f] transition-colors group-hover:text-white"
                       >
                         <path d="M5 12h14"></path>
                         <path d="m12 5 7 7-7 7"></path>
@@ -131,20 +135,20 @@ export default async function BlogsPage({
       </div>
 
       {/* Newsletter Section */}
-      <div className="bg-[#262b5f] text-white py-16 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4 font-baloo">Stay Updated</h2>
-          <p className="text-white/80 mb-8">
+      <div className="bg-[#262b5f] px-6 py-16 text-white">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="font-baloo mb-4 text-3xl font-bold">Stay Updated</h2>
+          <p className="mb-8 text-white/80">
             Subscribe to our newsletter for the latest toy trends, parenting
             tips, and exclusive offers
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+          <div className="mx-auto flex max-w-xl flex-col gap-4 sm:flex-row">
             <input
               type="email"
               placeholder="Your email address"
-              className="px-4 py-3 rounded-lg flex-grow bg-white/10 border border-white/20 text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-white/30"
+              className="flex-grow rounded-lg border border-white/20 bg-white/10 px-4 py-3 text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-white/30"
             />
-            <button className="px-6 py-3 bg-white text-[#262b5f] rounded-lg font-medium hover:bg-opacity-90 transition-colors">
+            <button className="rounded-lg bg-white px-6 py-3 font-medium text-[#262b5f] transition-colors hover:bg-opacity-90">
               Subscribe
             </button>
           </div>
@@ -153,4 +157,3 @@ export default async function BlogsPage({
     </div>
   )
 }
-

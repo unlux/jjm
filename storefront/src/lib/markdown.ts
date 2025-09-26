@@ -65,10 +65,7 @@ export async function markdownToHtml(markdown: string): Promise<string> {
         ["width"],
         ["height"],
       ],
-      code: [
-        ...(defaultSchema.attributes?.code || []),
-        ["className"],
-      ],
+      code: [...(defaultSchema.attributes?.code || []), ["className"]],
       pre: [...(defaultSchema.attributes?.pre || []), ["className"]],
     },
     protocols: {

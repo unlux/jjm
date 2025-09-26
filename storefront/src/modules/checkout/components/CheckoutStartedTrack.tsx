@@ -13,7 +13,8 @@ export default function CheckoutStartedTrack({
 }) {
   useEffect(() => {
     if (!cart?.id) return
-    const itemCount = cart.items?.reduce((acc, it) => acc + (it.quantity || 0), 0) || 0
+    const itemCount =
+      cart.items?.reduce((acc, it) => acc + (it.quantity || 0), 0) || 0
     if (itemCount <= 0) return
     track("checkout_started", {
       cart_id: cart.id,
@@ -23,7 +24,8 @@ export default function CheckoutStartedTrack({
       coupon: cart?.promotions?.[0]?.code,
       shipping_country: cart?.shipping_address?.country_code,
       delivery_method_selected: cart.shipping_methods?.[0]?.name,
-      payment_method_selected: cart.payment_collection?.payment_sessions?.[0]?.provider_id,
+      payment_method_selected:
+        cart.payment_collection?.payment_sessions?.[0]?.provider_id,
       logged_in: Boolean(customer?.id),
     })
   }, [cart?.id])

@@ -111,7 +111,8 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
             try {
               const path = window.location?.pathname || "/"
               const seg = path.split("/")[1]
-              const target = seg && seg.length <= 5 ? `/${seg}/wishlist` : "/wishlist"
+              const target =
+                seg && seg.length <= 5 ? `/${seg}/wishlist` : "/wishlist"
               window.location.href = target
             } catch {
               window.location.href = "/wishlist"

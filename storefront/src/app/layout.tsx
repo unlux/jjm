@@ -1,11 +1,13 @@
-import { getBaseURL } from "@lib/util/env"
-import { Metadata } from "next"
 import "styles/globals.css"
+
+import { getBaseURL } from "@lib/util/env"
 import { Analytics } from "@vercel/analytics/next"
+import { Metadata } from "next"
 import { Quicksand } from "next/font/google"
+
 import ClickSpark from "@/components/ui/ClickSpark"
-import Providers from "@/lib/context/Providers"
 import ResponsiveToaster from "@/components/ui/ResponsiveToaster"
+import Providers from "@/lib/context/Providers"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
@@ -22,7 +24,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" data-mode="light">
       <body
-        className={`${quicksand.className} font-quicksand antialiased m-0 p-0 group/nav`}
+        className={`${quicksand.className} font-quicksand group/nav m-0 p-0 antialiased`}
       >
         <ResponsiveToaster />
         <Providers>

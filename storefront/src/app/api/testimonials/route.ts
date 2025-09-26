@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+
 import { listTestimonialsCached } from "@/lib/repos/testimonials"
 
 export const dynamic = "force-dynamic"

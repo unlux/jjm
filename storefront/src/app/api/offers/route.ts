@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+
 import { listOffersCached } from "@/lib/repos/offers"
 
 export const dynamic = "force-dynamic"
@@ -12,10 +13,10 @@ export async function GET(req: Request) {
       isActiveParam === null
         ? undefined
         : isActiveParam === "true"
-        ? true
-        : isActiveParam === "false"
-        ? false
-        : undefined
+          ? true
+          : isActiveParam === "false"
+            ? false
+            : undefined
     const limit = searchParams.get("limit")
       ? Number(searchParams.get("limit"))
       : undefined

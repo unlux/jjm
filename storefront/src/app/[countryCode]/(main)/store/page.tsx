@@ -1,8 +1,8 @@
+import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+import StoreTemplate from "@modules/store/templates"
 import { Metadata } from "next"
 import { redirect } from "next/navigation"
 
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
-import StoreTemplate from "@modules/store/templates"
 import { listCategories } from "@/lib/data/categories"
 
 export const metadata: Metadata = {

@@ -1,7 +1,11 @@
 import "server-only"
 import { asc, eq } from "drizzle-orm"
 import { db } from "@/lib/db"
-import { offers as offersTable, type OfferRow, type NewOfferRow } from "@/lib/schema"
+import {
+  offers as offersTable,
+  type OfferRow,
+  type NewOfferRow,
+} from "@/lib/schema"
 import { unstable_cache } from "next/cache"
 
 export type OfferItem = {
@@ -17,17 +21,30 @@ export async function listOffers(params?: {
 }): Promise<OfferItem[]> {
   const { isActive, limit = 50 } = params ?? {}
   const where: any[] = []
-  if (typeof isActive === "boolean") where.push(eq(offersTable.isActive, isActive))
+  if (typeof isActive === "boolean")
+    where.push(eq(offersTable.isActive, isActive))
 
   const rows: OfferRow[] = await db
     .select()
     .from(offersTable)
     // drizzle's and reducer pattern used elsewhere; but with array empty, skip
-    .where(where.length ? (where as any).reduce((acc: any, w: any) => (acc ? (acc as any).and?.(w) ?? w : w), undefined) : undefined)
+    .where(
+      where.length
+        ? (where as any).reduce(
+            (acc: any, w: any) => (acc ? (acc as any).and?.(w) ?? w : w),
+            undefined
+          )
+        : undefined
+    )
     .orderBy(asc(offersTable.sortOrder), asc(offersTable.createdAt))
     .limit(limit)
 
-  return rows.map((r) => ({ id: r.id, message: r.message, href: r.href ?? undefined, isActive: r.isActive }))
+  return rows.map((r) => ({
+    id: r.id,
+    message: r.message,
+    href: r.href ?? undefined,
+    isActive: r.isActive,
+  }))
 }
 
 // Cached variant with ISR and tag-based revalidation
@@ -35,7 +52,12 @@ export async function listOffersCached(params?: {
   isActive?: boolean
   limit?: number
 }): Promise<OfferItem[]> {
-  const isActiveKey = typeof params?.isActive === "undefined" ? "all" : params?.isActive ? "active:true" : "active:false"
+  const isActiveKey =
+    typeof params?.isActive === "undefined"
+      ? "all"
+      : params?.isActive
+      ? "active:true"
+      : "active:false"
   const limitKey = String(params?.limit ?? 50)
   const keyParts = ["offers", isActiveKey, limitKey]
 

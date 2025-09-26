@@ -3,7 +3,8 @@ import { Resend } from "resend"
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY
 const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL
-const CONTACT_FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || "noreply@thejoyjunction.app"
+const CONTACT_FROM_EMAIL =
+  process.env.CONTACT_FROM_EMAIL || "noreply@thejoyjunction.app"
 
 // Simple in-memory rate limiter: 5 req / 10 min / IP
 type Bucket = { count: number; resetAt: number }
@@ -33,27 +34,46 @@ function rateLimit(req: Request) {
   return { ok: true, remaining: LIMIT - b.count, resetAt: b.resetAt }
 }
 
-const safe = (v?: string) => String(v ?? "").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+const safe = (v?: string) =>
+  String(v ?? "")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
 
 export async function POST(req: Request) {
   try {
     const rl = rateLimit(req)
     if (!rl.ok) {
       return NextResponse.json(
-        { error: "rate_limited", details: ["Too many requests. Please try again later."] },
-        { status: 429, headers: { "Retry-After": Math.ceil((rl.resetAt - Date.now()) / 1000).toString() } }
+        {
+          error: "rate_limited",
+          details: ["Too many requests. Please try again later."],
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": Math.ceil(
+              (rl.resetAt - Date.now()) / 1000
+            ).toString(),
+          },
+        }
       )
     }
 
     if (!RESEND_API_KEY) {
       return NextResponse.json(
-        { error: "server_misconfigured", details: ["RESEND_API_KEY is not set"] },
+        {
+          error: "server_misconfigured",
+          details: ["RESEND_API_KEY is not set"],
+        },
         { status: 500 }
       )
     }
     if (!CONTACT_TO_EMAIL) {
       return NextResponse.json(
-        { error: "server_misconfigured", details: ["CONTACT_TO_EMAIL is not set"] },
+        {
+          error: "server_misconfigured",
+          details: ["CONTACT_TO_EMAIL is not set"],
+        },
         { status: 500 }
       )
     }
@@ -78,7 +98,9 @@ export async function POST(req: Request) {
           <tbody>
             <tr>
               <td style="padding: 8px; font-weight: 600; width: 160px;">Email</td>
-              <td style="padding: 8px;"><a href="mailto:${safe(email)}">${safe(email)}</a></td>
+              <td style="padding: 8px;"><a href="mailto:${safe(email)}">${safe(
+                email
+              )}</a></td>
             </tr>
           </tbody>
         </table>

@@ -18,7 +18,9 @@ export async function addToCartWithToast(params: {
     const emoji = emojis[Math.floor(Math.random() * emojis.length)]
 
     toast.success(`${emoji} Added to cart!`, {
-      description: productTitle ? `${productTitle} is now in your cart.` : undefined,
+      description: productTitle
+        ? `${productTitle} is now in your cart.`
+        : undefined,
       action: {
         label: "View cart",
         onClick: () => {
@@ -42,7 +44,9 @@ export async function addToCartWithToast(params: {
   }
 }
 
-export async function deleteLineItemWithToast(lineId: string): Promise<boolean> {
+export async function deleteLineItemWithToast(
+  lineId: string
+): Promise<boolean> {
   try {
     await deleteLineItem(lineId)
     const emojis = ["🧹", "🗑️", "✨", "🎈"]
@@ -58,4 +62,3 @@ export async function deleteLineItemWithToast(lineId: string): Promise<boolean> 
     return false
   }
 }
- 

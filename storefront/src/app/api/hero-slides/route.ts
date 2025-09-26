@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+
 import { listHeroSlidesCached } from "@/lib/repos/heroSlides"
 
 export const dynamic = "force-dynamic"
@@ -12,10 +13,10 @@ export async function GET(req: Request) {
       isForMobileParam === null
         ? undefined
         : isForMobileParam === "true"
-        ? true
-        : isForMobileParam === "false"
-        ? false
-        : undefined
+          ? true
+          : isForMobileParam === "false"
+            ? false
+            : undefined
     const limit = searchParams.get("limit")
       ? Number(searchParams.get("limit"))
       : undefined

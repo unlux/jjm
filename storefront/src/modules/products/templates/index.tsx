@@ -41,7 +41,11 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   return (
     <div className="min-h-screen">
       {/* Analytics: product_view */}
-      <ProductViewTrack product={product} region={region} countryCode={countryCode} />
+      <ProductViewTrack
+        product={product}
+        region={region}
+        countryCode={countryCode}
+      />
       <div
         className="max-w-8xl w-full mx-auto px-6 py-6 relative grid gap-8 items-start grid-cols-1 lg:[grid-template-columns:400px_minmax(0,1fr)_360px]"
         data-testid="product-container"

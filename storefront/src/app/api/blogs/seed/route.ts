@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server"
+
+import { blogs as staticBlogs } from "@/lib/data/blog-seed"
 import { db } from "@/lib/db"
 import { blogs as blogsTable } from "@/lib/schema"
-import { blogs as staticBlogs } from "@/lib/data/blog-seed"
 
 export async function POST() {
   try {

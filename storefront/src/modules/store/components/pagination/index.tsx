@@ -6,11 +6,11 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 export function Pagination({
   page,
   totalPages,
-  'data-testid': dataTestid
+  "data-testid": dataTestid,
 }: {
   page: number
   totalPages: number
-  'data-testid'?: string
+  "data-testid"?: string
 }) {
   const router = useRouter()
   const pathname = usePathname()
@@ -39,7 +39,7 @@ export function Pagination({
         "inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
         isCurrent
           ? "bg-ui-bg-base text-ui-fg-base border border-ui-border-strong shadow-sm"
-          : "bg-transparent text-ui-fg-muted hover:text-ui-fg-base hover:bg-ui-bg-subtle border border-transparent",
+          : "bg-transparent text-ui-fg-muted hover:text-ui-fg-base hover:bg-ui-bg-subtle border border-transparent"
       )}
       disabled={isCurrent}
       onClick={() => handlePageChange(p)}

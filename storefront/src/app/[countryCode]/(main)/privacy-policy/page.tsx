@@ -4,11 +4,11 @@ export const dynamic = "force-static"
 
 const PrivacyPolicy = () => {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 text-gray-800">
-      <h1 className="text-3xl font-bold mb-6 text-center">Privacy Policy</h1>
+    <div className="mx-auto max-w-4xl px-4 py-10 text-gray-800">
+      <h1 className="mb-6 text-center text-3xl font-bold">Privacy Policy</h1>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">1. Introduction</h2>
+        <h2 className="mb-2 text-xl font-semibold">1. Introduction</h2>
         <p>
           Welcome to Joy Junction! This Privacy Policy explains how we collect,
           use, and protect your personal information when you use our website
@@ -17,10 +17,10 @@ const PrivacyPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">
+        <h2 className="mb-2 text-xl font-semibold">
           2. Information We Collect
         </h2>
-        <ul className="list-disc pl-6 space-y-1">
+        <ul className="list-disc space-y-1 pl-6">
           <li>Personal info (name, email, shipping address, phone number)</li>
           <li>Order details and payment information</li>
           <li>Browsing behavior (pages visited, time spent, etc.)</li>
@@ -29,10 +29,10 @@ const PrivacyPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">
+        <h2 className="mb-2 text-xl font-semibold">
           3. How We Use Your Information
         </h2>
-        <ul className="list-disc pl-6 space-y-1">
+        <ul className="list-disc space-y-1 pl-6">
           <li>To process orders and deliver products</li>
           <li>To send order updates and promotional emails (opt-in only)</li>
           <li>To improve our website and customer experience</li>
@@ -41,7 +41,7 @@ const PrivacyPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">4. Cookies</h2>
+        <h2 className="mb-2 text-xl font-semibold">4. Cookies</h2>
         <p>
           We use cookies to remember your preferences, keep you logged in, and
           track usage for analytics. You can control cookies in your browser
@@ -50,7 +50,7 @@ const PrivacyPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">5. Data Protection</h2>
+        <h2 className="mb-2 text-xl font-semibold">5. Data Protection</h2>
         <p>
           We take your privacy seriously. All sensitive data is encrypted, and
           we never sell or share your information with third-party marketers.
@@ -58,8 +58,8 @@ const PrivacyPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">6. Your Rights</h2>
-        <ul className="list-disc pl-6 space-y-1">
+        <h2 className="mb-2 text-xl font-semibold">6. Your Rights</h2>
+        <ul className="list-disc space-y-1 pl-6">
           <li>Access or update your personal info</li>
           <li>Request deletion of your data</li>
           <li>Opt-out of marketing communications</li>
@@ -67,7 +67,7 @@ const PrivacyPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">
+        <h2 className="mb-2 text-xl font-semibold">
           7. Changes to This Policy
         </h2>
         <p>
@@ -77,7 +77,7 @@ const PrivacyPolicy = () => {
       </section>
 
       <section>
-        <h2 className="text-xl font-semibold mb-2">8. Contact Us</h2>
+        <h2 className="mb-2 text-xl font-semibold">8. Contact Us</h2>
         <p>
           If you have any questions about this Privacy Policy, please contact us
           at{" "}
@@ -91,7 +91,7 @@ const PrivacyPolicy = () => {
         </p>
       </section>
 
-      <p className="text-sm text-gray-500 mt-10 text-center">
+      <p className="mt-10 text-center text-sm text-gray-500">
         Last updated: July 17, 2025
       </p>
     </div>
