@@ -1,5 +1,6 @@
 import { Heading } from "@medusajs/ui"
 import { cookies as nextCookies } from "next/headers"
+import ConfettiOnLoad from "@/modules/order/components/confetti-on-load"
 
 import CartTotals from "@modules/common/components/cart-totals"
 import Help from "@modules/order/components/help"
@@ -28,6 +29,7 @@ export default async function OrderCompletedTemplate({
         {isOnboarding && <OnboardingCta orderId={order.id} />}
         {/* Analytics: order_completed */}
         <OrderCompletedTrack order={order} />
+        <ConfettiOnLoad />
         <div
           className="flex flex-col gap-4 max-w-4xl h-full bg-white w-full py-10"
           data-testid="order-complete-container"
