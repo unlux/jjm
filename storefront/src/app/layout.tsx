@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { Quicksand } from "next/font/google"
 import ClickSpark from "@/apne-component/ClickSpark"
 import Providers from "@/apna-context/Providers"
+import ResponsiveToaster from "@/apne-component/ResponsiveToaster"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
@@ -23,6 +24,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       <body
         className={`${quicksand.className} font-quicksand antialiased m-0 p-0 group/nav`}
       >
+        <ResponsiveToaster />
         <Providers>
           <main className="relative">
             {props.children}

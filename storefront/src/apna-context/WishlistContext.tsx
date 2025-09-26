@@ -7,6 +7,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react"
+import { toast } from "sonner"
 
 // Lightweight item stored in wishlist (compatible across pages)
 export type WishlistItem = {
@@ -84,20 +85,59 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
 
   // Add a product to the wishlist
   const addToWishlist = (product: WishlistItem) => {
-    setWishlistItems((prev) => {
-      // Check if the product is already in the wishlist
-      if (prev.some((item) => item.id === product.id)) {
-        return prev // Don't add duplicates
-      } else {
-        // Add the new product
-        return [...prev, product]
-      }
-    })
+    // Compute next state first to avoid side-effects inside setState updater (StrictMode)
+    const exists = wishlistItems.some((item) => item.id === product.id)
+    if (exists) {
+      try {
+        toast("Already in wishlist", {
+          description: `${product.name} is already on your wishlist.`,
+          duration: 1500,
+        })
+      } catch {}
+      return
+    }
+
+    const next = [...wishlistItems, product]
+    setWishlistItems(next)
+
+    try {
+      const emojis = ["💖", "🧸", "⭐", "🎈", "✨", "🎁"]
+      const emoji = emojis[Math.floor(Math.random() * emojis.length)]
+      toast.success(`${emoji} Added to wishlist!`, {
+        description: `${product.name} is now on your wishlist.`,
+        action: {
+          label: "View wishlist",
+          onClick: () => {
+            try {
+              const path = window.location?.pathname || "/"
+              const seg = path.split("/")[1]
+              const target = seg && seg.length <= 5 ? `/${seg}/wishlist` : "/wishlist"
+              window.location.href = target
+            } catch {
+              window.location.href = "/wishlist"
+            }
+          },
+        },
+        duration: 2200,
+      })
+    } catch {}
   }
 
   // Remove an item from the wishlist
   const removeFromWishlist = (productId: string | number) => {
-    setWishlistItems((prev) => prev.filter((item) => item.id !== productId))
+    // Compute next state first
+    const removed = wishlistItems.find((i) => i.id === productId)
+    const next = wishlistItems.filter((item) => item.id !== productId)
+    setWishlistItems(next)
+
+    try {
+      toast("Removed from wishlist", {
+        description: removed?.name
+          ? `${removed.name} was removed from your wishlist.`
+          : "Item removed from your wishlist.",
+        duration: 1600,
+      })
+    } catch {}
   }
 
   // Clear the entire wishlist
