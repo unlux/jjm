@@ -302,7 +302,18 @@ const ShippingAddress = ({
           name="shipping_address.phone"
           autoComplete="tel"
           value={formData["shipping_address.phone"]}
-          onChange={handleChange}
+          onChange={(e) => {
+            const digits = e.target.value.replace(/\D/g, "").slice(0, 10)
+            setFormData({
+              ...formData,
+              [e.target.name]: digits,
+            })
+          }}
+          inputMode="numeric"
+          maxLength={10}
+          pattern="[0-9]{10}"
+          title="Enter a 10-digit phone number"
+          required
           data-testid="shipping-phone-input"
         />
       </div>
