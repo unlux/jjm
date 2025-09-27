@@ -18,6 +18,8 @@ jobs:
           username: ${{ secrets.LIGHTSAIL_USER }}
           key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
           script: |
+            set -e # Exit immediately if a command exits with a non-zero status.
+
             cd ~/jjm/backend
 
             echo ">>> Pulling latest code"
