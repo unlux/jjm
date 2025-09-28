@@ -61,6 +61,8 @@ const MobileActions: React.FC<MobileActionsProps> = ({
       id: product.id,
       name: product.title ?? "",
       image: product.thumbnail ?? undefined,
+      url: `/products/${product.handle}`,
+      variantId: variant?.id,
     }
     if (wishlistSelected) {
       removeFromWishlist(product.id)

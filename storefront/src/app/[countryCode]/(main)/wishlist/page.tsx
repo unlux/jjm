@@ -24,14 +24,17 @@ export default function WishlistPage() {
     return `₹${(price / 100).toFixed(2)}`
   }
 
-  const handleAddToCart = async (productId: number) => {
+  const handleAddToCart = async (productId: string | number) => {
     const product = wishlistItems.find((item) => item.id === productId)
     if (!product) return
 
     // If we don't know the variant, send user to product page to select
     if (!product.variantId) {
-      const to = product.url || `/products/${product.id}`
-      router.push(to)
+      // Navigate to PDP to select a variant
+      // Always use handle-based URL when available; otherwise, use lookup route by id
+      const localPath = product.url || `/products/lookup/${product.id}`
+      const target = `/${countryCode}${localPath}`
+      router.push(target)
       return
     }
 
@@ -137,7 +140,7 @@ export default function WishlistPage() {
                   className="group overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-100 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
                 >
                   <LocalizedClientLink
-                    href={item.url || `/products/${item.id}`}
+                    href={item.url || `/products/lookup/${item.id}`}
                   >
                     <div className="relative h-60">
                       <Image
@@ -192,7 +195,7 @@ export default function WishlistPage() {
                         const isAdded = state === "added"
                         return (
                           <Button
-                            onClick={() => handleAddToCart(item.id as number)}
+                            onClick={() => handleAddToCart(item.id)}
                             variant={isAdded ? "secondary" : "primary"}
                             className={
                               (isAdded
