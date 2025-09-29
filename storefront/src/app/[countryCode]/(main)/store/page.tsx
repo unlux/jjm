@@ -4,10 +4,41 @@ import { Metadata } from "next"
 import { redirect } from "next/navigation"
 
 import { listCategories } from "@/lib/data/categories"
+import { listRegions } from "@/lib/data/regions"
+import { buildHreflangMap } from "@/lib/seo/config"
 
-export const metadata: Metadata = {
-  title: "Store",
-  description: "Explore all of our products.",
+export async function generateMetadata(props: {
+  params: Promise<{ countryCode: string }>
+}): Promise<Metadata> {
+  const { countryCode } = await props.params
+
+  const countryCodes = await listRegions()
+    .then((regions) =>
+      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat().filter(Boolean) as string[]
+    )
+    .catch(() => [countryCode])
+
+  const canonicalPath = `/${countryCode}/store`
+  const languages = buildHreflangMap(countryCodes, (cc) => `/${cc}/store`)
+
+  return {
+    title: "Store",
+    description: "Explore all of our products.",
+    alternates: {
+      canonical: canonicalPath,
+      languages,
+    },
+    openGraph: {
+      title: "Store",
+      description: "Explore all of our products.",
+      url: canonicalPath,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Store",
+      description: "Explore all of our products.",
+    },
+  }
 }
 
 type Params = {

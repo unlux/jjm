@@ -5,6 +5,8 @@ import CollectionTemplate from "@modules/collections/templates"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { buildHreflangMap } from "@/lib/seo/config"
+import { BreadcrumbJsonLd, ItemListJsonLd } from "@/lib/seo/jsonld"
 
 type Props = {
   params: Promise<{ handle: string; countryCode: string }>
@@ -57,10 +59,38 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     notFound()
   }
 
-  const metadata = {
-    title: `${collection.title} | The Joy Junction`,
+  const countryCodes = await listRegions().then(
+    (regions: StoreRegion[]) =>
+      regions
+        ?.map((r) => r.countries?.map((c) => c.iso_2))
+        .flat()
+        .filter(Boolean) as string[]
+  ).catch(() => [params.countryCode])
+
+  const canonicalPath = `/${params.countryCode}/collections/${params.handle}`
+  const languages = buildHreflangMap(
+    countryCodes,
+    (cc) => `/${cc}/collections/${params.handle}`
+  )
+
+  const metadata: Metadata = {
+    title: collection.title,
     description: `${collection.title} collection`,
-  } as Metadata
+    alternates: {
+      canonical: canonicalPath,
+      languages,
+    },
+    openGraph: {
+      title: collection.title,
+      description: `${collection.title} collection`,
+      url: canonicalPath,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: collection.title,
+      description: `${collection.title} collection`,
+    },
+  }
 
   return metadata
 }
@@ -79,11 +109,33 @@ export default async function CollectionPage(props: Props) {
   }
 
   return (
-    <CollectionTemplate
-      collection={collection}
-      page={page}
-      sortBy={sortBy}
-      countryCode={params.countryCode}
-    />
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: `/${params.countryCode}` },
+          { name: "Collections", url: `/${params.countryCode}/collections` },
+          {
+            name: collection.title,
+            url: `/${params.countryCode}/collections/${params.handle}`,
+          },
+        ]}
+      />
+      {Array.isArray(collection.products) && collection.products.length > 0 && (
+        <ItemListJsonLd
+          items={(collection.products as any[])
+            .filter((p: any) => p?.handle)
+            .map((p: any) => ({
+              name: p.title || p.handle,
+              url: `/${params.countryCode}/products/${p.handle}`,
+            }))}
+        />
+      )}
+      <CollectionTemplate
+        collection={collection}
+        page={page}
+        sortBy={sortBy}
+        countryCode={params.countryCode}
+      />
+    </>
   )
 }

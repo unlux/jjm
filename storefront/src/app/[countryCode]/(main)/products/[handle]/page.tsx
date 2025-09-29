@@ -3,6 +3,8 @@ import { getRegion, listRegions } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { buildHreflangMap } from "@/lib/seo/config"
+import { ProductJsonLd } from "@/lib/seo/jsonld"
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
@@ -68,12 +70,35 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     notFound()
   }
 
+  const countryCodes = await listRegions()
+    .then((regions) =>
+      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat().filter(Boolean) as string[]
+    )
+    .catch(() => [params.countryCode])
+
+  const languages = buildHreflangMap(
+    countryCodes,
+    (cc) => `/${cc}/products/${product.handle}`
+  )
+  const canonicalPath = `/${params.countryCode}/products/${product.handle}`
+
   return {
-    title: `${product.title} | The Joy Junction`,
-    description: `${product.title}`,
+    title: product.title,
+    description: product.description || product.title,
+    alternates: {
+      canonical: canonicalPath,
+      languages,
+    },
     openGraph: {
-      title: `${product.title} | The Joy Junction`,
-      description: `${product.title}`,
+      title: product.title,
+      description: product.description || product.title,
+      url: canonicalPath,
+      images: product.thumbnail ? [product.thumbnail] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.title,
+      description: product.description || product.title,
       images: product.thumbnail ? [product.thumbnail] : [],
     },
   }
@@ -97,10 +122,13 @@ export default async function ProductPage(props: Props) {
   }
 
   return (
-    <ProductTemplate
-      product={pricedProduct}
-      region={region}
-      countryCode={params.countryCode}
-    />
+    <>
+      <ProductJsonLd product={pricedProduct} countryCode={params.countryCode} />
+      <ProductTemplate
+        product={pricedProduct}
+        region={region}
+        countryCode={params.countryCode}
+      />
+    </>
   )
 }

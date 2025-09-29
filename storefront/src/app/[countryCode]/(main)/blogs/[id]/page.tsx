@@ -1,19 +1,65 @@
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
 import React from "react"
+import type { Metadata } from "next"
 
 import { markdownToHtml } from "@/lib/markdown"
 import { getBlogByIdCached, listBlogsCached } from "@/lib/repos/blogs"
+import { listRegions } from "@/lib/data/regions"
+import { buildHreflangMap } from "@/lib/seo/config"
+import { BlogPostingJsonLd } from "@/lib/seo/jsonld"
+import { getBaseURL } from "@/lib/util/env"
 
 import ShareButtons from "./ShareButtons.client"
 export const revalidate = 86400 // 24 hours
 
+export async function generateMetadata(props: {
+  params: Promise<{ countryCode: string; id: string }>
+}): Promise<Metadata> {
+  const { countryCode, id } = await props.params
+  const blog = await getBlogByIdCached(id)
+  if (!blog) {
+    return { title: "Blog" }
+  }
+
+  const countryCodes = await listRegions()
+    .then((regions) =>
+      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat().filter(Boolean) as string[]
+    )
+    .catch(() => [countryCode])
+
+  const canonicalPath = `/${countryCode}/blogs/${id}`
+  const languages = buildHreflangMap(countryCodes, (cc) => `/${cc}/blogs/${id}`)
+
+  return {
+    title: blog.title,
+    description: blog.excerpt || blog.title,
+    alternates: {
+      canonical: canonicalPath,
+      languages,
+    },
+    openGraph: {
+      title: blog.title,
+      description: blog.excerpt || blog.title,
+      url: canonicalPath,
+      images: blog.image ? [blog.image] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blog.title,
+      description: blog.excerpt || blog.title,
+      images: blog.image ? [blog.image] : [],
+    },
+  }
+}
+
 export default async function BlogDetailPage({
   params,
 }: {
-  params: { id: string }
+  params: { id: string; countryCode: string }
 }) {
   const id = await params.id
+  const countryCode = (params as any).countryCode
   const blog = await getBlogByIdCached(id)
   if (!blog) {
     return (
@@ -53,6 +99,10 @@ export default async function BlogDetailPage({
 
   return (
     <div className="min-h-screen bg-[#f9f9f9]">
+      <BlogPostingJsonLd
+        blog={blog}
+        url={new URL(`/${countryCode || ""}/blogs/${blog.id}`, getBaseURL()).toString()}
+      />
       {/* Hero Section */}
       <div className="relative">
         <div className="absolute inset-0 bg-[#262b5f] opacity-70"></div>

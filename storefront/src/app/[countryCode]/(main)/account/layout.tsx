@@ -1,6 +1,7 @@
 import { retrieveCustomer } from "@lib/data/customer"
 import { Toaster } from "@medusajs/ui"
 import AccountLayout from "@modules/account/templates/account-layout"
+import type { Metadata } from "next"
 
 export default async function AccountPageLayout({
   dashboard,
@@ -17,4 +18,8 @@ export default async function AccountPageLayout({
       <Toaster />
     </AccountLayout>
   )
+}
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
 }

@@ -5,6 +5,8 @@ import CategoryTemplate from "@modules/categories/templates"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { buildHreflangMap } from "@/lib/seo/config"
+import { BreadcrumbJsonLd, ItemListJsonLd } from "@/lib/seo/jsonld"
 
 type Props = {
   params: Promise<{ category: string[]; countryCode: string }>
@@ -46,15 +48,41 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   try {
     const productCategory = await getCategoryByHandle(params.category)
 
-    const title = productCategory.name + " | The Joy Junction"
+    const title = productCategory.name
+    const description =
+      productCategory.description ?? `${title} category.`
 
-    const description = productCategory.description ?? `${title} category.`
+    const countryCodes = await listRegions()
+      .then((regions: StoreRegion[]) =>
+        regions
+          ?.map((r) => r.countries?.map((c) => c.iso_2))
+          .flat()
+          .filter(Boolean) as string[]
+      )
+      .catch(() => [params.countryCode])
+
+    const canonicalPath = `/${params.countryCode}/categories/${params.category.join("/")}`
+    const languages = buildHreflangMap(
+      countryCodes,
+      (cc) => `/${cc}/categories/${params.category.join("/")}`
+    )
 
     return {
-      title: `${title} | The Joy Junction`,
+      title,
       description,
       alternates: {
-        canonical: `${params.category.join("/")}`,
+        canonical: canonicalPath,
+        languages,
+      },
+      openGraph: {
+        title,
+        description,
+        url: canonicalPath,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
       },
     }
   } catch (error) {
@@ -74,11 +102,33 @@ export default async function CategoryPage(props: Props) {
   }
 
   return (
-    <CategoryTemplate
-      category={productCategory}
-      sortBy={sortBy}
-      page={page}
-      countryCode={params.countryCode}
-    />
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: `/${params.countryCode}` },
+          { name: "Categories", url: `/${params.countryCode}/categories` },
+          {
+            name: productCategory.name,
+            url: `/${params.countryCode}/categories/${params.category.join("/")}`,
+          },
+        ]}
+      />
+      {Array.isArray(productCategory.products) && productCategory.products.length > 0 && (
+        <ItemListJsonLd
+          items={productCategory.products
+            .filter((p: any) => p?.handle)
+            .map((p: any) => ({
+              name: p.title || p.handle,
+              url: `/${params.countryCode}/products/${p.handle}`,
+            }))}
+        />
+      )}
+      <CategoryTemplate
+        category={productCategory}
+        sortBy={sortBy}
+        page={page}
+        countryCode={params.countryCode}
+      />
+    </>
   )
 }

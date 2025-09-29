@@ -1,10 +1,47 @@
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
 import React from "react"
+import type { Metadata } from "next"
 
 import { listBlogsCached } from "@/lib/repos/blogs"
+import { listRegions } from "@/lib/data/regions"
+import { buildHreflangMap } from "@/lib/seo/config"
 
 export const revalidate = 86400 // 24 hours
+export async function generateMetadata(props: {
+  params: Promise<{ countryCode: string }>
+}): Promise<Metadata> {
+  const { countryCode } = await props.params
+  const countryCodes = await listRegions()
+    .then((regions) =>
+      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat().filter(Boolean) as string[]
+    )
+    .catch(() => [countryCode])
+
+  const canonicalPath = `/${countryCode}/blogs`
+  const languages = buildHreflangMap(countryCodes, (cc) => `/${cc}/blogs`)
+
+  return {
+    title: "Blogs",
+    description: "Insights and ideas to make playtime more educational and fun.",
+    alternates: {
+      canonical: canonicalPath,
+      languages,
+    },
+    openGraph: {
+      title: "Blogs",
+      description:
+        "Discover insights and ideas to make playtime more educational and fun.",
+      url: canonicalPath,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Blogs",
+      description:
+        "Discover insights and ideas to make playtime more educational and fun.",
+    },
+  }
+}
 export default async function BlogsPage({
   searchParams,
 }: {

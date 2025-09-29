@@ -1,8 +1,12 @@
 import React from "react"
 
 import RevalidateButton from "@/components/RevalidateButton"
+import type { Metadata } from "next"
 
 export const revalidate = 0 // always render latest UI; actions call API which triggers ISR
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+}
 
 export default function RevalidatePage() {
   return (

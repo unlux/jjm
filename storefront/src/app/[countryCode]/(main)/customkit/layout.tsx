@@ -1,4 +1,3 @@
-import AboutUsTemplate from "@modules/about-us/templates"
 import type { Metadata } from "next"
 import { listRegions } from "@/lib/data/regions"
 import { buildHreflangMap } from "@/lib/seo/config"
@@ -13,32 +12,32 @@ export async function generateMetadata(props: {
     )
     .catch(() => [countryCode])
 
-  const canonicalPath = `/${countryCode}/about-us`
-  const languages = buildHreflangMap(countryCodes, (cc) => `/${cc}/about-us`)
+  const canonicalPath = `/${countryCode}/customkit`
+  const languages = buildHreflangMap(countryCodes, (cc) => `/${cc}/customkit`)
 
   return {
-    title: "About Us",
+    title: "Custom Learning Kits",
     description:
-      "Learn about our mission to create fun learning activities that focus on skills beyond academics.",
+      "Create personalized game-based learning kits tailored to your child's interests.",
     alternates: {
       canonical: canonicalPath,
       languages,
     },
     openGraph: {
-      title: "About Us",
+      title: "Custom Learning Kits",
       description:
-        "Learn about our mission to create fun learning activities that focus on skills beyond academics.",
+        "Create personalized game-based learning kits tailored to your child's interests.",
       url: canonicalPath,
     },
     twitter: {
       card: "summary_large_image",
-      title: "About Us",
+      title: "Custom Learning Kits",
       description:
-        "Learn about our mission to create fun learning activities that focus on skills beyond academics.",
+        "Create personalized game-based learning kits tailored to your child's interests.",
     },
   }
 }
 
-export default function AboutUsPage() {
-  return <AboutUsTemplate />
+export default function CustomkitLayout({ children }: { children: React.ReactNode }) {
+  return children
 }

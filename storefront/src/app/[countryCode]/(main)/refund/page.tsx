@@ -1,6 +1,42 @@
 // components/RefundPolicy.tsx
 // Server component: static content only
 export const dynamic = "force-static"
+import type { Metadata } from "next"
+import { listRegions } from "@/lib/data/regions"
+import { buildHreflangMap } from "@/lib/seo/config"
+
+export async function generateMetadata(props: {
+  params: Promise<{ countryCode: string }>
+}): Promise<Metadata> {
+  const { countryCode } = await props.params
+  const countryCodes = await listRegions()
+    .then((regions) =>
+      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat().filter(Boolean) as string[]
+    )
+    .catch(() => [countryCode])
+
+  const canonicalPath = `/${countryCode}/refund`
+  const languages = buildHreflangMap(countryCodes, (cc) => `/${cc}/refund`)
+
+  return {
+    title: "Refund & Returns Policy",
+    description: "Refund and returns policy for The Joy Junction.",
+    alternates: {
+      canonical: canonicalPath,
+      languages,
+    },
+    openGraph: {
+      title: "Refund & Returns Policy",
+      description: "Refund and returns policy for The Joy Junction.",
+      url: canonicalPath,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Refund & Returns Policy",
+      description: "Refund and returns policy for The Joy Junction.",
+    },
+  }
+}
 
 const RefundPolicy = () => {
   return (
