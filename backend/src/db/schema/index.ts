@@ -1,1 +1,5 @@
 export * from "./affiliate-coupons"
+export * from "./blogs"
+export * from "./hero-slides"
+export * from "./testimonials"
+export * from "./offers"
