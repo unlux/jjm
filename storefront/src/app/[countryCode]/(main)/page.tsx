@@ -1,9 +1,10 @@
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
+import { listRegions } from "@lib/data/regions"
 import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
 import { Metadata } from "next"
-import { listRegions } from "@lib/data/regions"
+
 import { buildHreflangMap } from "@/lib/seo/config"
 import { WebsiteJsonLd } from "@/lib/seo/jsonld"
 
@@ -13,8 +14,12 @@ export async function generateMetadata(props: {
   const { countryCode } = await props.params
 
   const countryCodes = await listRegions()
-    .then((regions) =>
-      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat().filter(Boolean) as string[]
+    .then(
+      (regions) =>
+        regions
+          ?.map((r) => r.countries?.map((c) => c.iso_2))
+          .flat()
+          .filter(Boolean) as string[]
     )
     .catch(() => [countryCode])
 

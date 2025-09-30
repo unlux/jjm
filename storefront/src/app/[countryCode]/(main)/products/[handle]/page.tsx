@@ -3,6 +3,7 @@ import { getRegion, listRegions } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+
 import { buildHreflangMap } from "@/lib/seo/config"
 import { ProductJsonLd } from "@/lib/seo/jsonld"
 
@@ -71,8 +72,12 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   const countryCodes = await listRegions()
-    .then((regions) =>
-      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat().filter(Boolean) as string[]
+    .then(
+      (regions) =>
+        regions
+          ?.map((r) => r.countries?.map((c) => c.iso_2))
+          .flat()
+          .filter(Boolean) as string[]
     )
     .catch(() => [params.countryCode])
 

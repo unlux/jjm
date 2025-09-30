@@ -7,6 +7,24 @@ import { SortOptions } from "@modules/store/components/refinement-list/sort-prod
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
 
+// Compatibility type for product list query params.
+// Mirrors HttpTypes.StoreProductListParams per Medusa MCP guidance, while
+// avoiding direct import in case the current package version doesn't export it.
+export type StoreProductListParamsCompat = HttpTypes.FindParams & {
+  offset?: number
+  limit?: number
+  fields?: string
+  id?: string | string[]
+  handle?: string | string[]
+  region_id?: string
+  collection_id?: string | string[]
+  category_id?: string | string[]
+  order?: string
+  tags?: string | string[]
+  tag_id?: string | string[]
+  is_giftcard?: boolean
+}
+
 export const listProducts = async ({
   pageParam = 1,
   queryParams,
@@ -14,13 +32,13 @@ export const listProducts = async ({
   regionId,
 }: {
   pageParam?: number
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductListParams
+  queryParams?: StoreProductListParamsCompat
   countryCode?: string
   regionId?: string
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductListParams
+  queryParams?: StoreProductListParamsCompat
 }> => {
   if (!countryCode && !regionId) {
     throw new Error("Country code or region ID is required")
@@ -96,13 +114,13 @@ export const listProductsWithSort = async ({
   countryCode,
 }: {
   page?: number
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: StoreProductListParamsCompat
   sortBy?: SortOptions
   countryCode: string
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: StoreProductListParamsCompat
 }> => {
   const limit = queryParams?.limit || 12
 

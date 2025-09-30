@@ -13,8 +13,12 @@ export async function generateMetadata(props: {
   const { countryCode } = await props.params
 
   const countryCodes = await listRegions()
-    .then((regions) =>
-      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat().filter(Boolean) as string[]
+    .then(
+      (regions) =>
+        regions
+          ?.map((r) => r.countries?.map((c) => c.iso_2))
+          .flat()
+          .filter(Boolean) as string[]
     )
     .catch(() => [countryCode])
 

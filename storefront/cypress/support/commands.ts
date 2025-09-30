@@ -1,3 +1,4 @@
+/// <reference path="./commands.d.ts" />
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -25,7 +26,7 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 // Custom iframe command
-Cypress.Commands.add("iframe", (iframeSelector: string) => {
+(Cypress.Commands as any).add("iframe", (iframeSelector: string) => {
   return cy
     .get(iframeSelector)
     .its("0.contentDocument")
@@ -34,6 +35,17 @@ Cypress.Commands.add("iframe", (iframeSelector: string) => {
     .should("not.be.undefined")
     .then(($body) => {
       return cy.wrap($body)
+    })
+})
+
+// Wait until the iframe's document is fully loaded
+(Cypress.Commands as any).add("frameLoaded", (iframeSelector: string) => {
+  return cy
+    .get(iframeSelector)
+    .its("0.contentDocument.readyState")
+    .should((state) => {
+      // readyState should be 'interactive' or 'complete'
+      expect(["interactive", "complete"]).to.include(state)
     })
 })
 

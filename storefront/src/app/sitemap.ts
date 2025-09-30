@@ -1,18 +1,23 @@
 import type { MetadataRoute } from "next"
-import { getBaseURL } from "@/lib/util/env"
-import { listRegions } from "@/lib/data/regions"
-import { listProducts } from "@/lib/data/products"
+
 import { listCategories } from "@/lib/data/categories"
 import { listCollections } from "@/lib/data/collections"
+import { listProducts } from "@/lib/data/products"
+import { listRegions } from "@/lib/data/regions"
 import { listBlogsCached } from "@/lib/repos/blogs"
+import { getBaseURL } from "@/lib/util/env"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getBaseURL()
 
   // Determine supported country codes
   const countryCodes = await listRegions()
-    .then((regions) =>
-      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat().filter(Boolean) as string[]
+    .then(
+      (regions) =>
+        regions
+          ?.map((r) => r.countries?.map((c) => c.iso_2))
+          .flat()
+          .filter(Boolean) as string[]
     )
     .catch(() => ["us"]) // fallback
 
@@ -37,7 +42,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Collections
     try {
-      const { collections } = await listCollections({ fields: "handle", limit: "200" })
+      const { collections } = await listCollections({
+        fields: "handle",
+        limit: "200",
+      })
       for (const col of collections || []) {
         if (!col?.handle) continue
         const path = `/${cc}/collections/${col.handle}`
@@ -73,7 +81,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const blogs = await listBlogsCached({ limit: 200 })
       for (const b of blogs || []) {
         const path = `/${cc}/blogs/${b.id}`
-        urls.push({ url: new URL(path, base).toString(), lastModified: new Date(b.publishedAt || now) })
+        urls.push({
+          url: new URL(path, base).toString(),
+          lastModified: new Date(b.publishedAt || now),
+        })
       }
     } catch {}
   }

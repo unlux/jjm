@@ -1,5 +1,6 @@
 import AboutUsTemplate from "@modules/about-us/templates"
 import type { Metadata } from "next"
+
 import { listRegions } from "@/lib/data/regions"
 import { buildHreflangMap } from "@/lib/seo/config"
 
@@ -8,8 +9,12 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { countryCode } = await props.params
   const countryCodes = await listRegions()
-    .then((regions) =>
-      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat().filter(Boolean) as string[]
+    .then(
+      (regions) =>
+        regions
+          ?.map((r) => r.countries?.map((c) => c.iso_2))
+          .flat()
+          .filter(Boolean) as string[]
     )
     .catch(() => [countryCode])
 

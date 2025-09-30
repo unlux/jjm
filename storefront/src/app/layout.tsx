@@ -4,11 +4,12 @@ import { getBaseURL } from "@lib/util/env"
 import { Analytics } from "@vercel/analytics/next"
 import { Metadata } from "next"
 import { Quicksand } from "next/font/google"
-import { OrganizationJsonLd } from "@/lib/seo/jsonld"
+import React from "react"
 
 import ClickSpark from "@/components/ui/ClickSpark"
 import ResponsiveToaster from "@/components/ui/ResponsiveToaster"
 import Providers from "@/lib/context/Providers"
+import { OrganizationJsonLd } from "@/lib/seo/jsonld"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),

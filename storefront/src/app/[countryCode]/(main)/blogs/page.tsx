@@ -1,10 +1,10 @@
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import type { Metadata } from "next"
 import Image from "next/image"
 import React from "react"
-import type { Metadata } from "next"
 
-import { listBlogsCached } from "@/lib/repos/blogs"
 import { listRegions } from "@/lib/data/regions"
+import { listBlogsCached } from "@/lib/repos/blogs"
 import { buildHreflangMap } from "@/lib/seo/config"
 
 export const revalidate = 86400 // 24 hours
@@ -13,8 +13,12 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { countryCode } = await props.params
   const countryCodes = await listRegions()
-    .then((regions) =>
-      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat().filter(Boolean) as string[]
+    .then(
+      (regions) =>
+        regions
+          ?.map((r) => r.countries?.map((c) => c.iso_2))
+          .flat()
+          .filter(Boolean) as string[]
     )
     .catch(() => [countryCode])
 
@@ -23,7 +27,8 @@ export async function generateMetadata(props: {
 
   return {
     title: "Blogs",
-    description: "Insights and ideas to make playtime more educational and fun.",
+    description:
+      "Insights and ideas to make playtime more educational and fun.",
     alternates: {
       canonical: canonicalPath,
       languages,

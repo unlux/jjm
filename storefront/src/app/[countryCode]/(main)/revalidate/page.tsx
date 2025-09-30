@@ -1,7 +1,7 @@
+import type { Metadata } from "next"
 import React from "react"
 
 import RevalidateButton from "@/components/RevalidateButton"
-import type { Metadata } from "next"
 
 export const revalidate = 0 // always render latest UI; actions call API which triggers ISR
 export const metadata: Metadata = {

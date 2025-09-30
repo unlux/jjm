@@ -1,4 +1,4 @@
-import { c } from "vite/dist/node/types.d-aGj9QkWt"
+// (removed invalid vite import)
 
 const basicTest = (cy: any) => {
   console.log("🧹 Clearing all cookies before test")
@@ -127,8 +127,13 @@ describe("E-commerce Checkout Flow", () => {
 
     // Wait for the Razorpay iframe to be created and visible
     console.log("💳 Processing Razorpay payment")
-    //cy.frameLoaded('.razorpay-checkout-frame')
-    cy.frameLoaded('.razorpay-checkout-frame[style*="width: 100%"]')
+    // Wait until the Razorpay iframe document is ready
+    // (avoid custom typings by asserting readystate inline)
+    cy.get('.razorpay-checkout-frame[style*="width: 100%"]')
+      .its('0.contentDocument.readyState')
+      .should((state) => {
+        expect(["interactive", "complete"]).to.include(state)
+      })
     // Wait for the correct iframe to be loaded and target it specifically
     // cy.iframe('.razorpay-checkout-frame[style*="width: 100%"]')
     cy.get('.razorpay-checkout-frame[style*="width: 100%"]')

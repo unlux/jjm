@@ -5,6 +5,7 @@ import CategoryTemplate from "@modules/categories/templates"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+
 import { buildHreflangMap } from "@/lib/seo/config"
 import { BreadcrumbJsonLd, ItemListJsonLd } from "@/lib/seo/jsonld"
 
@@ -49,15 +50,15 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     const productCategory = await getCategoryByHandle(params.category)
 
     const title = productCategory.name
-    const description =
-      productCategory.description ?? `${title} category.`
+    const description = productCategory.description ?? `${title} category.`
 
     const countryCodes = await listRegions()
-      .then((regions: StoreRegion[]) =>
-        regions
-          ?.map((r) => r.countries?.map((c) => c.iso_2))
-          .flat()
-          .filter(Boolean) as string[]
+      .then(
+        (regions: StoreRegion[]) =>
+          regions
+            ?.map((r) => r.countries?.map((c) => c.iso_2))
+            .flat()
+            .filter(Boolean) as string[]
       )
       .catch(() => [params.countryCode])
 
@@ -113,16 +114,17 @@ export default async function CategoryPage(props: Props) {
           },
         ]}
       />
-      {Array.isArray(productCategory.products) && productCategory.products.length > 0 && (
-        <ItemListJsonLd
-          items={productCategory.products
-            .filter((p: any) => p?.handle)
-            .map((p: any) => ({
-              name: p.title || p.handle,
-              url: `/${params.countryCode}/products/${p.handle}`,
-            }))}
-        />
-      )}
+      {Array.isArray(productCategory.products) &&
+        productCategory.products.length > 0 && (
+          <ItemListJsonLd
+            items={productCategory.products
+              .filter((p: any) => p?.handle)
+              .map((p: any) => ({
+                name: p.title || p.handle,
+                url: `/${params.countryCode}/products/${p.handle}`,
+              }))}
+          />
+        )}
       <CategoryTemplate
         category={productCategory}
         sortBy={sortBy}

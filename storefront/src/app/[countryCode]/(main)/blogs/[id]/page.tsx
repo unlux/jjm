@@ -1,11 +1,11 @@
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import type { Metadata } from "next"
 import Image from "next/image"
 import React from "react"
-import type { Metadata } from "next"
 
+import { listRegions } from "@/lib/data/regions"
 import { markdownToHtml } from "@/lib/markdown"
 import { getBlogByIdCached, listBlogsCached } from "@/lib/repos/blogs"
-import { listRegions } from "@/lib/data/regions"
 import { buildHreflangMap } from "@/lib/seo/config"
 import { BlogPostingJsonLd } from "@/lib/seo/jsonld"
 import { getBaseURL } from "@/lib/util/env"
@@ -23,8 +23,12 @@ export async function generateMetadata(props: {
   }
 
   const countryCodes = await listRegions()
-    .then((regions) =>
-      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat().filter(Boolean) as string[]
+    .then(
+      (regions) =>
+        regions
+          ?.map((r) => r.countries?.map((c) => c.iso_2))
+          .flat()
+          .filter(Boolean) as string[]
     )
     .catch(() => [countryCode])
 
@@ -101,7 +105,10 @@ export default async function BlogDetailPage({
     <div className="min-h-screen bg-[#f9f9f9]">
       <BlogPostingJsonLd
         blog={blog}
-        url={new URL(`/${countryCode || ""}/blogs/${blog.id}`, getBaseURL()).toString()}
+        url={new URL(
+          `/${countryCode || ""}/blogs/${blog.id}`,
+          getBaseURL()
+        ).toString()}
       />
       {/* Hero Section */}
       <div className="relative">
