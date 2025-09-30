@@ -7,6 +7,7 @@ import { FlatCompat } from "@eslint/eslintrc"
 import eslint from "@eslint/js"
 import js from "@eslint/js"
 import { defineConfig } from "eslint/config"
+import eslintConfigPrettier from "eslint-config-prettier/flat"
 import simpleImportSort from "eslint-plugin-simple-import-sort"
 import globals from "globals"
 import tseslint from "typescript-eslint"
@@ -22,6 +23,7 @@ const compat = new FlatCompat({
 export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommended,
+  eslintConfigPrettier,
   [
     {
       extends: compat.extends(
