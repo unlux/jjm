@@ -23,23 +23,23 @@ const features = [
 
 export default function FeatureStrip() {
   return (
-    <section className="bg-white py-10 md:py-16 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+    <section className="bg-white px-4 py-10 sm:px-6 md:py-16">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 md:grid-cols-4">
         {features.map((feature, i) => (
           <div
             key={i}
-            className="flex flex-col items-center text-center border border-gray-200 rounded-xl p-8 py-10 hover:shadow-xl transition aspect-square"
+            className="flex aspect-square flex-col items-center rounded-xl border border-gray-200 p-8 py-10 text-center transition hover:shadow-xl"
           >
-            <div className="w-full aspect-square">
+            <div className="aspect-square w-full">
               <Image
                 src={feature.image}
                 alt={feature.title}
                 width={1200}
                 height={1200}
-                className="object-contain w-full h-full"
+                className="h-full w-full object-contain"
               />
             </div>
-            <h3 className="text-lg md:text-2xl font-bold  text-[#1e1e3f]">
+            <h3 className="text-lg font-bold text-[#1e1e3f] md:text-2xl">
               {feature.title}
             </h3>
           </div>

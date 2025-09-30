@@ -37,7 +37,7 @@ export default function ShareButtons({ title }: { title: string }) {
     <div className="flex gap-3">
       <button
         onClick={() => handleShare("facebook")}
-        className="w-10 h-10 rounded-full bg-[#3b5998] text-white flex items-center justify-center"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-[#3b5998] text-white"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ export default function ShareButtons({ title }: { title: string }) {
       </button>
       <button
         onClick={() => handleShare("twitter")}
-        className="w-10 h-10 rounded-full bg-[#1da1f2] text-white flex items-center justify-center"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1da1f2] text-white"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +73,7 @@ export default function ShareButtons({ title }: { title: string }) {
       </button>
       <button
         onClick={() => handleShare("linkedin")}
-        className="w-10 h-10 rounded-full bg-[#0077b5] text-white flex items-center justify-center"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0077b5] text-white"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +93,7 @@ export default function ShareButtons({ title }: { title: string }) {
       </button>
       <button
         onClick={() => handleShare("whatsapp")}
-        className="w-10 h-10 rounded-full bg-[#25d366] text-white flex items-center justify-center"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-[#25d366] text-white"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

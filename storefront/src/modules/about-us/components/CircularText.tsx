@@ -1,13 +1,13 @@
 "use client"
 
-import React, { useEffect } from "react"
 import {
   motion,
-  useAnimation,
-  useMotionValue,
   MotionValue,
   Transition,
+  useAnimation,
+  useMotionValue,
 } from "framer-motion"
+import React, { useEffect } from "react"
 interface CircularTextProps {
   text: string
   spinDuration?: number
@@ -103,7 +103,7 @@ const CircularText: React.FC<CircularTextProps> = ({
 
   return (
     <motion.div
-      className={`m-0 mx-auto rounded-full w-[200px] h-[200px] relative font-black text-black text-center cursor-pointer origin-center ${className}`}
+      className={`relative m-0 mx-auto h-[200px] w-[200px] origin-center cursor-pointer rounded-full text-center font-black text-black ${className}`}
       style={{ rotate: rotation }}
       initial={{ rotate: 0 }}
       animate={controls}
@@ -120,7 +120,7 @@ const CircularText: React.FC<CircularTextProps> = ({
         return (
           <span
             key={i}
-            className="absolute inline-block inset-0 text-2xl transition-all duration-500 ease-&lsqb;cubic-bezier(0,0,0,1)&rsqb"
+            className="ease-&lsqb;cubic-bezier(0,0,0,1)&rsqb absolute inset-0 inline-block text-2xl transition-all duration-500"
             style={{ transform, WebkitTransform: transform }}
           >
             {letter}

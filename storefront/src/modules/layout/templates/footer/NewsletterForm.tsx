@@ -52,17 +52,17 @@ export default function NewsletterForm() {
   return (
     <form className="flex flex-col space-y-4" onSubmit={onSubmit}>
       {error && (
-        <div className="text-sm text-red-200 bg-red-900/30 px-3 py-2 rounded-md border border-red-500/40">
+        <div className="rounded-md border border-red-500/40 bg-red-900/30 px-3 py-2 text-sm text-red-200">
           {error}
         </div>
       )}
       {success && (
-        <div className="text-sm text-green-200 bg-green-900/20 px-3 py-2 rounded-md border border-green-500/30">
+        <div className="rounded-md border border-green-500/30 bg-green-900/20 px-3 py-2 text-sm text-green-200">
           {success}
         </div>
       )}
       <div className="relative">
-        <div className="absolute left-0 top-[50%] transform -translate-y-1/2 text-gray-400">
+        <div className="absolute left-0 top-[50%] -translate-y-1/2 transform text-gray-400">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -81,7 +81,7 @@ export default function NewsletterForm() {
         <input
           type="email"
           placeholder="Enter Your Email Address"
-          className="w-full bg-transparent border-b border-gray-400 text-white placeholder-gray-400 py-2 pl-7 pr-10 focus:outline-none focus:border-white transition-colors"
+          className="w-full border-b border-gray-400 bg-transparent py-2 pl-7 pr-10 text-white placeholder-gray-400 transition-colors focus:border-white focus:outline-none"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -90,7 +90,7 @@ export default function NewsletterForm() {
         <button
           type="submit"
           disabled={submitting}
-          className="absolute right-0 top-[50%] transform -translate-y-1/2 text-white h-8 w-8 flex items-center justify-center disabled:opacity-60"
+          className="absolute right-0 top-[50%] flex h-8 w-8 -translate-y-1/2 transform items-center justify-center text-white disabled:opacity-60"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -109,17 +109,17 @@ export default function NewsletterForm() {
         </button>
       </div>
 
-      <label className="text-sm text-gray-300 flex items-start gap-2 cursor-pointer">
-        <div className="relative flex items-center mt-1">
+      <label className="flex cursor-pointer items-start gap-2 text-sm text-gray-300">
+        <div className="relative mt-1 flex items-center">
           <input
             type="checkbox"
             id="privacy-checkbox"
-            className="peer appearance-none w-4 h-4 border border-gray-400 rounded-sm bg-transparent checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition-colors"
+            className="peer h-4 w-4 appearance-none rounded-sm border border-gray-400 bg-transparent transition-colors checked:border-blue-600 checked:bg-blue-600 focus:outline-none"
             checked={agree}
             onChange={(e) => setAgree(e.target.checked)}
           />
           <svg
-            className="absolute w-3 h-3 text-white pointer-events-none opacity-0 peer-checked:opacity-100 left-0.5 top-0.5"
+            className="pointer-events-none absolute left-0.5 top-0.5 h-3 w-3 text-white opacity-0 peer-checked:opacity-100"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
@@ -135,7 +135,7 @@ export default function NewsletterForm() {
           I agree to the{" "}
           <a
             href="/privacy-policy"
-            className="text-white hover:text-blue-300 underline transition"
+            className="text-white underline transition hover:text-blue-300"
           >
             Privacy Policy
           </a>

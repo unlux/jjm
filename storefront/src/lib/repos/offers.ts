@@ -1,12 +1,14 @@
 import "server-only"
+
 import { asc, eq } from "drizzle-orm"
+import { unstable_cache } from "next/cache"
+
 import { db } from "@/lib/db"
 import {
-  offers as offersTable,
-  type OfferRow,
   type NewOfferRow,
+  type OfferRow,
+  offers as offersTable,
 } from "@/lib/schema"
-import { unstable_cache } from "next/cache"
 
 export type OfferItem = {
   id: string
@@ -31,7 +33,7 @@ export async function listOffers(params?: {
     .where(
       where.length
         ? (where as any).reduce(
-            (acc: any, w: any) => (acc ? (acc as any).and?.(w) ?? w : w),
+            (acc: any, w: any) => (acc ? ((acc as any).and?.(w) ?? w) : w),
             undefined
           )
         : undefined
@@ -56,8 +58,8 @@ export async function listOffersCached(params?: {
     typeof params?.isActive === "undefined"
       ? "all"
       : params?.isActive
-      ? "active:true"
-      : "active:false"
+        ? "active:true"
+        : "active:false"
   const limitKey = String(params?.limit ?? 50)
   const keyParts = ["offers", isActiveKey, limitKey]
 
@@ -66,8 +68,8 @@ export async function listOffersCached(params?: {
     typeof params?.isActive === "undefined"
       ? "offers:all"
       : params?.isActive
-      ? "offers:active:true"
-      : "offers:active:false",
+        ? "offers:active:true"
+        : "offers:active:false",
   ]
 
   const cached = unstable_cache(

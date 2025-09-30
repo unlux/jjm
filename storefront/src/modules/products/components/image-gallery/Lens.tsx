@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useRef, useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
+import React, { useRef, useState } from "react"
 
 interface LensProps {
   children: React.ReactNode
@@ -46,7 +46,7 @@ export const Lens: React.FC<LensProps> = ({
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden rounded-lg z-20"
+      className="relative z-20 overflow-hidden rounded-lg"
       onMouseEnter={() => {
         setIsHovering(true)
       }}

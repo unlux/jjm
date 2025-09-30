@@ -1,9 +1,8 @@
-import React from "react"
 import { CreditCard } from "@medusajs/icons"
-
-import Ideal from "@modules/common/icons/ideal"
 import Bancontact from "@modules/common/icons/bancontact"
+import Ideal from "@modules/common/icons/ideal"
 import PayPal from "@modules/common/icons/paypal"
+import React from "react"
 
 export const isRazorpay = (providerId?: string) => {
   return providerId?.startsWith("pp_razorpay")

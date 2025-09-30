@@ -58,7 +58,7 @@ export default function FloatingShowcase({
 
   return (
     <div
-      className={`relative w-full mx-auto overflow-y-visible large:overflow-y-visible overflow-x-visible isolate [overscroll-behavior-x:contain] ${className}`.trim()}
+      className={`relative isolate mx-auto w-full overflow-x-visible overflow-y-visible [overscroll-behavior-x:contain] large:overflow-y-visible ${className}`.trim()}
       style={{ maxWidth: mainImageWidth }}
     >
       {/* Main image */}
@@ -69,7 +69,7 @@ export default function FloatingShowcase({
           width={mainImageWidth}
           height={mainImageHeight}
           sizes={`(max-width: 768px) 100%, ${mainImageWidth}px`}
-          className="h-auto w-full object-contain rounded-3xl"
+          className="h-auto w-full rounded-3xl object-contain"
           priority={false}
         />
       </Container>
@@ -79,7 +79,7 @@ export default function FloatingShowcase({
         <div
           className={
             badgeWrapperClassName ||
-            "pointer-events-auto absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 z-20"
+            "pointer-events-auto absolute -bottom-6 -right-6 z-20 md:-bottom-10 md:-right-10"
           }
         >
           {badge}
@@ -91,7 +91,7 @@ export default function FloatingShowcase({
         <div
           className={
             primaryWrapperClassName ||
-            "pointer-events-auto absolute -top-6 -left-6 md:-top-10 md:-left-10 z-10 w-[88px] h-[88px] md:w-[124px] md:h-[124px] lg:w-[148px] lg:h-[148px] [contain:layout_paint] animate-spin [animation-duration:12s] origin-center"
+            "pointer-events-auto absolute -left-6 -top-6 z-10 h-[88px] w-[88px] origin-center animate-spin [animation-duration:12s] [contain:layout_paint] md:-left-10 md:-top-10 md:h-[124px] md:w-[124px] lg:h-[148px] lg:w-[148px]"
           }
         >
           {primaryIconHref ? (
@@ -121,7 +121,7 @@ export default function FloatingShowcase({
         <div
           className={
             secondaryWrapperClassName ||
-            "pointer-events-auto absolute bottom-6 -right-6 md:bottom-10 md:-right-10 z-20 w-[64px] h-[64px] md:w-[84px] md:h-[84px] lg:w-[99px] lg:h-[99px] [contain:layout_paint]"
+            "pointer-events-auto absolute -right-6 bottom-6 z-20 h-[64px] w-[64px] [contain:layout_paint] md:-right-10 md:bottom-10 md:h-[84px] md:w-[84px] lg:h-[99px] lg:w-[99px]"
           }
         >
           {secondaryIconHref ? (

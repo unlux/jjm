@@ -1,7 +1,8 @@
 "use client"
 
-import { addToCart, deleteLineItem } from "@/lib/data/cart"
 import { toast } from "sonner"
+
+import { addToCart, deleteLineItem } from "@/lib/data/cart"
 
 export async function addToCartWithToast(params: {
   variantId: string

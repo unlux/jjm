@@ -1,6 +1,7 @@
 "use client"
 
 import "keen-slider/keen-slider.min.css"
+
 import { useKeenSlider } from "keen-slider/react"
 import Image from "next/image"
 import Link from "next/link"
@@ -68,15 +69,15 @@ export default function BlogSectionClient({ blogs }: { blogs: any[] }) {
   )
 
   return (
-    <section className="bg-white py-12 sm:py-16 md:py-20 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto">
-        <p className="uppercase text-sm tracking-widest text-[#262b5f] font-semibold mb-2 text-center font-fredoka">
+    <section className="bg-white px-4 py-12 sm:px-6 sm:py-16 md:py-20">
+      <div className="mx-auto max-w-7xl">
+        <p className="font-fredoka mb-2 text-center text-sm font-semibold uppercase tracking-widest text-[#262b5f]">
           Our Blog
         </p>
-        <h2 className="text-4xl font-bold text-center text-[#1e1e3f] mb-4 font-baloo">
+        <h2 className="font-baloo mb-4 text-center text-4xl font-bold text-[#1e1e3f]">
           Latest Updates
         </h2>
-        <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12">
+        <p className="mx-auto mb-12 max-w-2xl text-center text-gray-600">
           Discover insights and ideas to make playtime more educational and fun
           for your children
         </p>
@@ -85,27 +86,27 @@ export default function BlogSectionClient({ blogs }: { blogs: any[] }) {
           {blogs.map((blog: any, i: number) => (
             <div key={i} className="keen-slider__slide">
               <Link href={`/blogs/${blog.id}`} className="block h-full">
-                <div className="bg-white rounded-2xl overflow-hidden transition-all duration-300 group h-[400px] flex flex-col">
+                <div className="group flex h-[400px] flex-col overflow-hidden rounded-2xl bg-white transition-all duration-300">
                   <div className="relative overflow-hidden">
                     <Image
                       src={blog.image}
                       alt={blog.title}
                       width={500}
                       height={300}
-                      className="w-full h-[220px] object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="h-[220px] w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
-                    <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                    <div className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 backdrop-blur-sm">
                       <span className="text-xs font-semibold text-[#262b5f]">
                         {blog.category}
                       </span>
                     </div>
                   </div>
-                  <div className="p-5 flex flex-col flex-grow">
-                    <p className="text-xs text-gray-500 mb-2 flex items-center">
-                      <span className="inline-block w-4 h-[2px] bg-[#262b5f] mr-2"></span>
+                  <div className="flex flex-grow flex-col p-5">
+                    <p className="mb-2 flex items-center text-xs text-gray-500">
+                      <span className="mr-2 inline-block h-[2px] w-4 bg-[#262b5f]"></span>
                       {blog.date}
                     </p>
-                    <h3 className="text-lg font-bold text-[#1e1e3f] leading-snug group-hover:text-[#262b5f] transition-colors line-clamp-2 min-h-[3.5rem]">
+                    <h3 className="line-clamp-2 min-h-[3.5rem] text-lg font-bold leading-snug text-[#1e1e3f] transition-colors group-hover:text-[#262b5f]">
                       {blog.title}
                     </h3>
                   </div>
@@ -116,10 +117,10 @@ export default function BlogSectionClient({ blogs }: { blogs: any[] }) {
         </div>
 
         {/* Navigation */}
-        <div className="flex items-center justify-center mt-10 gap-6">
+        <div className="mt-10 flex items-center justify-center gap-6">
           <button
             onClick={() => instanceRef.current?.prev()}
-            className="w-10 h-10 rounded-full border border-[#262b5f] flex items-center justify-center text-[#262b5f] hover:bg-[#262b5f] hover:text-white transition-colors"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#262b5f] text-[#262b5f] transition-colors hover:bg-[#262b5f] hover:text-white"
             aria-label="Previous slide"
           >
             <svg
@@ -143,9 +144,9 @@ export default function BlogSectionClient({ blogs }: { blogs: any[] }) {
               <button
                 key={idx}
                 onClick={() => instanceRef.current?.moveToIdx(idx)}
-                className={`w-2.5 h-2.5 rounded-full transition-all ${
+                className={`h-2.5 w-2.5 rounded-full transition-all ${
                   currentSlide === idx
-                    ? "bg-[#262b5f] w-8"
+                    ? "w-8 bg-[#262b5f]"
                     : "bg-[#cfcfcf] hover:bg-[#262b5f]/50"
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}
@@ -155,7 +156,7 @@ export default function BlogSectionClient({ blogs }: { blogs: any[] }) {
 
           <button
             onClick={() => instanceRef.current?.next()}
-            className="w-10 h-10 rounded-full border border-[#262b5f] flex items-center justify-center text-[#262b5f] hover:bg-[#262b5f] hover:text-white transition-colors"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#262b5f] text-[#262b5f] transition-colors hover:bg-[#262b5f] hover:text-white"
             aria-label="Next slide"
           >
             <svg
@@ -178,7 +179,7 @@ export default function BlogSectionClient({ blogs }: { blogs: any[] }) {
         <div className="mt-10 text-center">
           <Link
             href="/blogs"
-            className="inline-block px-6 py-3 bg-[#262b5f] text-white rounded-lg hover:bg-opacity-90 transition-colors"
+            className="inline-block rounded-lg bg-[#262b5f] px-6 py-3 text-white transition-colors hover:bg-opacity-90"
           >
             View All Blogs
           </Link>

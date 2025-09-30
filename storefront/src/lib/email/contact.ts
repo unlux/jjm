@@ -26,8 +26,8 @@ export const renderContactEmailHtml = (data: ContactEmailPayload) => {
         <tr>
           <td style="padding: 8px; font-weight: 600;">Email</td>
           <td style="padding: 8px;"><a href="mailto:${safe(data.email)}">${safe(
-    data.email
-  )}</a></td>
+            data.email
+          )}</a></td>
         </tr>
         ${
           data.phone

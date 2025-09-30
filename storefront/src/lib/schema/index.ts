@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, integer, boolean } from "drizzle-orm/pg-core"
+import { boolean, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
 export const blogs = pgTable("blogs", {
   // Using slug as primary id

@@ -20,7 +20,7 @@ const LineItemPrice = ({
   const hasReducedPrice = currentPrice < originalPrice
 
   return (
-    <div className="flex flex-col gap-x-2 text-ui-fg-subtle items-end">
+    <div className="flex flex-col items-end gap-x-2 text-ui-fg-subtle">
       <div className="text-left">
         {hasReducedPrice && (
           <>
@@ -29,7 +29,7 @@ const LineItemPrice = ({
                 <span className="text-ui-fg-subtle">Original: </span>
               )}
               <span
-                className="line-through text-ui-fg-muted"
+                className="text-ui-fg-muted line-through"
                 data-testid="product-original-price"
               >
                 {convertToLocale({

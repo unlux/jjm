@@ -1,10 +1,11 @@
 import { listProductsWithSort } from "@lib/data/products"
-import { getAuthHeaders, getCacheOptions } from "@/lib/data/cookies"
-import { sdk } from "@/lib/config"
 import { getRegion } from "@lib/data/regions"
 import ProductPreview from "@modules/products/components/product-preview"
 import { Pagination } from "@modules/store/components/pagination"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+
+import { sdk } from "@/lib/config"
+import { getAuthHeaders, getCacheOptions } from "@/lib/data/cookies"
 import ProductListViewTrack from "@/modules/products/components/ProductListViewTrack"
 
 // Single source of truth for pagination page size
@@ -134,7 +135,7 @@ export default async function PaginatedProducts({
       {/* Analytics: product list view */}
       <ProductListViewTrack products={products} list_id={listId} page={page} />
       <ul
-        className="grid grid-cols-1 2xsmall:grid-cols-2 small:grid-cols-2 medium:grid-cols-3 gap-x-6 gap-y-8 w-full"
+        className="grid w-full grid-cols-1 gap-x-6 gap-y-8 2xsmall:grid-cols-2 small:grid-cols-2 medium:grid-cols-3"
         data-testid="products-list"
       >
         {products.map((p, idx) => {

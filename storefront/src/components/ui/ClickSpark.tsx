@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useEffect, useCallback } from "react"
+import React, { useCallback, useEffect, useRef } from "react"
 
 type Spark = {
   x: number
@@ -169,7 +169,7 @@ const ClickSparkOverlay: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-50"
+      className="pointer-events-none fixed inset-0 z-50"
     />
   )
 }

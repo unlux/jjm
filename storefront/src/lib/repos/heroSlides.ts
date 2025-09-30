@@ -1,8 +1,10 @@
 import "server-only"
+
 import { asc, eq } from "drizzle-orm"
-import { db } from "@/lib/db"
-import { heroSlides as heroSlidesTable, type HeroSlideRow } from "@/lib/schema"
 import { unstable_cache } from "next/cache"
+
+import { db } from "@/lib/db"
+import { type HeroSlideRow, heroSlides as heroSlidesTable } from "@/lib/schema"
 
 export type SlideItem = {
   src: string
@@ -53,8 +55,8 @@ export async function listHeroSlidesCached(params?: {
     typeof params?.isForMobile === "undefined"
       ? "all"
       : params?.isForMobile
-      ? "mobile:true"
-      : "mobile:false"
+        ? "mobile:true"
+        : "mobile:false"
   const limitKey = String(params?.limit ?? 50)
   const keyParts = ["hero-slides", isForMobileKey, limitKey]
 
@@ -63,8 +65,8 @@ export async function listHeroSlidesCached(params?: {
     typeof params?.isForMobile === "undefined"
       ? "hero-slides:all"
       : params?.isForMobile
-      ? "hero-slides:mobile:true"
-      : "hero-slides:mobile:false",
+        ? "hero-slides:mobile:true"
+        : "hero-slides:mobile:false",
   ]
 
   const cached = unstable_cache(

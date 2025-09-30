@@ -19,8 +19,8 @@ export default function RevalidateButton({
       const qs = tag
         ? `?tag=${encodeURIComponent(tag)}`
         : tags
-        ? `?tags=${encodeURIComponent(tags)}`
-        : "?tag=hero"
+          ? `?tags=${encodeURIComponent(tags)}`
+          : "?tag=hero"
       // Call server proxy which injects x-revalidate-secret if configured
       const res = await fetch(`/api/revalidate/trigger${qs}`)
       const json = await res.json().catch(() => ({}))
@@ -38,7 +38,7 @@ export default function RevalidateButton({
       <button
         onClick={trigger}
         disabled={loading}
-        className="px-4 py-2 rounded bg-[#262b5f] text-white hover:bg-opacity-90 disabled:opacity-50"
+        className="rounded bg-[#262b5f] px-4 py-2 text-white hover:bg-opacity-90 disabled:opacity-50"
       >
         {loading ? "Revalidating…" : `Revalidate (${tag || tags || "hero"})`}
       </button>

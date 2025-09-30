@@ -1,8 +1,7 @@
-import { Container, clx } from "@medusajs/ui"
+import { clx, Container } from "@medusajs/ui"
+import PlaceholderImage from "@modules/common/icons/placeholder-image"
 import Image from "next/image"
 import React from "react"
-
-import PlaceholderImage from "@modules/common/icons/placeholder-image"
 
 type ThumbnailProps = {
   thumbnail?: string | null
@@ -29,7 +28,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   return (
     <Container
       className={clx(
-        "relative w-full overflow-hidden p-4 bg-ui-bg-subtle shadow-elevation-card-rest rounded-large group-hover:shadow-elevation-card-hover transition-shadow ease-in-out duration-150",
+        "relative w-full overflow-hidden rounded-large bg-ui-bg-subtle p-4 shadow-elevation-card-rest transition-shadow duration-150 ease-in-out group-hover:shadow-elevation-card-hover",
         className,
         {
           "aspect-[1/1]": true,
@@ -43,16 +42,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
     >
       <ImageOrPlaceholder image={initialImage} size={size} />
       {discountPercentage && (
-        <div
-          className="
-      absolute top-2 left-2
-      bg-red-500/90 text-white text-xs sm:text-sm font-semibold
-      px-2.5 py-1 rounded-full
-      z-10 backdrop-blur-xl shadow-md
-      transition-all duration-300 ease-in-out
-      hover:opacity-0 hover:scale-90
-    "
-        >
+        <div className="absolute left-2 top-2 z-10 rounded-full bg-red-500/90 px-2.5 py-1 text-xs font-semibold text-white shadow-md backdrop-blur-xl transition-all duration-300 ease-in-out hover:scale-90 hover:opacity-0 sm:text-sm">
           -{discountPercentage}%
         </div>
       )}
@@ -75,7 +65,7 @@ const ImageOrPlaceholder = ({
       fill
     />
   ) : (
-    <div className="w-full h-full absolute inset-0 flex items-center justify-center">
+    <div className="absolute inset-0 flex h-full w-full items-center justify-center">
       <PlaceholderImage size={size === "small" ? 16 : 24} />
     </div>
   )

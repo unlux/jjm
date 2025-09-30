@@ -1,12 +1,12 @@
 import Medusa from "@medusajs/js-sdk"
 import {
-  liteClient as algoliasearch,
   LiteClient as SearchClient,
+  liteClient as algoliasearch,
 } from "algoliasearch/lite"
 
 // Determine Medusa backend URL
 // Prefer NEXT_PUBLIC_ var for browser/client usage; fallback to server var; then localhost for dev
-let MEDUSA_BACKEND_URL =
+const MEDUSA_BACKEND_URL =
   process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL ||
   process.env.MEDUSA_BACKEND_URL ||
   "http://localhost:9000"
@@ -28,8 +28,8 @@ export const searchClient: SearchClient = {
       "params" in request
         ? request.params?.query
         : "query" in request
-        ? request.query
-        : ""
+          ? request.query
+          : ""
 
     if (!query) {
       return {

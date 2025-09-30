@@ -63,7 +63,6 @@ export function track(name: AnalyticsEventName, props?: Record<string, any>) {
     posthog.capture(name, { ...getPageContext(), ...props })
   } catch (e) {
     if (process.env.NODE_ENV === "development") {
-      // eslint-disable-next-line no-console
       console.warn("[analytics.track] failed", e)
     }
   }

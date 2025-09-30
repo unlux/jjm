@@ -130,7 +130,7 @@ describe("E-commerce Checkout Flow", () => {
     // Wait until the Razorpay iframe document is ready
     // (avoid custom typings by asserting readystate inline)
     cy.get('.razorpay-checkout-frame[style*="width: 100%"]')
-      .its('0.contentDocument.readyState')
+      .its("0.contentDocument.readyState")
       .should((state) => {
         expect(["interactive", "complete"]).to.include(state)
       })

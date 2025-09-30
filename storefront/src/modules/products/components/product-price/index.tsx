@@ -1,7 +1,6 @@
-import { clx } from "@medusajs/ui"
-
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
+import { clx } from "@medusajs/ui"
 
 export default function ProductPrice({
   product,
@@ -18,7 +17,7 @@ export default function ProductPrice({
   const selectedPrice = variant ? variantPrice : cheapestPrice
 
   if (!selectedPrice) {
-    return <div className="block w-32 h-9 bg-gray-100 animate-pulse" />
+    return <div className="block h-9 w-32 animate-pulse bg-gray-100" />
   }
 
   return (
@@ -26,7 +25,7 @@ export default function ProductPrice({
       <div className="flex items-baseline gap-3">
         <span
           className={clx("text-3xl", {
-            "text-red-600 font-semibold": selectedPrice.price_type === "sale",
+            "font-semibold text-red-600": selectedPrice.price_type === "sale",
             "font-normal": selectedPrice.price_type !== "sale",
           })}
           aria-label={
@@ -61,7 +60,7 @@ export default function ProductPrice({
       </div>
 
       {selectedPrice.price_type === "sale" ? (
-        <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
+        <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-3">
           <p className="text-base">
             <span className="text-ui-fg-subtle">Original: </span>
             <span
@@ -72,7 +71,7 @@ export default function ProductPrice({
               {selectedPrice.original_price}
             </span>
           </p>
-          <span className="text-sm text-green-600 font-medium">
+          <span className="text-sm font-medium text-green-600">
             {(() => {
               const save =
                 typeof selectedPrice.original_price_number === "number" &&

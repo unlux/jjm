@@ -1,17 +1,17 @@
 import { Dialog, Transition } from "@headlessui/react"
-import { Button, clx } from "@medusajs/ui"
-import React, { Fragment, useMemo } from "react"
-
 import useToggleState from "@lib/hooks/use-toggle-state"
+import { getProductPrice } from "@lib/util/get-product-price"
+import { isSimpleProduct } from "@lib/util/product"
+import { HttpTypes } from "@medusajs/types"
+import { Button, clx } from "@medusajs/ui"
 import ChevronDown from "@modules/common/icons/chevron-down"
 import X from "@modules/common/icons/x"
-
-import { getProductPrice } from "@lib/util/get-product-price"
-import OptionSelect from "./option-select"
-import { HttpTypes } from "@medusajs/types"
-import { isSimpleProduct } from "@lib/util/product"
-import { useWishlist } from "@/lib/context/WishlistContext"
 import { Heart } from "lucide-react"
+import React, { Fragment, useMemo } from "react"
+
+import { useWishlist } from "@/lib/context/WishlistContext"
+
+import OptionSelect from "./option-select"
 
 type MobileActionsProps = {
   product: HttpTypes.StoreProduct
@@ -74,7 +74,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
   return (
     <>
       <div
-        className={clx("lg:hidden inset-x-0 bottom-0 fixed z-50", {
+        className={clx("fixed inset-x-0 bottom-0 z-50 lg:hidden", {
           "pointer-events-none": !show,
         })}
       >
@@ -89,10 +89,10 @@ const MobileActions: React.FC<MobileActionsProps> = ({
           leaveTo="opacity-0"
         >
           <div
-            className="bg-white flex flex-col gap-y-3 p-4 h-full w-full border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]"
+            className="flex h-full w-full flex-col gap-y-3 border-t border-gray-200 bg-white p-4 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]"
             data-testid="mobile-actions"
           >
-            <div className="w-full flex flex-col gap-1">
+            <div className="flex w-full flex-col gap-1">
               <h3
                 className="text-base font-medium text-ui-fg-base"
                 data-testid="mobile-title"
@@ -110,10 +110,10 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                   </span>
                   {selectedPrice.price_type === "sale" && (
                     <>
-                      <span className="line-through text-ui-fg-muted text-sm">
+                      <span className="text-sm text-ui-fg-muted line-through">
                         {selectedPrice.original_price}
                       </span>
-                      <span className="ml-1 bg-red-50 text-red-700 text-xs font-medium px-2 py-0.5 rounded-full">
+                      <span className="ml-1 rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700">
                         -{selectedPrice.percentage_diff}%
                       </span>
                     </>
@@ -121,7 +121,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 </div>
               )}
             </div>
-            <div className={clx("grid w-full gap-x-4 grid-cols-10")}>
+            <div className={clx("grid w-full grid-cols-10 gap-x-4")}>
               <Button
                 onClick={() => {
                   if (!variant) {
@@ -132,28 +132,28 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 }}
                 // If no variant selected, open options on tap
                 disabled={!inStock}
-                className={clx("w-full col-span-7")}
+                className={clx("col-span-7 w-full")}
                 isLoading={isAdding}
                 data-testid="mobile-cart-button"
                 title={
                   !variant
                     ? "Select options"
                     : inStock
-                    ? "Add to cart"
-                    : "Out of stock"
+                      ? "Add to cart"
+                      : "Out of stock"
                 }
               >
                 {!variant
                   ? "Select options"
                   : !inStock
-                  ? "Out of stock"
-                  : "Add to cart"}
+                    ? "Out of stock"
+                    : "Add to cart"}
               </Button>
               <Button
                 onClick={handleToggleWishlist}
                 variant="secondary"
                 className={clx(
-                  "w-full col-span-3",
+                  "col-span-3 w-full",
                   wishlistSelected
                     ? "border-pink-500 text-pink-600"
                     : "text-ui-fg-muted"
@@ -190,8 +190,8 @@ const MobileActions: React.FC<MobileActionsProps> = ({
             <div className="fixed inset-0 bg-gray-700 bg-opacity-75 backdrop-blur-sm" />
           </Transition.Child>
 
-          <div className="fixed bottom-0 inset-x-0">
-            <div className="flex min-h-full h-full items-center justify-center text-center">
+          <div className="fixed inset-x-0 bottom-0">
+            <div className="flex h-full min-h-full items-center justify-center text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -202,13 +202,13 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 leaveTo="opacity-0"
               >
                 <Dialog.Panel
-                  className="w-full h-full transform overflow-hidden text-left flex flex-col gap-y-3"
+                  className="flex h-full w-full transform flex-col gap-y-3 overflow-hidden text-left"
                   data-testid="mobile-actions-modal"
                 >
-                  <div className="w-full flex justify-end pr-6">
+                  <div className="flex w-full justify-end pr-6">
                     <button
                       onClick={close}
-                      className="bg-white w-12 h-12 rounded-full text-ui-fg-base flex justify-center items-center"
+                      className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-ui-fg-base"
                       data-testid="close-modal-button"
                     >
                       <X />

@@ -1,28 +1,29 @@
 "use client"
 
-import { useActionState, useEffect, useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { Mail, Lock, Eye, EyeOff, User, Phone, ArrowRight } from "lucide-react"
-
-import { LOGIN_VIEW } from "@modules/account/templates/login-template"
-import { Checkbox, Text } from "@medusajs/ui"
-import Input from "@modules/common/components/input"
-import ErrorMessage from "@modules/checkout/components/error-message"
-import { SubmitButton } from "@modules/checkout/components/submit-button"
-import { login, signup, transferCart } from "@lib/data/customer"
-import Button from "@modules/common/components/button"
-import { Google } from "@medusajs/icons"
 import { sdk } from "@lib/config"
-import Spinner from "@modules/common/icons/spinner"
 import {
   getCacheTag,
   revalidateCustomerCache,
   setAuthToken,
 } from "@lib/data/cookies"
+import { login, signup, transferCart } from "@lib/data/customer"
+import { Google } from "@medusajs/icons"
+import { Checkbox, Text } from "@medusajs/ui"
+import { LOGIN_VIEW } from "@modules/account/templates/login-template"
+import ErrorMessage from "@modules/checkout/components/error-message"
+import { SubmitButton } from "@modules/checkout/components/submit-button"
+import Button from "@modules/common/components/button"
+import Input from "@modules/common/components/input"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import AdditionalInfo from "./additional-info"
+import Spinner from "@modules/common/icons/spinner"
+import { ArrowRight, Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { useActionState, useEffect, useState } from "react"
+
 import { track } from "@/lib/analytics"
+
+import AdditionalInfo from "./additional-info"
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
@@ -115,70 +116,70 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
   const toggleShowPassword = () => setShowPassword(!showPassword)
 
   return (
-    <div className="min-h-screen bg-gray-50 mx-4 px-4">
-      <div className="max-w-7xl mx-auto py-8 sm:py-12 px-4">
+    <div className="mx-4 min-h-screen bg-gray-50 px-4">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:py-12">
         {/* TOP TEXT */}
-        <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-5xl font-bold text-[#1e1e3f] mb-3 font-baloo tracking-wide leading-tight">
+        <div className="mb-10 text-center">
+          <h1 className="font-baloo mb-3 text-3xl font-bold leading-tight tracking-wide text-[#1e1e3f] md:text-5xl">
             {isLogin ? "Welcome Back! 👋" : "Join The Joy Junction! 🎈"}
           </h1>
-          <p className="text-gray-600 text-lg md:text-xl font-fredoka max-w-3xl mx-auto">
+          <p className="font-fredoka mx-auto max-w-3xl text-lg text-gray-600 md:text-xl">
             {isLogin
               ? "Sign in to your magical toy box and continue your adventure!"
               : "Create an account and start your joyful journey into our toy wonderland!"}
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+        <div className="mx-auto max-w-4xl">
+          <div className="overflow-hidden rounded-2xl bg-white shadow-md">
             <div className="md:flex">
-              <div className="hidden md:block md:w-1/2 relative bg-gradient-to-br from-[#262b5f] to-[#3a4183]">
-                <div className="absolute inset-0 p-8 flex flex-col justify-between">
+              <div className="relative hidden bg-gradient-to-br from-[#262b5f] to-[#3a4183] md:block md:w-1/2">
+                <div className="absolute inset-0 flex flex-col justify-between p-8">
                   <div className="relative z-10">
-                    <h3 className="text-white text-3xl font-bold mb-3 font-baloo tracking-wide leading-tight drop-shadow-md">
+                    <h3 className="font-baloo mb-3 text-3xl font-bold leading-tight tracking-wide text-white drop-shadow-md">
                       {isLogin
                         ? "Welcome back to our toy wonderland! 🎉"
                         : "Join our happy playground! 🧸"}
                     </h3>
-                    <p className="text-blue-100 text-lg leading-relaxed">
+                    <p className="text-lg leading-relaxed text-blue-100">
                       {isLogin
                         ? "Access your wishlist, track orders, and discover perfect toys for your little ones!"
                         : "Create an account for magical toy suggestions, exclusive offers, and more fun!"}
                     </p>
                   </div>
 
-                  <div className="relative z-10 rounded-xl bg-white/10 backdrop-blur-sm p-5 border border-white/20 shadow-lg">
-                    <p className="italic text-white/95 text-base font-medium leading-relaxed">
+                  <div className="relative z-10 rounded-xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur-sm">
+                    <p className="text-base font-medium italic leading-relaxed text-white/95">
                       &ldquo;Play is the highest form of research.&rdquo;
                     </p>
-                    <p className="text-blue-200 text-sm mt-2 font-semibold">
+                    <p className="mt-2 text-sm font-semibold text-blue-200">
                       ~ Albert Einstein
                     </p>
                   </div>
 
-                  <div className="absolute bottom-0 right-0 w-72 h-72 opacity-20 animate-float">
+                  <div className="animate-float absolute bottom-0 right-0 h-72 w-72 opacity-20">
                     <Image
                       src="/card-tastic-fun.png"
                       alt="Toy illustration"
                       width={300}
                       height={300}
-                      className="object-cover rounded-full shadow-2xl"
+                      className="rounded-full object-cover shadow-2xl"
                     />
                   </div>
                 </div>
 
-                <div className="absolute top-5 left-5 w-24 h-24 rounded-full bg-pink-500/15 animate-pulse-slow"></div>
-                <div className="absolute top-1/4 right-10 w-16 h-16 rounded-full bg-yellow-500/20 animate-bounce-slow"></div>
-                <div className="absolute bottom-10 left-10 w-20 h-20 rounded-full bg-blue-500/15 animate-pulse-slow"></div>
+                <div className="animate-pulse-slow absolute left-5 top-5 h-24 w-24 rounded-full bg-pink-500/15"></div>
+                <div className="animate-bounce-slow absolute right-10 top-1/4 h-16 w-16 rounded-full bg-yellow-500/20"></div>
+                <div className="animate-pulse-slow absolute bottom-10 left-10 h-20 w-20 rounded-full bg-blue-500/15"></div>
 
-                <div className="absolute top-1/3 left-20 w-10 h-10 rounded-md bg-red-400/10 rotate-12 animate-spin-slow"></div>
-                <div className="absolute bottom-32 right-32 w-12 h-12 bg-green-400/10 transform rotate-45 animate-bounce-slow"></div>
+                <div className="animate-spin-slow absolute left-20 top-1/3 h-10 w-10 rotate-12 rounded-md bg-red-400/10"></div>
+                <div className="animate-bounce-slow absolute bottom-32 right-32 h-12 w-12 rotate-45 transform bg-green-400/10"></div>
               </div>
 
-              <div className="p-6 sm:p-8 md:p-10 md:w-1/2">
-                <div className="flex border-b border-gray-200 mb-8">
+              <div className="p-6 sm:p-8 md:w-1/2 md:p-10">
+                <div className="mb-8 flex border-b border-gray-200">
                   <button
-                    className={`pb-4 px-4 text-base font-medium transition-colors ${
+                    className={`px-4 pb-4 text-base font-medium transition-colors ${
                       isLogin
                         ? "border-b-2 border-[#262b5f] text-[#262b5f]"
                         : "text-gray-500 hover:text-gray-700"
@@ -188,7 +189,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                     Sign In
                   </button>
                   <button
-                    className={`pb-4 px-4 text-base font-medium transition-colors ${
+                    className={`px-4 pb-4 text-base font-medium transition-colors ${
                       !isLogin
                         ? "border-b-2 border-[#262b5f] text-[#262b5f]"
                         : "text-gray-500 hover:text-gray-700"
@@ -222,7 +223,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                         <button
                           type="button"
                           onClick={loginWithGoogle}
-                          className="w-full py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#262b5f] flex items-center justify-center gap-2"
+                          className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#262b5f] focus:ring-offset-2"
                         >
                           <Google />
                           Continue with Google
@@ -233,13 +234,13 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                           <div className="w-full border-t border-gray-200"></div>
                         </div>
                         <div className="relative flex justify-center">
-                          <span className="px-4 bg-white text-sm text-gray-500">
+                          <span className="bg-white px-4 text-sm text-gray-500">
                             Or sign in with email
                           </span>
                         </div>
                       </div>
                       {isExchanging && (
-                        <div className="flex items-center gap-2 p-3 rounded-md bg-neutral-100 text-neutral-900">
+                        <div className="flex items-center gap-2 rounded-md bg-neutral-100 p-3 text-neutral-900">
                           <Spinner />
                           <span>Signing you in with Google…</span>
                         </div>
@@ -247,12 +248,12 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                       <div>
                         <label
                           htmlFor="email"
-                          className="block text-sm font-medium text-gray-700 mb-1"
+                          className="mb-1 block text-sm font-medium text-gray-700"
                         >
                           Email Address
                         </label>
                         <div className="relative">
-                          <div className="absolute left-0 inset-y-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                             <Mail size={18} />
                           </div>
                           <Input
@@ -260,7 +261,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             name="email"
                             id="email"
                             required
-                            className="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
+                            className="w-full rounded-lg border border-gray-300 px-4 py-3 pl-10 outline-none transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#262b5f]"
                             label=""
                             autoComplete="email"
                             data-testid="email-input"
@@ -269,7 +270,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                       </div>
 
                       <div>
-                        <div className="flex justify-between items-center mb-1">
+                        <div className="mb-1 flex items-center justify-between">
                           <label
                             htmlFor="password"
                             className="block text-sm font-medium text-gray-700"
@@ -284,7 +285,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                           </Link> */}
                         </div>
                         <div className="relative">
-                          <div className="absolute left-0 inset-y-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                             <Lock size={18} />
                           </div>
                           <Input
@@ -292,7 +293,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             name="password"
                             id="password"
                             required
-                            className="pl-10 pr-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
+                            className="w-full rounded-lg border border-gray-300 px-4 py-3 pl-10 pr-10 outline-none transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#262b5f]"
                             label=""
                             autoComplete={
                               isLogin ? "current-password" : "new-password"
@@ -300,7 +301,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             data-testid="password-input"
                           />
                           <div
-                            className="absolute right-0 inset-y-0 flex items-center pr-3 cursor-pointer text-gray-400 hover:text-gray-600"
+                            className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-gray-400 hover:text-gray-600"
                             onClick={toggleShowPassword}
                           >
                             {showPassword ? (
@@ -316,7 +317,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                         error={loginMessage}
                         data-testid="login-error-message"
                       />
-                      <SubmitButton className="w-full bg-[#262b5f] text-white py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2">
+                      <SubmitButton className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#262b5f] px-4 py-3 text-white transition-colors hover:bg-opacity-90">
                         Sign In <ArrowRight size={16} />
                       </SubmitButton>
                     </div>
@@ -361,7 +362,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                         <button
                           type="button"
                           onClick={loginWithGoogle}
-                          className="w-full py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#262b5f] flex items-center justify-center gap-2"
+                          className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#262b5f] focus:ring-offset-2"
                         >
                           <Google />
                           Continue with Google
@@ -372,21 +373,21 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                           <div className="w-full border-t border-gray-200"></div>
                         </div>
                         <div className="relative flex justify-center">
-                          <span className="px-4 bg-white text-sm text-gray-500">
+                          <span className="bg-white px-4 text-sm text-gray-500">
                             Or sign up with email
                           </span>
                         </div>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                         <div>
                           <label
                             htmlFor="first_name"
-                            className="block text-sm font-medium text-gray-700 mb-1"
+                            className="mb-1 block text-sm font-medium text-gray-700"
                           >
                             First Name
                           </label>
                           <div className="relative">
-                            <div className="absolute left-0 inset-y-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                               <User size={18} />
                             </div>
                             <Input
@@ -395,7 +396,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                               id="first_name"
                               value={formData.first_name}
                               onChange={handleInputChange}
-                              className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
+                              className="w-full rounded-lg border border-gray-300 px-4 py-3 !pl-10 outline-none transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#262b5f]"
                               label=""
                               autoComplete="given-name"
                               required
@@ -407,7 +408,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                         <div>
                           <label
                             htmlFor="last_name"
-                            className="block text-sm font-medium text-gray-700 mb-1"
+                            className="mb-1 block text-sm font-medium text-gray-700"
                           >
                             Last Name
                           </label>
@@ -418,7 +419,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                               id="last_name"
                               value={formData.last_name}
                               onChange={handleInputChange}
-                              className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
+                              className="w-full rounded-lg border border-gray-300 px-4 py-3 !pl-10 outline-none transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#262b5f]"
                               label=""
                               autoComplete="family-name"
                               required
@@ -431,12 +432,12 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                       <div>
                         <label
                           htmlFor="signup-email"
-                          className="block text-sm font-medium text-gray-700 mb-1"
+                          className="mb-1 block text-sm font-medium text-gray-700"
                         >
                           Email Address
                         </label>
                         <div className="relative">
-                          <div className="absolute left-0 inset-y-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                             <Mail size={18} />
                           </div>
                           <Input
@@ -445,7 +446,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             id="signup-email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
+                            className="w-full rounded-lg border border-gray-300 px-4 py-3 !pl-10 outline-none transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#262b5f]"
                             label=""
                             autoComplete="email"
                             required
@@ -457,12 +458,12 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                       <div>
                         <label
                           htmlFor="phone"
-                          className="block text-sm font-medium text-gray-700 mb-1"
+                          className="mb-1 block text-sm font-medium text-gray-700"
                         >
                           Phone Number
                         </label>
                         <div className="relative">
-                          <div className="absolute left-0 inset-y-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                             <Phone size={18} />
                           </div>
                           <Input
@@ -471,7 +472,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             id="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
+                            className="w-full rounded-lg border border-gray-300 px-4 py-3 !pl-10 outline-none transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#262b5f]"
                             label=""
                             autoComplete="tel"
                             data-testid="phone-input"
@@ -482,12 +483,12 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                       <div>
                         <label
                           htmlFor="signup-password"
-                          className="block text-sm font-medium text-gray-700 mb-1"
+                          className="mb-1 block text-sm font-medium text-gray-700"
                         >
                           Password
                         </label>
                         <div className="relative">
-                          <div className="absolute left-0 inset-y-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                             <Lock size={18} />
                           </div>
                           <Input
@@ -496,14 +497,14 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                             id="signup-password"
                             value={formData.password}
                             onChange={handleInputChange}
-                            className="!pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#262b5f] focus:border-transparent outline-none transition-all duration-200"
+                            className="w-full rounded-lg border border-gray-300 px-4 py-3 !pl-10 outline-none transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#262b5f]"
                             label=""
                             autoComplete="new-password"
                             required
                             data-testid="password-input"
                           />
                           <div
-                            className="absolute right-0 inset-y-0 flex items-center pr-3 cursor-pointer text-gray-400 hover:text-gray-600"
+                            className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-gray-400 hover:text-gray-600"
                             onClick={toggleShowPassword}
                           >
                             {showPassword ? (
@@ -542,7 +543,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                         error={signupMessage}
                         data-testid="register-error"
                       />
-                      <SubmitButton className="w-full bg-[#262b5f] text-white py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2">
+                      <SubmitButton className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#262b5f] px-4 py-3 text-white transition-colors hover:bg-opacity-90">
                         Create Account <ArrowRight size={16} />
                       </SubmitButton>
                     </div>
@@ -559,7 +560,7 @@ const AccountPage = ({ setCurrentView, currentView }: Props) => {
                     <button
                       type="button"
                       onClick={() => toggleForm(!isLogin)}
-                      className="text-[#262b5f] font-medium hover:underline focus:outline-none"
+                      className="font-medium text-[#262b5f] hover:underline focus:outline-none"
                     >
                       {isLogin ? "Create an account" : "Sign in"}
                     </button>

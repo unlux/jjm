@@ -1,11 +1,12 @@
-import { asc, desc, eq, and, or, isNull, isNotNull } from "drizzle-orm"
+import { and, asc, desc, eq, isNotNull, isNull, or } from "drizzle-orm"
+import { unstable_cache } from "next/cache"
+
 import { db } from "@/lib/db"
 import {
-  testimonials as testimonialsTable,
-  type TestimonialRow,
   type NewTestimonialRow,
+  type TestimonialRow,
+  testimonials as testimonialsTable,
 } from "@/lib/schema"
-import { unstable_cache } from "next/cache"
 
 export type TestimonialItem = Pick<
   TestimonialRow,
@@ -28,8 +29,8 @@ export async function listTestimonials(params?: {
     orderBy === "newest"
       ? [desc(testimonialsTable.createdAt)]
       : orderBy === "rating"
-      ? [desc(testimonialsTable.rating), desc(testimonialsTable.createdAt)]
-      : [asc(testimonialsTable.sortOrder), desc(testimonialsTable.createdAt)]
+        ? [desc(testimonialsTable.rating), desc(testimonialsTable.createdAt)]
+        : [asc(testimonialsTable.sortOrder), desc(testimonialsTable.createdAt)]
 
   const rows = await db
     .select({
@@ -59,8 +60,8 @@ export async function listTestimonialsCached(params?: {
     typeof params?.isFeatured === "undefined"
       ? "all"
       : params?.isFeatured
-      ? "featured:true"
-      : "featured:false"
+        ? "featured:true"
+        : "featured:false"
   const limitKey = String(params?.limit ?? 50)
   const orderKey = params?.orderBy ?? "sortOrder"
   const keyParts = ["testimonials", isFeaturedKey, limitKey, orderKey]
@@ -70,8 +71,8 @@ export async function listTestimonialsCached(params?: {
     typeof params?.isFeatured === "undefined"
       ? "testimonials:all"
       : params?.isFeatured
-      ? "testimonials:featured:true"
-      : "testimonials:featured:false",
+        ? "testimonials:featured:true"
+        : "testimonials:featured:false",
   ]
 
   const cached = unstable_cache(

@@ -1,4 +1,5 @@
 import { listTestimonialsCached } from "@/lib/repos/testimonials"
+
 import TestimonialSectionClient from "./TestimonialSectionClient"
 
 export const revalidate = 3600

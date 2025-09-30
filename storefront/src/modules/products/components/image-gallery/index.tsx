@@ -1,6 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import { Container } from "@medusajs/ui"
 import Image from "next/image"
+
 import { Lens } from "./Lens"
 type ImageGalleryProps = {
   images: HttpTypes.StoreProductImage[]
@@ -8,8 +9,8 @@ type ImageGalleryProps = {
 
 const ImageGallery = ({ images }: ImageGalleryProps) => {
   return (
-    <div className="flex items-start relative">
-      <div className="flex flex-col flex-1 small:mx-16 gap-y-4">
+    <div className="relative flex items-start">
+      <div className="flex flex-1 flex-col gap-y-4 small:mx-16">
         {images.map((image, index) => {
           return (
             <Lens key={image.id}>

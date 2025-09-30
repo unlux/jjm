@@ -7,14 +7,16 @@ import { Button } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
 import { isEqual } from "lodash"
+import { Heart } from "lucide-react"
 import { useParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
-import ProductPrice from "../product-price"
-import MobileActions from "./mobile-actions"
-import { useWishlist } from "@/lib/context/WishlistContext"
-import { Heart } from "lucide-react"
+
 import { track } from "@/lib/analytics"
 import { addToCartWithToast } from "@/lib/client/cart-toasts"
+import { useWishlist } from "@/lib/context/WishlistContext"
+
+import ProductPrice from "../product-price"
+import MobileActions from "./mobile-actions"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -183,7 +185,7 @@ export default function ProductActions({
 
         <ProductPrice product={product} variant={selectedVariant} />
 
-        <div className="grid grid-cols-4 w-full gap-2 flex-nowrap items-stretch">
+        <div className="grid w-full grid-cols-4 flex-nowrap items-stretch gap-2">
           <Button
             onClick={handleAddToCart}
             disabled={
@@ -194,21 +196,21 @@ export default function ProductActions({
               !isValidVariant
             }
             variant="primary"
-            className="col-span-3 h-10 w-full basis-[70%] min-w-0"
+            className="col-span-3 h-10 w-full min-w-0 basis-[70%]"
             isLoading={isAdding}
             data-testid="add-product-button"
           >
             {!selectedVariant && !options
               ? "Select variant"
               : !inStock || !isValidVariant
-              ? "Out of stock"
-              : "Add to cart"}
+                ? "Out of stock"
+                : "Add to cart"}
           </Button>
 
           <Button
             onClick={handleToggleWishlist}
             variant={wishlistSelected ? "secondary" : "secondary"}
-            className={`col-span-1 h-10 w-full basis-[30%] min-w-0 px-0 ${
+            className={`col-span-1 h-10 w-full min-w-0 basis-[30%] px-0 ${
               wishlistSelected ? "border-pink-500 text-pink-600" : ""
             }`}
             data-testid="add-wishlist-button"

@@ -1,15 +1,16 @@
 // Server component: no client-only APIs used
 
 import Image from "next/image"
+
 import FloatingShowcase from "./FloatingShowcase"
 import RotatingBadge from "./RotatingBadge"
 
 export default function AboutSection() {
   return (
-    <section className="text-[#181D4E] bg-white w-full px-4 sm:px-6 md:px-12 py-10 md:py-24 flex flex-col justify-center">
-      <div className="max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-2 gap-10 md:gap-24">
+    <section className="flex w-full flex-col justify-center bg-white px-4 py-10 text-[#181D4E] sm:px-6 md:px-12 md:py-24">
+      <div className="mx-auto flex max-w-7xl flex-col gap-10 md:grid md:grid-cols-2 md:gap-24">
         {/* Images Section - Stacked on mobile, left side in desktop */}
-        <div className="relative w-full flex flex-col items-center md:items-start">
+        <div className="relative flex w-full flex-col items-center md:items-start">
           <FloatingShowcase
             mainImageSrc="/feature.webp"
             mainImageAlt="Character Flashcards"
@@ -31,18 +32,18 @@ export default function AboutSection() {
         </div>
 
         {/* Right column with text and image 2 on desktop */}
-        <div className="w-full flex flex-col">
+        <div className="flex w-full flex-col">
           {/* Text Section */}
           <div className="">
-            <p className="uppercase text-sm tracking-widest text-[#181D4E] font-semibold font-fredoka md:pb-4 pb-1">
+            <p className="font-fredoka pb-1 text-sm font-semibold uppercase tracking-widest text-[#181D4E] md:pb-4">
               OUR APPROACH
             </p>
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-[#181D4E] mb-6 md:mb-8 leading-tight font-baloo">
+            <h2 className="font-baloo mb-6 text-2xl font-bold leading-tight text-[#181D4E] md:mb-8 md:text-4xl lg:text-5xl">
               We help you take care
               <br />
               of the kids
             </h2>
-            <p className="text-[#181D4E] leading-relaxed text-md md:mb-12 max-w-lg">
+            <p className="text-md max-w-lg leading-relaxed text-[#181D4E] md:mb-12">
               Our products are crafted with love and expertise by dedicated
               teachers who spend every day immersed in the wonderful world of
               children. They&apos;re the superheroes of understanding and know
@@ -58,7 +59,7 @@ export default function AboutSection() {
               alt="Colorful Flashcards"
               width={600}
               height={250}
-              className="w-full h-auto rounded-3xl shadow-md"
+              className="h-auto w-full rounded-3xl shadow-md"
             />
           </div>
         </div>

@@ -1,12 +1,12 @@
 "use client"
 
+import { HttpTypes } from "@medusajs/types"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useMemo, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { createPortal } from "react-dom"
 
-import SortProducts, { SortOptions } from "./sort-products"
 import CategoryFilter from "./category-filter"
-import { HttpTypes } from "@medusajs/types"
+import SortProducts, { SortOptions } from "./sort-products"
 
 type RefinementListProps = {
   sortBy: SortOptions
@@ -87,7 +87,7 @@ const RefinementList = ({
       {mobileTriggerTarget ? (
         createPortal(
           <button
-            className="inline-flex items-center gap-2 rounded-md bg-ui-bg-base px-3 py-2 ring-1 ring-ui-border-base hover:text-ui-fg-base hover:bg-ui-bg-subtle"
+            className="inline-flex items-center gap-2 rounded-md bg-ui-bg-base px-3 py-2 ring-1 ring-ui-border-base hover:bg-ui-bg-subtle hover:text-ui-fg-base"
             onClick={() => setMobileOpen(true)}
           >
             <span className="">Filters</span>
@@ -95,9 +95,9 @@ const RefinementList = ({
           mobileTriggerTarget
         )
       ) : (
-        <div className="small:hidden mb-4 flex justify-center">
+        <div className="mb-4 flex justify-center small:hidden">
           <button
-            className="inline-flex items-center gap-2 rounded-md bg-ui-bg-base px-3 py-2 text-ui-fg-subtle ring-1 ring-ui-border-base hover:text-ui-fg-base hover:bg-ui-bg-subtle"
+            className="inline-flex items-center gap-2 rounded-md bg-ui-bg-base px-3 py-2 text-ui-fg-subtle ring-1 ring-ui-border-base hover:bg-ui-bg-subtle hover:text-ui-fg-base"
             onClick={() => setMobileOpen(true)}
           >
             <span className="">Filters</span>
@@ -107,7 +107,7 @@ const RefinementList = ({
 
       {/* Desktop sidebar */}
       <div
-        className="hidden small:flex small:flex-col gap-12 py-4 mb-8 small:px-0 pl-6 small:min-w-[250px] small:ml-[1.675rem] small:mr-10 small:sticky"
+        className="mb-8 hidden gap-12 py-4 pl-6 small:sticky small:ml-[1.675rem] small:mr-10 small:flex small:min-w-[250px] small:flex-col small:px-0"
         data-testid="test-list"
       >
         <SortProducts
@@ -134,8 +134,8 @@ const RefinementList = ({
             if (e.target === e.currentTarget) setMobileOpen(false)
           }}
         >
-          <div className="h-full w-4/5 max-w-xs bg-white shadow-2xl pl-8 p-4 overflow-y-auto transform transition-transform duration-300 translate-x-0">
-            <div className="flex justify-between items-center mb-4">
+          <div className="h-full w-4/5 max-w-xs translate-x-0 transform overflow-y-auto bg-white p-4 pl-8 shadow-2xl transition-transform duration-300">
+            <div className="mb-4 flex items-center justify-between">
               <h2 className="txt-compact-small-plus text-ui-fg-subtle">
                 Filters
               </h2>

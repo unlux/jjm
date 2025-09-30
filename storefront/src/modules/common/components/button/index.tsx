@@ -1,4 +1,4 @@
-import { clx, Button as MedusaButton } from "@medusajs/ui"
+import { Button as MedusaButton, clx } from "@medusajs/ui"
 
 type ButtonProps = React.ComponentProps<typeof MedusaButton>
 

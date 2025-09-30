@@ -1,7 +1,7 @@
 "use client"
 
-import { Toaster } from "sonner"
 import { useEffect, useState } from "react"
+import { Toaster } from "sonner"
 
 export default function ResponsiveToaster() {
   const [isMobile, setIsMobile] = useState(false)

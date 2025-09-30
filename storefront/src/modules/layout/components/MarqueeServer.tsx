@@ -1,4 +1,5 @@
 import { listOffersCached } from "@/lib/repos/offers"
+
 import Marquee from "./Marquee"
 
 // Static server-rendered marquee with ISR matching offers cache window

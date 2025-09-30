@@ -1,15 +1,17 @@
+import { HttpTypes } from "@medusajs/types"
+
+import RevalidateButton from "@/components/RevalidateButton"
+import { homeCategories } from "@/lib/context/categories.config"
+import { listCategories } from "@/lib/data/categories"
+
 import AboutSection from "./AboutSection"
 import BlogCarousel from "./BlogSection"
 import CategoriesAndAges from "./CategoriesAndAges"
-import { listCategories } from "@/lib/data/categories"
-import { homeCategories } from "@/lib/context/categories.config"
 import FeatureStrip from "./FeatureStrip"
 import HeroSlider from "./HeroSlider"
-import RevalidateButton from "@/components/RevalidateButton"
 import PopularProducts from "./PopularProducts"
 import Testimonials from "./TestimonialSection"
 import WhatsAppButton from "./WhatsAppButton"
-import { HttpTypes } from "@medusajs/types"
 
 const Hero = async ({ region }: { region: HttpTypes.StoreRegion }) => {
   // Pre-resolve category handles -> IDs for hero links (cached server-side via ISR)
@@ -54,7 +56,7 @@ const Hero = async ({ region }: { region: HttpTypes.StoreRegion }) => {
     <main className="w-full">
       <HeroSlider />
       {process.env.NODE_ENV !== "production" && (
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="mx-auto max-w-7xl px-6 py-4">
           <RevalidateButton tags="all" />
         </div>
       )}

@@ -1,10 +1,10 @@
 "use client"
+import { placeOrder } from "@lib/data/cart"
+import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import Spinner from "@modules/common/icons/spinner"
-import React, { useCallback, useMemo, useEffect, useState } from "react"
-import { useRazorpay, RazorpayOrderOptions } from "react-razorpay"
-import { HttpTypes } from "@medusajs/types"
-import { placeOrder } from "@lib/data/cart"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { RazorpayOrderOptions, useRazorpay } from "react-razorpay"
 import { CurrencyCode } from "react-razorpay/dist/constants/currency"
 
 export const RazorpayPaymentButton = ({
@@ -193,7 +193,7 @@ export const RazorpayPaymentButton = ({
         {submitting ? <Spinner /> : "Checkout"}
       </Button>
       {errorMessage && (
-        <div className="text-red-500 text-small-regular mt-2">
+        <div className="text-small-regular mt-2 text-red-500">
           {errorMessage}
         </div>
       )}

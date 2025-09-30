@@ -1,13 +1,12 @@
 "use client"
 
-import React, { useEffect, useMemo, useActionState } from "react"
-
+import { addCustomerAddress, updateCustomerAddress } from "@lib/data/customer"
+import { HttpTypes } from "@medusajs/types"
 import Input from "@modules/common/components/input"
 import NativeSelect from "@modules/common/components/native-select"
+import React, { useActionState, useEffect, useMemo } from "react"
 
 import AccountInfo from "../account-info"
-import { HttpTypes } from "@medusajs/types"
-import { addCustomerAddress, updateCustomerAddress } from "@lib/data/customer"
 
 type MyInformationProps = {
   customer: HttpTypes.StoreCustomer

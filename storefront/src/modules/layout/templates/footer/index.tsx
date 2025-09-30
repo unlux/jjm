@@ -1,9 +1,10 @@
-import Image from "next/image"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import Link from "next/link"
 import { listCategories } from "@lib/data/categories"
-import ShopCategoriesAccordion from "./shop-categories-accordion"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Image from "next/image"
+import Link from "next/link"
+
 import NewsletterForm from "./NewsletterForm"
+import ShopCategoriesAccordion from "./shop-categories-accordion"
 
 export default async function Footer() {
   const productCategories = await listCategories()
@@ -12,10 +13,10 @@ export default async function Footer() {
   )
 
   return (
-    <footer className="bg-[#181D4E] text-white py-16 px-6">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-10">
+    <footer className="bg-[#181D4E] px-6 py-16 text-white">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 md:grid-cols-5">
         {/* Logo */}
-        <div className="col-span-1 md:col-span-1 flex flex-col items-center md:items-start">
+        <div className="col-span-1 flex flex-col items-center md:col-span-1 md:items-start">
           <Image
             src="/logo.png"
             alt="The Joy Junction"
@@ -26,13 +27,13 @@ export default async function Footer() {
 
         {/* Address */}
         <div>
-          <h4 className="text-white font-semibold mb-2">Address</h4>
+          <h4 className="mb-2 font-semibold text-white">Address</h4>
           <p className="text-gray-300">Jaipur, Rajasthan</p>
         </div>
 
         {/* Useful links */}
         <div>
-          <h4 className="text-white font-semibold mb-2">Useful Links</h4>
+          <h4 className="mb-2 font-semibold text-white">Useful Links</h4>
           <ul className="space-y-2 text-gray-300">
             <li>
               <LocalizedClientLink href="/">Home</LocalizedClientLink>
@@ -55,7 +56,7 @@ export default async function Footer() {
 
         {/* Other links */}
         <div>
-          <h4 className="text-white font-semibold mb-2">Other Links</h4>
+          <h4 className="mb-2 font-semibold text-white">Other Links</h4>
           <ul className="space-y-2 text-gray-300">
             <li>
               <LocalizedClientLink href="/privacy-policy">
@@ -77,10 +78,10 @@ export default async function Footer() {
 
         {/* Newsletter & Socials */}
         <div className="space-y-4">
-          <h4 className="text-white font-semibold mb-2">
+          <h4 className="mb-2 font-semibold text-white">
             Subscribe to our newsletter
           </h4>
-          <p className="text-gray-300 text-sm leading-5">
+          <p className="text-sm leading-5 text-gray-300">
             for learning tips, product news and exclusive offers!
           </p>
 
@@ -88,7 +89,7 @@ export default async function Footer() {
           <NewsletterForm />
 
           {/* Social Icons */}
-          <div className="flex items-center space-x-4 mt-4">
+          <div className="mt-4 flex items-center space-x-4">
             <Link href="https://facebook.com" target="_blank">
               <i className="fab fa-facebook text-xl" />
             </Link>

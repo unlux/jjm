@@ -2,6 +2,7 @@
 
 import { sdk } from "@lib/config"
 import { HttpTypes } from "@medusajs/types"
+
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 
 export async function listStoreCategoriesCached(

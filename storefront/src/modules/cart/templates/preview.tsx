@@ -2,8 +2,7 @@
 
 import repeat from "@lib/util/repeat"
 import { HttpTypes } from "@medusajs/types"
-import { Table, clx } from "@medusajs/ui"
-
+import { clx, Table } from "@medusajs/ui"
 import Item from "@modules/cart/components/item"
 import SkeletonLineItem from "@modules/skeletons/components/skeleton-line-item"
 
@@ -18,7 +17,7 @@ const ItemsPreviewTemplate = ({ cart }: ItemsTemplateProps) => {
   return (
     <div
       className={clx({
-        "pl-[1px] overflow-y-scroll overflow-x-hidden no-scrollbar max-h-[420px]":
+        "no-scrollbar max-h-[420px] overflow-x-hidden overflow-y-scroll pl-[1px]":
           hasOverflow,
       })}
     >

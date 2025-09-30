@@ -3,14 +3,14 @@
 const AdditionalInfo = () => {
   return (
     <div className="mt-16 text-center">
-      <h3 className="text-2xl md:text-3xl font-bold text-[#1e1e3f] mb-6 font-baloo tracking-wide">
+      <h3 className="font-baloo mb-6 text-2xl font-bold tracking-wide text-[#1e1e3f] md:text-3xl">
         ✨ Magical Benefits of <br />
         Joining Us ✨
       </h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto px-4 md:px-0">
-        <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-blue-50">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-5 text-[#262b5f] animate-pulse-slow">
+      <div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 px-4 md:grid-cols-3 md:px-0">
+        <div className="transform rounded-xl border border-blue-50 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+          <div className="animate-pulse-slow mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-[#262b5f]">
             <svg
               width="32"
               height="32"
@@ -27,17 +27,17 @@ const AdditionalInfo = () => {
               />
             </svg>
           </div>
-          <h4 className="font-bold text-xl text-gray-800 mb-3 font-baloo">
+          <h4 className="font-baloo mb-3 text-xl font-bold text-gray-800">
             Track Your Treasures 🚚
           </h4>
-          <p className="text-gray-600 font-fredoka">
+          <p className="font-fredoka text-gray-600">
             Follow your toy adventures from order to delivery, all in one
             magical place!
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-pink-50">
-          <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-5 text-[#262b5f] animate-bounce-slow">
+        <div className="transform rounded-xl border border-pink-50 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+          <div className="animate-bounce-slow mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-pink-100 text-[#262b5f]">
             <svg
               width="32"
               height="32"
@@ -54,17 +54,17 @@ const AdditionalInfo = () => {
               />
             </svg>
           </div>
-          <h4 className="font-bold text-xl text-gray-800 mb-3 font-baloo">
+          <h4 className="font-baloo mb-3 text-xl font-bold text-gray-800">
             Save Favorites ❤️
           </h4>
-          <p className="text-gray-600 font-fredoka">
+          <p className="font-fredoka text-gray-600">
             Build magical wishlists and save your little one&apos;s dream toys
             for special occasions!
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-green-50">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5 text-[#262b5f] animate-float">
+        <div className="transform rounded-xl border border-green-50 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+          <div className="animate-float mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-[#262b5f]">
             <svg
               width="32"
               height="32"
@@ -81,10 +81,10 @@ const AdditionalInfo = () => {
               />
             </svg>
           </div>
-          <h4 className="font-bold text-xl text-gray-800 mb-3 font-baloo">
+          <h4 className="font-baloo mb-3 text-xl font-bold text-gray-800">
             Magical Recommendations ✨
           </h4>
-          <p className="text-gray-600 font-fredoka">
+          <p className="font-fredoka text-gray-600">
             Discover perfectly matched toys for your child&apos;s age,
             interests, and development stage!
           </p>

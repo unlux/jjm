@@ -1,10 +1,10 @@
-import { Suspense } from "react"
-
+import { HttpTypes } from "@medusajs/types"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import RefinementList from "@modules/store/components/refinement-list"
-import { HttpTypes } from "@medusajs/types"
-import { listCategories } from "@/lib/data/categories"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+import { Suspense } from "react"
+
+import { listCategories } from "@/lib/data/categories"
 
 import PaginatedProducts from "./paginated-products"
 
@@ -36,12 +36,12 @@ const StoreTemplate = async ({
 
   return (
     <div
-      className="flex flex-col small:flex-row small:items-start p-6 "
+      className="flex flex-col p-6 small:flex-row small:items-start"
       data-testid="category-container"
     >
       <RefinementList sortBy={sort} categories={ensureCategories} />
       <div className="w-full large:mx-10">
-        <div className="mb-8 flex items-end justify-between small:justify-start border-gray-900">
+        <div className="mb-8 flex items-end justify-between border-gray-900 small:justify-start">
           <h1
             data-testid="store-page-title"
             className="text-2xl-semi small:text-2xl-semi"

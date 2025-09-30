@@ -26,28 +26,30 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 // Custom iframe command
-(Cypress.Commands as any).add("iframe", (iframeSelector: string) => {
-  return cy
-    .get(iframeSelector)
-    .its("0.contentDocument")
-    .should("exist")
-    .its("body")
-    .should("not.be.undefined")
-    .then(($body) => {
-      return cy.wrap($body)
-    })
-})
-
-// Wait until the iframe's document is fully loaded
-(Cypress.Commands as any).add("frameLoaded", (iframeSelector: string) => {
-  return cy
-    .get(iframeSelector)
-    .its("0.contentDocument.readyState")
-    .should((state) => {
-      // readyState should be 'interactive' or 'complete'
-      expect(["interactive", "complete"]).to.include(state)
-    })
-})
+;(Cypress.Commands as any)
+  .add("iframe", (iframeSelector: string) => {
+    return cy
+      .get(iframeSelector)
+      .its("0.contentDocument")
+      .should("exist")
+      .its("body")
+      .should("not.be.undefined")
+      .then(($body) => {
+        return cy.wrap($body)
+      })
+  })(
+    // Wait until the iframe's document is fully loaded
+    Cypress.Commands as any
+  )
+  .add("frameLoaded", (iframeSelector: string) => {
+    return cy
+      .get(iframeSelector)
+      .its("0.contentDocument.readyState")
+      .should((state) => {
+        // readyState should be 'interactive' or 'complete'
+        expect(["interactive", "complete"]).to.include(state)
+      })
+  })
 
 // declare global {
 //   namespace Cypress {

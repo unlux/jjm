@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import Image from "next/image"
+import { useState } from "react"
 
 type FormState = {
   age: string
@@ -126,11 +126,11 @@ export default function JoyfulQuestionnaire() {
   }
 
   return (
-    <div className="flex items-center justify-center bg-gradient-to-b from-blue-900 to-blue-800 py-8 px-2">
-      <div className="w-full max-w-2xl bg-blue-900/60 backdrop-blur rounded-2xl shadow-2xl p-6 md:p-10 border-4 border-blue-200">
+    <div className="flex items-center justify-center bg-gradient-to-b from-blue-900 to-blue-800 px-2 py-8">
+      <div className="w-full max-w-2xl rounded-2xl border-4 border-blue-200 bg-blue-900/60 p-6 shadow-2xl backdrop-blur md:p-10">
         {/* Header & Progress */}
         <div className="mb-6">
-          <div className="flex justify-center mb-4">
+          <div className="mb-4 flex justify-center">
             <Image
               src="/questionnaire.jpg"
               alt="Character Traits"
@@ -143,7 +143,7 @@ export default function JoyfulQuestionnaire() {
             <p className="text-sm opacity-90">
               Step {currentStep} of {totalSteps}
             </p>
-            <div className="w-full h-3 mt-2 bg-blue-200/30 rounded-full overflow-hidden">
+            <div className="mt-2 h-3 w-full overflow-hidden rounded-full bg-blue-200/30">
               <div
                 className="h-full bg-pink-400 transition-all duration-500"
                 style={{ width: `${(currentStep / totalSteps) * 100}%` }}
@@ -155,10 +155,10 @@ export default function JoyfulQuestionnaire() {
         {!submitted && (
           <form onSubmit={handleSubmit} className="space-y-6 text-white">
             {currentStep === 1 && (
-              <div className="space-y-6 animate-fade-in">
+              <div className="animate-fade-in space-y-6">
                 {/* 1. Age */}
                 <div>
-                  <label className="block font-bold text-lg mb-2" htmlFor="age">
+                  <label className="mb-2 block text-lg font-bold" htmlFor="age">
                     1. What is the age of your kiddo?{" "}
                     <span className="text-pink-300">*</span>
                   </label>
@@ -169,17 +169,17 @@ export default function JoyfulQuestionnaire() {
                     value={form.age}
                     onChange={handleChange}
                     placeholder="Enter Your Kiddo's age...."
-                    className="w-full rounded-lg px-4 py-3 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300"
+                    className="w-full rounded-lg bg-white px-4 py-3 text-blue-900 focus:outline-none focus:ring-2 focus:ring-pink-300"
                     required
                   />
                   {errors.age && (
-                    <p className="mt-1 text-pink-300 text-sm">{errors.age}</p>
+                    <p className="mt-1 text-sm text-pink-300">{errors.age}</p>
                   )}
                 </div>
 
                 {/* 2. Gender */}
                 <div>
-                  <label className="block font-bold text-lg mb-2">
+                  <label className="mb-2 block text-lg font-bold">
                     2. Gender <span className="text-pink-300">*</span>
                   </label>
                   <div className="flex flex-wrap gap-6">
@@ -189,7 +189,7 @@ export default function JoyfulQuestionnaire() {
                     ].map((g) => (
                       <label
                         key={g.value}
-                        className="flex items-center bg-white/10 px-3 py-2 rounded-lg"
+                        className="flex items-center rounded-lg bg-white/10 px-3 py-2"
                       >
                         <input
                           type="radio"
@@ -205,7 +205,7 @@ export default function JoyfulQuestionnaire() {
                     ))}
                   </div>
                   {errors.gender && (
-                    <p className="mt-1 text-pink-300 text-sm">
+                    <p className="mt-1 text-sm text-pink-300">
                       {errors.gender}
                     </p>
                   )}
@@ -214,10 +214,10 @@ export default function JoyfulQuestionnaire() {
             )}
 
             {currentStep === 2 && (
-              <div className="space-y-6 animate-fade-in">
+              <div className="animate-fade-in space-y-6">
                 {/* 3. Main Character Trait */}
                 <div>
-                  <label className="block font-bold text-lg mb-2">
+                  <label className="mb-2 block text-lg font-bold">
                     3. What is the main character trait of your champ? (You can
                     refer the picture given above){" "}
                     <span className="text-pink-300">*</span>
@@ -259,16 +259,16 @@ export default function JoyfulQuestionnaire() {
                     ))}
                   </div>
                   {errors.trait && (
-                    <p className="mt-1 text-pink-300 text-sm">{errors.trait}</p>
+                    <p className="mt-1 text-sm text-pink-300">{errors.trait}</p>
                   )}
                 </div>
 
                 {/* 4. Skills to Develop */}
                 <div>
-                  <label className="block font-bold text-lg mb-2">
+                  <label className="mb-2 block text-lg font-bold">
                     4. What skills do you want your little munchkin to develop?
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     {[
                       "Imagination",
                       "Narration",
@@ -296,10 +296,10 @@ export default function JoyfulQuestionnaire() {
             )}
 
             {currentStep === 3 && (
-              <div className="space-y-6 animate-fade-in">
+              <div className="animate-fade-in space-y-6">
                 {/* 5. What makes your superkid happy? */}
                 <div>
-                  <label className="block font-bold text-lg mb-2">
+                  <label className="mb-2 block text-lg font-bold">
                     5. What are some things that make your superkid happy?{" "}
                     <span className="text-pink-300">*</span>
                   </label>
@@ -309,17 +309,17 @@ export default function JoyfulQuestionnaire() {
                     value={form.happy}
                     onChange={handleChange}
                     placeholder="Enter here...."
-                    className="w-full rounded-lg px-4 py-3 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300"
+                    className="w-full rounded-lg bg-white px-4 py-3 text-blue-900 focus:outline-none focus:ring-2 focus:ring-pink-300"
                     required
                   />
                   {errors.happy && (
-                    <p className="mt-1 text-pink-300 text-sm">{errors.happy}</p>
+                    <p className="mt-1 text-sm text-pink-300">{errors.happy}</p>
                   )}
                 </div>
 
                 {/* 6. Interests and hobbies */}
                 <div>
-                  <label className="block font-bold text-lg mb-2">
+                  <label className="mb-2 block text-lg font-bold">
                     6. What are some of little pumpkin’s interests and hobbies?
                   </label>
                   <textarea
@@ -327,17 +327,17 @@ export default function JoyfulQuestionnaire() {
                     value={form.interests}
                     onChange={handleChange}
                     placeholder="Enter here...."
-                    className="w-full rounded-lg px-4 py-3 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300"
+                    className="w-full rounded-lg bg-white px-4 py-3 text-blue-900 focus:outline-none focus:ring-2 focus:ring-pink-300"
                     rows={2}
                   />
                 </div>
 
                 {/* 7. What does your kiddo struggle with? */}
                 <div>
-                  <label className="block font-bold text-lg mb-2">
+                  <label className="mb-2 block text-lg font-bold">
                     7. What does your kiddo struggle with?
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     {[
                       "Reading",
                       "Writing",
@@ -365,10 +365,10 @@ export default function JoyfulQuestionnaire() {
             )}
 
             {currentStep === 4 && (
-              <div className="space-y-6 animate-fade-in">
+              <div className="animate-fade-in space-y-6">
                 {/* 8. Anything else? */}
                 <div>
-                  <label className="block font-bold text-lg mb-2">
+                  <label className="mb-2 block text-lg font-bold">
                     8. Anything else that we should know about your champion?
                   </label>
                   <textarea
@@ -376,7 +376,7 @@ export default function JoyfulQuestionnaire() {
                     value={form.extra}
                     onChange={handleChange}
                     placeholder="Enter here...."
-                    className="w-full rounded-lg px-4 py-3 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300"
+                    className="w-full rounded-lg bg-white px-4 py-3 text-blue-900 focus:outline-none focus:ring-2 focus:ring-pink-300"
                     rows={2}
                   />
                 </div>
@@ -384,7 +384,7 @@ export default function JoyfulQuestionnaire() {
                 {/* 9. Phone Number (Mandatory) */}
                 <div>
                   <label
-                    className="block font-bold text-lg mb-2"
+                    className="mb-2 block text-lg font-bold"
                     htmlFor="phone"
                   >
                     9. Your Phone Number{" "}
@@ -397,21 +397,21 @@ export default function JoyfulQuestionnaire() {
                     value={form.phone}
                     onChange={handleChange}
                     placeholder="Enter your 10-digit phone number..."
-                    className="w-full rounded-lg px-4 py-3 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300"
+                    className="w-full rounded-lg bg-white px-4 py-3 text-blue-900 focus:outline-none focus:ring-2 focus:ring-pink-300"
                     pattern="[0-9]{10}"
                     maxLength={10}
                     minLength={10}
                     required
                   />
                   {errors.phone && (
-                    <p className="mt-1 text-pink-300 text-sm">{errors.phone}</p>
+                    <p className="mt-1 text-sm text-pink-300">{errors.phone}</p>
                   )}
                 </div>
 
                 {/* 10. Email (Mandatory) */}
                 <div>
                   <label
-                    className="block font-bold text-lg mb-2"
+                    className="mb-2 block text-lg font-bold"
                     htmlFor="email"
                   >
                     10. Your Email Address{" "}
@@ -424,18 +424,18 @@ export default function JoyfulQuestionnaire() {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="Enter your email address..."
-                    className="w-full rounded-lg px-4 py-3 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300"
+                    className="w-full rounded-lg bg-white px-4 py-3 text-blue-900 focus:outline-none focus:ring-2 focus:ring-pink-300"
                     required
                   />
                   {errors.email && (
-                    <p className="mt-1 text-pink-300 text-sm">{errors.email}</p>
+                    <p className="mt-1 text-sm text-pink-300">{errors.email}</p>
                   )}
                 </div>
 
                 {/* Summary Preview */}
-                <div className="bg-white/10 rounded-lg p-4">
-                  <p className="font-semibold mb-2">Quick recap</p>
-                  <div className="text-sm space-y-1 opacity-90">
+                <div className="rounded-lg bg-white/10 p-4">
+                  <p className="mb-2 font-semibold">Quick recap</p>
+                  <div className="space-y-1 text-sm opacity-90">
                     <p>
                       Age:{" "}
                       <span className="font-medium">{form.age || "—"}</span>
@@ -482,7 +482,7 @@ export default function JoyfulQuestionnaire() {
               <button
                 type="button"
                 onClick={handleBack}
-                className="px-5 py-2 rounded-full font-semibold bg-white/10 text-white hover:bg-white/20 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="rounded-full bg-white/10 px-5 py-2 font-semibold text-white hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-40"
                 disabled={currentStep === 1}
               >
                 Back
@@ -492,7 +492,7 @@ export default function JoyfulQuestionnaire() {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="px-6 py-2 rounded-full font-bold bg-pink-400 hover:bg-pink-500 text-white shadow-lg"
+                  className="rounded-full bg-pink-400 px-6 py-2 font-bold text-white shadow-lg hover:bg-pink-500"
                 >
                   Next
                 </button>
@@ -500,7 +500,7 @@ export default function JoyfulQuestionnaire() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-8 py-2 rounded-full font-bold bg-cyan-400 hover:bg-cyan-500 disabled:opacity-60 disabled:cursor-not-allowed text-white shadow-lg text-lg"
+                  className="rounded-full bg-cyan-400 px-8 py-2 text-lg font-bold text-white shadow-lg hover:bg-cyan-500 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {submitting ? "Sending..." : "Send"}
                 </button>
@@ -510,20 +510,20 @@ export default function JoyfulQuestionnaire() {
         )}
 
         {submitted && (
-          <div className="text-center py-12 text-white">
-            <h2 className="text-2xl font-bold text-green-300 mb-4">
+          <div className="py-12 text-center text-white">
+            <h2 className="mb-4 text-2xl font-bold text-green-300">
               Thank you!
             </h2>
             <p className="text-lg">
               Your answers have been received. Our team of learning wizards will
               get started on your Joy Box!
             </p>
-            <span className="text-4xl mt-6 block">🎁✨</span>
+            <span className="mt-6 block text-4xl">🎁✨</span>
           </div>
         )}
         {!submitted && submitError && (
-          <div className="text-center py-4">
-            <p className="text-sm text-red-200 bg-red-900/30 inline-block px-3 py-2 rounded-md border border-red-500/40">
+          <div className="py-4 text-center">
+            <p className="inline-block rounded-md border border-red-500/40 bg-red-900/30 px-3 py-2 text-sm text-red-200">
               {submitError}
             </p>
           </div>

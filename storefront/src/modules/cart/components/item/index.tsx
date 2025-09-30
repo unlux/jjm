@@ -1,8 +1,8 @@
 "use client"
 
-import { Table, Text, clx } from "@medusajs/ui"
 import { updateLineItem } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
+import { clx, Table, Text } from "@medusajs/ui"
 import CartItemSelect from "@modules/cart/components/cart-item-select"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import DeleteButton from "@modules/common/components/delete-button"
@@ -13,6 +13,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import Spinner from "@modules/common/icons/spinner"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { useState } from "react"
+
 import { track } from "@/lib/analytics"
 
 type ItemProps = {
@@ -64,12 +65,12 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
 
   return (
     <Table.Row className="w-full" data-testid="product-row">
-      <Table.Cell className="!pl-0 p-4 w-24">
+      <Table.Cell className="w-24 p-4 !pl-0">
         <LocalizedClientLink
           href={`/products/${item.product_handle}`}
           className={clx("flex", {
             "w-16": type === "preview",
-            "small:w-24 w-12": type === "full",
+            "w-12 small:w-24": type === "full",
           })}
         >
           <Thumbnail
@@ -92,7 +93,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
 
       {type === "full" && (
         <Table.Cell>
-          <div className="flex gap-2 items-center w-28">
+          <div className="flex w-28 items-center gap-2">
             <DeleteButton
               id={item.id}
               data-testid="product-delete-button"
@@ -112,7 +113,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
             <CartItemSelect
               value={item.quantity}
               onChange={(value) => changeQuantity(parseInt(value.target.value))}
-              className="w-14 h-10 p-4"
+              className="h-10 w-14 p-4"
               data-testid="product-select-button"
             >
               {/* TODO: Update this with the v2 way of managing inventory */}
@@ -150,11 +151,11 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       <Table.Cell className="!pr-0">
         <span
           className={clx("!pr-0", {
-            "flex flex-col items-end h-full justify-center": type === "preview",
+            "flex h-full flex-col items-end justify-center": type === "preview",
           })}
         >
           {type === "preview" && (
-            <span className="flex gap-x-1 ">
+            <span className="flex gap-x-1">
               <Text className="text-ui-fg-muted">{item.quantity}x </Text>
               <LineItemUnitPrice
                 item={item}

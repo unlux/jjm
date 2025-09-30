@@ -1,13 +1,12 @@
-import { notFound } from "next/navigation"
-import { Suspense } from "react"
-
+import { HttpTypes } from "@medusajs/types"
 import InteractiveLink from "@modules/common/components/interactive-link"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import RefinementList from "@modules/store/components/refinement-list"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import PaginatedProducts from "@modules/store/templates/paginated-products"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { HttpTypes } from "@medusajs/types"
+import { notFound } from "next/navigation"
+import { Suspense } from "react"
 
 export default function CategoryTemplate({
   category,
@@ -38,12 +37,12 @@ export default function CategoryTemplate({
 
   return (
     <div
-      className="flex flex-col small:flex-row small:items-start py-6 content-container"
+      className="content-container flex flex-col py-6 small:flex-row small:items-start"
       data-testid="category-container"
     >
       <RefinementList sortBy={sort} data-testid="sort-by-container" />
       <div className="w-full">
-        <div className="flex flex-row mb-8 text-2xl-semi gap-4">
+        <div className="text-2xl-semi mb-8 flex flex-row gap-4">
           {parents &&
             parents.map((parent) => (
               <span key={parent.id} className="text-ui-fg-subtle">
@@ -60,12 +59,12 @@ export default function CategoryTemplate({
           <h1 data-testid="category-page-title">{category.name}</h1>
         </div>
         {category.description && (
-          <div className="mb-8 text-base-regular">
+          <div className="text-base-regular mb-8">
             <p>{category.description}</p>
           </div>
         )}
         {category.category_children && (
-          <div className="mb-8 text-base-large">
+          <div className="text-base-large mb-8">
             <ul className="grid grid-cols-1 gap-2">
               {category.category_children?.map((c) => (
                 <li key={c.id}>

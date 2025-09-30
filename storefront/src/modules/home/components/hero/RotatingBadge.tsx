@@ -1,8 +1,8 @@
 "use client"
 
+import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
-import clsx from "clsx"
 import { useEffect, useRef, useState } from "react"
 
 type RotatingBadgeProps = {
@@ -45,7 +45,7 @@ export default function RotatingBadge({
     <Link
       href={href}
       className={clsx(
-        "pointer-events-auto select-none block",
+        "pointer-events-auto block select-none",
         "relative isolate rounded-full",
         "[contain:layout_paint] [will-change:transform]",
         "overflow-hidden", // prevents any overflow from circular letters
@@ -59,7 +59,7 @@ export default function RotatingBadge({
       <svg
         viewBox="0 0 100 100"
         xmlns="http://www.w3.org/2000/svg"
-        className={clsx("absolute inset-0 w-full h-full")}
+        className={clsx("absolute inset-0 h-full w-full")}
         role="img"
         aria-hidden="true"
       >
@@ -97,7 +97,7 @@ export default function RotatingBadge({
           alt={centerIconAlt}
           width={120}
           height={120}
-          className="w-[50%] h-[50%] object-contain"
+          className="h-[50%] w-[50%] object-contain"
           priority={false}
         />
       </span>

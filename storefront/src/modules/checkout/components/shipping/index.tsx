@@ -12,6 +12,7 @@ import Divider from "@modules/common/components/divider"
 import MedusaRadio from "@modules/common/components/radio"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
+
 import { track } from "@/lib/analytics"
 
 const PICKUP_OPTION_ON = "__PICKUP_ON"
@@ -164,13 +165,13 @@ const Shipping: React.FC<ShippingProps> = ({
 
   return (
     <div className="bg-white">
-      <div className="flex flex-row items-center justify-between mb-6">
+      <div className="mb-6 flex flex-row items-center justify-between">
         <Heading
           level="h2"
           className={clx(
-            "flex flex-row text-3xl-regular gap-x-2 items-baseline",
+            "text-3xl-regular flex flex-row items-baseline gap-x-2",
             {
-              "opacity-50 pointer-events-none select-none":
+              "pointer-events-none select-none opacity-50":
                 !isOpen && cart.shipping_methods?.length === 0,
             }
           )}
@@ -199,15 +200,15 @@ const Shipping: React.FC<ShippingProps> = ({
         <>
           <div className="grid">
             <div className="flex flex-col">
-              <span className="font-medium txt-medium text-ui-fg-base">
+              <span className="txt-medium font-medium text-ui-fg-base">
                 Shipping method
               </span>
-              <span className="mb-4 text-ui-fg-muted txt-medium">
+              <span className="txt-medium mb-4 text-ui-fg-muted">
                 How would you like you order delivered
               </span>
             </div>
             <div data-testid="delivery-options-container">
-              <div className="pb-8 md:pt-0 pt-2">
+              <div className="pb-8 pt-2 md:pt-0">
                 {hasPickupOptions && (
                   <RadioGroup
                     value={showPickupOptions}
@@ -225,7 +226,7 @@ const Shipping: React.FC<ShippingProps> = ({
                       value={PICKUP_OPTION_ON}
                       data-testid="delivery-option-radio"
                       className={clx(
-                        "flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
+                        "text-small-regular mb-2 flex cursor-pointer items-center justify-between rounded-rounded border px-8 py-4 hover:shadow-borders-interactive-with-active",
                         {
                           "border-ui-border-interactive":
                             showPickupOptions === PICKUP_OPTION_ON,
@@ -267,7 +268,7 @@ const Shipping: React.FC<ShippingProps> = ({
                         data-testid="delivery-option-radio"
                         disabled={isDisabled}
                         className={clx(
-                          "flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
+                          "text-small-regular mb-2 flex cursor-pointer items-center justify-between rounded-rounded border px-8 py-4 hover:shadow-borders-interactive-with-active",
                           {
                             "border-ui-border-interactive":
                               option.id === shippingMethodId,
@@ -312,15 +313,15 @@ const Shipping: React.FC<ShippingProps> = ({
           {showPickupOptions === PICKUP_OPTION_ON && (
             <div className="grid">
               <div className="flex flex-col">
-                <span className="font-medium txt-medium text-ui-fg-base">
+                <span className="txt-medium font-medium text-ui-fg-base">
                   Store
                 </span>
-                <span className="mb-4 text-ui-fg-muted txt-medium">
+                <span className="txt-medium mb-4 text-ui-fg-muted">
                   Choose a store near you
                 </span>
               </div>
               <div data-testid="delivery-options-container">
-                <div className="pb-8 md:pt-0 pt-2">
+                <div className="pb-8 pt-2 md:pt-0">
                   <RadioGroup
                     value={shippingMethodId}
                     onChange={(v) => {
@@ -337,7 +338,7 @@ const Shipping: React.FC<ShippingProps> = ({
                           disabled={option.insufficient_inventory}
                           data-testid="delivery-option-radio"
                           className={clx(
-                            "flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
+                            "text-small-regular mb-2 flex cursor-pointer items-center justify-between rounded-rounded border px-8 py-4 hover:shadow-borders-interactive-with-active",
                             {
                               "border-ui-border-interactive":
                                 option.id === shippingMethodId,
@@ -398,8 +399,8 @@ const Shipping: React.FC<ShippingProps> = ({
         <div>
           <div className="text-small-regular">
             {cart && (cart.shipping_methods?.length ?? 0) > 0 && (
-              <div className="flex flex-col w-1/3">
-                <Text className="txt-medium-plus text-ui-fg-base mb-1">
+              <div className="flex w-1/3 flex-col">
+                <Text className="txt-medium-plus mb-1 text-ui-fg-base">
                   Method
                 </Text>
                 <Text className="txt-medium text-ui-fg-subtle">

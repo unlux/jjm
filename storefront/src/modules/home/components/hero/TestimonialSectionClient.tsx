@@ -1,9 +1,9 @@
 "use client"
 
+import Autoplay from "embla-carousel-autoplay"
+import useEmblaCarousel from "embla-carousel-react"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import useEmblaCarousel from "embla-carousel-react"
-import Autoplay from "embla-carousel-autoplay"
 
 export type Testimonial = {
   id: string
@@ -34,7 +34,7 @@ const renderStars = (rating: number) => {
     .map((_, i) => (
       <svg
         key={i}
-        className={`w-5 h-5 ${
+        className={`h-5 w-5 ${
           i < rating ? "text-yellow-400" : "text-gray-300"
         }`}
         fill="currentColor"
@@ -90,7 +90,7 @@ export default function TestimonialSectionClient({
   return (
     <section className="w-full">
       {/* Testimonial Hero Image */}
-      <div className="relative w-full h-[38vh] md:h-[45vh] lg:h-[60vh] overflow-hidden">
+      <div className="relative h-[38vh] w-full overflow-hidden md:h-[45vh] lg:h-[60vh]">
         <Image
           src={"/testimonial-picture.webp"}
           alt="Happy children playing with toys"
@@ -100,38 +100,38 @@ export default function TestimonialSectionClient({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#262b5f] via-[#262b5f]/60 to-transparent">
           <div className="absolute bottom-0 left-0 w-full p-8 md:p-12 lg:p-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 font-baloo">
+            <h2 className="font-baloo mb-3 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
               Our Happy Customers
             </h2>
-            <p className="text-lg text-white/80 max-w-2xl">
+            <p className="max-w-2xl text-lg text-white/80">
               See what our customers have to say about our products and services
             </p>
           </div>
         </div>
       </div>
 
-      <div className="bg-[#262b5f] pt-10 sm:pt-12 pb-14 sm:pb-16 px-4 sm:px-6 text-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start mb-6">
+      <div className="bg-[#262b5f] px-4 pb-14 pt-10 text-white sm:px-6 sm:pb-16 sm:pt-12">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-6 grid grid-cols-1 items-start gap-6 md:grid-cols-3">
             {/* Left Title Block */}
             <div className="md:col-span-1">
-              <p className="uppercase text-sm tracking-widest text-gray-300 font-semibold mb-2 font-fredoka">
+              <p className="font-fredoka mb-2 text-sm font-semibold uppercase tracking-widest text-gray-300">
                 Testimonials
               </p>
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 leading-tight font-baloo">
+              <h2 className="font-baloo mb-3 text-2xl font-bold leading-tight text-white md:text-3xl">
                 What Our Clients Say About Us
               </h2>
-              <p className="text-gray-300 text-md">
+              <p className="text-md text-gray-300">
                 We appreciate your kind and honest feedback and invite you to
                 our amazing store.
               </p>
             </div>
 
             {/* Carousel Navigation */}
-            <div className="md:col-span-2 flex items-center justify-end gap-4">
+            <div className="flex items-center justify-end gap-4 md:col-span-2">
               <button
                 onClick={() => emblaApi?.scrollPrev()}
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-all hover:bg-white/20"
                 aria-label="Previous testimonials"
               >
                 <svg
@@ -152,7 +152,7 @@ export default function TestimonialSectionClient({
               </button>
               <button
                 onClick={() => emblaApi?.scrollNext()}
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-all hover:bg-white/20"
                 aria-label="Next testimonials"
               >
                 <svg
@@ -179,14 +179,12 @@ export default function TestimonialSectionClient({
               {testimonials.map((testimonial) => (
                 <div
                   key={testimonial.id}
-                  className={`flex-[0_0_100%] md:flex-[0_0_50%] px-2`}
+                  className={`flex-[0_0_100%] px-2 md:flex-[0_0_50%]`}
                 >
                   <div
-                    className={`bg-white text-[#1e1e3f] rounded-xl shadow-md flex flex-col gap-3
-                                    transition-all duration-300 hover:bg-green-800 hover:shadow-xl group
-                                    ${getSizeClasses("normal")}`}
+                    className={`group flex flex-col gap-3 rounded-xl bg-white text-[#1e1e3f] shadow-md transition-all duration-300 hover:bg-green-800 hover:shadow-xl ${getSizeClasses("normal")}`}
                   >
-                    <span className="text-green-600 text-3xl leading-none group-hover:text-white transition-colors">
+                    <span className="text-3xl leading-none text-green-600 transition-colors group-hover:text-white">
                       ❝
                     </span>
                     {(() => {
@@ -199,12 +197,12 @@ export default function TestimonialSectionClient({
                       return (
                         <div className="space-y-2">
                           {title && (
-                            <h3 className="font-semibold text-lg group-hover:text-white transition-colors">
+                            <h3 className="text-lg font-semibold transition-colors group-hover:text-white">
                               {title}
                             </h3>
                           )}
                           {body && (
-                            <p className="text-sm text-gray-700 group-hover:text-white transition-colors flex-grow line-clamp-3 md:line-clamp-none">
+                            <p className="line-clamp-3 flex-grow text-sm text-gray-700 transition-colors group-hover:text-white md:line-clamp-none">
                               {body}
                             </p>
                           )}
@@ -212,17 +210,17 @@ export default function TestimonialSectionClient({
                       )
                     })()}
 
-                    <div className="flex items-center gap-3 mt-auto pt-3">
+                    <div className="mt-auto flex items-center gap-3 pt-3">
                       {testimonial.image ? (
                         <Image
                           src={"/avatar.jpg"}
                           alt={testimonial.author}
                           width={40}
                           height={40}
-                          className="rounded-full ring-2 ring-transparent group-hover:ring-white transition-all object-cover"
+                          className="rounded-full object-cover ring-2 ring-transparent transition-all group-hover:ring-white"
                         />
                       ) : (
-                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
                           <svg
                             className="h-5 w-5 text-gray-400"
                             fill="none"
@@ -239,10 +237,10 @@ export default function TestimonialSectionClient({
                         </div>
                       )}
                       <div>
-                        <p className="font-semibold text-sm group-hover:text-white transition-colors">
+                        <p className="text-sm font-semibold transition-colors group-hover:text-white">
                           {testimonial.author}
                         </p>
-                        <p className="text-xs text-gray-500 group-hover:text-gray-200 transition-colors">
+                        <p className="text-xs text-gray-500 transition-colors group-hover:text-gray-200">
                           {testimonial.role}
                         </p>
                         <div className="flex">
@@ -256,13 +254,13 @@ export default function TestimonialSectionClient({
             </div>
           </div>
           {/* Dots Indicator */}
-          <div className="flex justify-center gap-2 mt-6">
+          <div className="mt-6 flex justify-center gap-2">
             {Array.from({ length: slideCount }).map((_, index) => (
               <button
                 key={index}
-                className={`w-2.5 h-2.5 rounded-full transition-all ${
+                className={`h-2.5 w-2.5 rounded-full transition-all ${
                   index === selectedIndex
-                    ? "bg-cyan-400 scale-110"
+                    ? "scale-110 bg-cyan-400"
                     : "bg-white/40 hover:bg-white/60"
                 }`}
                 onClick={() => emblaApi?.scrollTo(index)}

@@ -1,14 +1,14 @@
 "use client"
 import { HttpTypes } from "@medusajs/types"
 import { Heading, Text } from "@medusajs/ui"
-import { Info, PlayCircle, Sparkles } from "lucide-react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import GlareHover from "@modules/products/components/product-tabs/glare-hover"
 import InfoCard from "@modules/products/components/product-tabs/InfoCard"
+import { Info, PlayCircle, Sparkles } from "lucide-react"
 import { Modak } from "next/font/google"
 import { Comic_Neue } from "next/font/google"
 import { Sour_Gummy } from "next/font/google"
 import { useRef } from "react"
-import GlareHover from "@modules/products/components/product-tabs/glare-hover"
 const comicNeue = Comic_Neue({ subsets: ["latin"], weight: ["400"] })
 const modak = Modak({ subsets: ["latin"], weight: ["400"] })
 const sour = Sour_Gummy({ subsets: ["latin"], weight: ["400"] })
@@ -32,11 +32,11 @@ const ProductInfo = ({
   const containerRef = useRef<HTMLDivElement>(null)
   return (
     <div id="product-info">
-      <div className="flex flex-col gap-y-8 lg:max-w-[700px] mx-auto">
+      <div className="mx-auto flex flex-col gap-y-8 lg:max-w-[700px]">
         {product.collection && (
           <LocalizedClientLink
             href={`/collections/${product.collection.handle}`}
-            className="inline-block text-sm font-medium text-pink-500 hover:text-pink-600 transition-colors"
+            className="inline-block text-sm font-medium text-pink-500 transition-colors hover:text-pink-600"
           >
             {product.collection.title}
           </LocalizedClientLink>
@@ -55,7 +55,7 @@ const ProductInfo = ({
               className="w-auto max-w-full"
             >
               <h2
-                className={`text-4xl md:text-4xl font-black px-6 py-4 text-center break-words bg-gradient-to-r from-blue-50 to-blue-100 rounded-full shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 whitespace-normal text-[#181D4E]/80 ${sour.className}`}
+                className={`transform whitespace-normal break-words rounded-full bg-gradient-to-r from-blue-50 to-blue-100 px-6 py-4 text-center text-4xl font-black text-[#181D4E]/80 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:scale-105 hover:shadow-md md:text-4xl ${sour.className}`}
                 style={{
                   maxWidth: "100%",
                   wordWrap: "break-word",
@@ -95,14 +95,14 @@ const ProductInfo = ({
         <div className="space-y-8 pt-4">
           {description && (
             <InfoCard
-              icon={<Info className="w-5 h-5" />}
+              icon={<Info className="h-5 w-5" />}
               title="What’s Inside?"
               color="blue"
               bg="bg-blue-50"
             >
               <Text
                 data-testid="product-description"
-                className={`text-gray-700 text-lg whitespace-pre-line ${comicNeue.className}`}
+                className={`whitespace-pre-line text-lg text-gray-700 ${comicNeue.className}`}
               >
                 {description}
               </Text>
@@ -112,12 +112,12 @@ const ProductInfo = ({
           {/* Cool Things Section*/}
           {coolThings && Array.isArray(coolThings) && coolThings.length > 0 && (
             <InfoCard
-              icon={<Sparkles className="w-5 h-5" />}
+              icon={<Sparkles className="h-5 w-5" />}
               title="Cool Things You’ll Learn"
               color="pink"
               bg="bg-pink-50"
             >
-              <ul className="space-y-2 list-disc list-inside text-gray-700">
+              <ul className="list-inside list-disc space-y-2 text-gray-700">
                 {coolThings.map((item, i) => (
                   <li key={i}>{item}</li>
                 ))}
@@ -129,12 +129,12 @@ const ProductInfo = ({
           <div className="block lg:hidden">
             {howToPlay && (
               <InfoCard
-                icon={<PlayCircle className="w-5 h-5" />}
+                icon={<PlayCircle className="h-5 w-5" />}
                 title="How to Play"
                 color="yellow"
                 bg="bg-yellow-50"
               >
-                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                <p className="whitespace-pre-line leading-relaxed text-gray-700">
                   {Array.isArray(howToPlay) ? howToPlay.join("\n") : howToPlay}
                 </p>
               </InfoCard>

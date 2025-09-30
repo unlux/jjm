@@ -5,6 +5,7 @@ import Input from "@modules/common/components/input"
 import { mapKeys } from "lodash"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { toast } from "sonner"
+
 import AddressSelect from "../address-select"
 import CountrySelect from "../country-select"
 
@@ -285,7 +286,7 @@ const ShippingAddress = ({
           data-testid="billing-address-checkbox"
         />
       </div>
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="mb-4 grid grid-cols-2 gap-4">
         <Input
           label="Email"
           name="email"

@@ -1,4 +1,5 @@
 import { listBlogsCached } from "@/lib/repos/blogs"
+
 import BlogSectionClient from "./BlogSectionClient"
 
 export const revalidate = 3600

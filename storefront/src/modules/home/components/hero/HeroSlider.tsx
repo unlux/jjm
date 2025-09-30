@@ -1,5 +1,6 @@
-import HeroSliderClient from "./HeroSliderClient"
 import { listHeroSlidesCached } from "@/lib/repos/heroSlides"
+
+import HeroSliderClient from "./HeroSliderClient"
 
 export const revalidate = 86400 // daily revalidation
 

@@ -1,8 +1,10 @@
 import "server-only"
+
 import { and, desc, eq } from "drizzle-orm"
-import { db } from "@/lib/db"
-import { blogs as blogsTable, type BlogRow } from "@/lib/schema"
 import { unstable_cache } from "next/cache"
+
+import { db } from "@/lib/db"
+import { type BlogRow, blogs as blogsTable } from "@/lib/schema"
 
 export type Blog = {
   id: string

@@ -1,14 +1,15 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
-import { Hits, InstantSearch, SearchBox } from "react-instantsearch"
-import { searchClient } from "../../../../lib/config"
-import Modal from "../../../common/components/modal"
 import { Button } from "@medusajs/ui"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import React, { useEffect, useState } from "react"
+import { Hits, InstantSearch, SearchBox } from "react-instantsearch"
+
+import { searchClient } from "../../../../lib/config"
+import Modal from "../../../common/components/modal"
 
 type Hit = {
   objectID: string
@@ -29,11 +30,11 @@ export default function SearchModal() {
 
   return (
     <>
-      <div className="hidden small:flex items-center gap-x-6 h-full">
+      <div className="hidden h-full items-center gap-x-6 small:flex">
         <Button
           onClick={() => setIsOpen(true)}
           variant="transparent"
-          className="hover:text-ui-fg-base text-small-regular px-0 hover:bg-transparent focus:!bg-transparent"
+          className="text-small-regular px-0 hover:bg-transparent hover:text-ui-fg-base focus:!bg-transparent"
         >
           Search
         </Button>
@@ -44,7 +45,7 @@ export default function SearchModal() {
           indexName={process.env.NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME}
           future={{ preserveSharedStateOnUnmount: true }}
         >
-          <SearchBox className="w-full [&_input]:w-[94%] [&_input]:outline-none [&_button]:w-[3%]" />
+          <SearchBox className="w-full [&_button]:w-[3%] [&_input]:w-[94%] [&_input]:outline-none" />
           <Hits hitComponent={Hit} />
         </InstantSearch>
       </Modal>
@@ -54,7 +55,7 @@ export default function SearchModal() {
 
 const Hit = ({ hit }: { hit: Hit }) => {
   return (
-    <div className="flex flex-row gap-x-2 mt-4 relative">
+    <div className="relative mt-4 flex flex-row gap-x-2">
       <Image src={hit.thumbnail} alt={hit.title} width={100} height={100} />
       <div className="flex flex-col gap-y-1">
         <h3>{hit.title}</h3>
@@ -62,7 +63,7 @@ const Hit = ({ hit }: { hit: Hit }) => {
       </div>
       <LocalizedClientLink
         href={`/products/${hit.handle}`}
-        className="absolute right-0 top-0 w-full h-full"
+        className="absolute right-0 top-0 h-full w-full"
         aria-label={`View Product: ${hit.title}`}
       />
     </div>

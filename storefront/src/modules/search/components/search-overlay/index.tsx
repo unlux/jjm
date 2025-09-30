@@ -1,22 +1,23 @@
 "use client"
 
+import { searchClient } from "@lib/config"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { X } from "lucide-react"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 import {
   Hits,
   InstantSearch,
-  useSearchBox,
   useInstantSearch,
+  useSearchBox,
 } from "react-instantsearch"
-import { searchClient } from "@lib/config"
-import Image from "next/image"
-import { X } from "lucide-react"
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
+
+import { sdk } from "@/lib/config"
 import {
   homeCategories,
   type HomeCategory,
 } from "@/lib/context/categories.config"
-import { sdk } from "@/lib/config"
 
 type HitProps = {
   hit: {
@@ -36,8 +37,8 @@ const Hit = ({ hit }: HitProps) => {
       className="group"
       aria-label={`View Product: ${hit.title}`}
     >
-      <div className="flex flex-row gap-x-4 p-2 rounded-lg group-hover:bg-gray-100 transition-colors">
-        <div className="relative w-20 h-20 flex-shrink-0">
+      <div className="flex flex-row gap-x-4 rounded-lg p-2 transition-colors group-hover:bg-gray-100">
+        <div className="relative h-20 w-20 flex-shrink-0">
           <Image
             src={hit.thumbnail}
             alt={hit.title}
@@ -56,10 +57,10 @@ const Hit = ({ hit }: HitProps) => {
 
 const SkeletonHit = () => (
   <div className="flex flex-row gap-x-4 p-2">
-    <div className="relative w-20 h-20 flex-shrink-0 bg-gray-200 rounded-md animate-pulse"></div>
-    <div className="flex flex-col justify-center gap-y-2 flex-grow">
-      <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-      <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+    <div className="relative h-20 w-20 flex-shrink-0 animate-pulse rounded-md bg-gray-200"></div>
+    <div className="flex flex-grow flex-col justify-center gap-y-2">
+      <div className="h-4 w-3/4 animate-pulse rounded bg-gray-200"></div>
+      <div className="h-4 w-1/2 animate-pulse rounded bg-gray-200"></div>
     </div>
   </div>
 )
@@ -82,7 +83,7 @@ const Results = () => {
   // Show "no results" message only after a search completes with no hits.
   if (results.nbHits === 0 && results.query) {
     return (
-      <div className="text-center py-10">
+      <div className="py-10 text-center">
         <p className="text-gray-600">
           No results found for{" "}
           <span className="font-semibold">"{results.query}"</span>.
@@ -120,12 +121,12 @@ const SearchBox = () => {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         placeholder="Search for toys, games, flashcards..."
-        className="w-full py-3 px-5 bg-gray-100 border-0 rounded-lg focus:ring-2 focus:ring-blue-500 placeholder-gray-500 text-gray-900"
+        className="w-full rounded-lg border-0 bg-gray-100 px-5 py-3 text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500"
       />
       <button
         type="submit"
         disabled={isSearchDisabled}
-        className="px-5 py-3 bg-[#262b5f] hover:bg-[#1e2248] text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="rounded-lg bg-[#262b5f] px-5 py-3 font-medium text-white transition-colors hover:bg-[#1e2248] disabled:cursor-not-allowed disabled:opacity-50"
       >
         Search
       </button>
@@ -151,23 +152,23 @@ const SearchOverlay = ({ onClose }: SearchOverlayProps) => {
   const overlayCategories: HomeCategory[] = homeCategories
   return (
     <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible group-[.search-open]/nav:opacity-100 group-[.search-open]/nav:visible transition-opacity duration-300"
+      className="invisible fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-[.search-open]/nav:visible group-[.search-open]/nav:opacity-100"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose()
         }
       }}
     >
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col relative opacity-0 scale-95 group-[.search-open]/nav:opacity-100 group-[.search-open]/nav:scale-100 transition-all duration-300 ease-out">
-        <div className="p-6 sm:p-8 flex-grow overflow-y-auto">
+      <div className="relative flex max-h-[90vh] w-full max-w-3xl scale-95 flex-col rounded-2xl bg-white opacity-0 shadow-2xl transition-all duration-300 ease-out group-[.search-open]/nav:scale-100 group-[.search-open]/nav:opacity-100">
+        <div className="flex-grow overflow-y-auto p-6 sm:p-8">
           <InstantSearch searchClient={searchClient} indexName="products">
-            <div className="flex items-center justify-between mb-6">
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+            <div className="mb-6 flex items-center justify-between">
+              <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">
                 Search Our Store
               </h1>
               <button
                 onClick={onClose}
-                className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                className="rounded-full bg-gray-100 p-2 transition-colors hover:bg-gray-200"
                 aria-label="Close search"
               >
                 <X size={24} className="text-gray-700" />
@@ -175,7 +176,7 @@ const SearchOverlay = ({ onClose }: SearchOverlayProps) => {
             </div>
             <SearchBox />
             <div className="mt-8">
-              <h2 className="text-lg font-semibold text-gray-800 mb-3">
+              <h2 className="mb-3 text-lg font-semibold text-gray-800">
                 Popular Searches
               </h2>
               <div className="flex flex-wrap gap-2">
@@ -186,7 +187,7 @@ const SearchOverlay = ({ onClose }: SearchOverlayProps) => {
                       router.push(`/store?age=${age}`)
                       onClose()
                     }}
-                    className="px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors"
+                    className="rounded-full bg-blue-100 px-3 py-1.5 text-sm font-medium text-blue-800 transition-colors hover:bg-blue-200"
                   >
                     Age: {age}
                   </button>
@@ -200,7 +201,7 @@ const SearchOverlay = ({ onClose }: SearchOverlayProps) => {
                       )
                       onClose()
                     }}
-                    className="px-3 py-1.5 bg-green-100 text-green-800 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
+                    className="rounded-full bg-green-100 px-3 py-1.5 text-sm font-medium text-green-800 transition-colors hover:bg-green-200"
                   >
                     {cat.title}
                   </button>

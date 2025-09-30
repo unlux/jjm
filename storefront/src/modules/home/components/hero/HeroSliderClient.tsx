@@ -1,12 +1,13 @@
 "use client"
-import { useEffect, useRef } from "react"
-import Link from "next/link"
-import { Swiper, SwiperSlide } from "swiper/react"
-import { Pagination, Navigation } from "swiper/modules"
-import type { Swiper as SwiperType } from "swiper"
 import "swiper/css"
 import "swiper/css/pagination"
 import "swiper/css/navigation"
+
+import Link from "next/link"
+import { useEffect, useRef } from "react"
+import type { Swiper as SwiperType } from "swiper"
+import { Navigation, Pagination } from "swiper/modules"
+import { Swiper, SwiperSlide } from "swiper/react"
 
 export type SlideItem = {
   src: string
@@ -47,7 +48,7 @@ function VideoSwiper({
     if (!item) return
     const isVid = isVideoSrc(item.src)
     // If image: use provided duration or default 5s. If video: only use duration when explicitly provided.
-    const d = isVid ? item.duration : item.duration ?? DEFAULT_IMAGE_DURATION
+    const d = isVid ? item.duration : (item.duration ?? DEFAULT_IMAGE_DURATION)
     if (typeof d === "number" && d > 0) {
       timerRef.current = setTimeout(() => {
         const swiper = swiperRef.current
@@ -110,7 +111,7 @@ function VideoSwiper({
             })
             startSlideTimer(active)
           }}
-          className="w-full h-full"
+          className="h-full w-full"
         >
           {slides.map((s, i) => {
             const isVid = isVideoSrc(s.src)
@@ -121,7 +122,7 @@ function VideoSwiper({
                 }}
                 src={s.src}
                 aria-label={s.alt}
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
                 muted
                 playsInline
                 autoPlay
@@ -138,13 +139,13 @@ function VideoSwiper({
               <img
                 src={s.src}
                 alt={s.alt}
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
                 loading="eager"
               />
             )
 
             return (
-              <SwiperSlide key={`${s.src}-${i}`} className="w-full h-full">
+              <SwiperSlide key={`${s.src}-${i}`} className="h-full w-full">
                 {s.href ? (
                   s.href.startsWith("http") ? (
                     <a
@@ -152,7 +153,7 @@ function VideoSwiper({
                       aria-label={s.alt}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block w-full h-full"
+                      className="block h-full w-full"
                     >
                       {media}
                     </a>
@@ -160,7 +161,7 @@ function VideoSwiper({
                     <Link
                       href={s.href}
                       aria-label={s.alt}
-                      className="block w-full h-full"
+                      className="block h-full w-full"
                     >
                       {media}
                     </Link>
@@ -210,7 +211,7 @@ function VideoSwiper({
           </svg>
         </button>
       </div>
-      <div className="absolute inset-0 animate-fadeIn pointer-events-none z-30" />
+      <div className="animate-fadeIn pointer-events-none absolute inset-0 z-30" />
     </div>
   )
 }

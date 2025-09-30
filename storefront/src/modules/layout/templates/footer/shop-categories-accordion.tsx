@@ -1,10 +1,10 @@
 "use client"
 
-import * as React from "react"
+import { ArrowRightMini, ArrowUpRightMini } from "@medusajs/icons"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { ChevronDownIcon } from "lucide-react"
-import { ArrowUpRightMini, ArrowRightMini } from "@medusajs/icons"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import * as React from "react"
 
 // Minimal cn helper (since we don't have a global util here)
 function cn(...classes: Array<string | false | null | undefined>) {
@@ -89,10 +89,10 @@ export default function ShopCategoriesAccordion({
           <AccordionPrimitive.Header className="flex">
             <AccordionPrimitive.Trigger
               className={cn(
-                "flex flex-1 items-center justify-between gap-2 py-2 px-1 md:px-0 text-left font-semibold outline-none transition-all",
+                "flex flex-1 items-center justify-between gap-2 px-1 py-2 text-left font-semibold outline-none transition-all md:px-0",
                 triggerSizing,
                 triggerText,
-                "focus-visible:ring-2 rounded-md",
+                "rounded-md focus-visible:ring-2",
                 focusRing
               )}
             >
@@ -112,19 +112,19 @@ export default function ShopCategoriesAccordion({
                   <li key={cat.id}>
                     <LocalizedClientLink
                       href={`/store?category=${cat.handle}`}
-                      className="group inline-flex min-w-0 items-start justify-start gap-1 w-auto whitespace-normal"
+                      className="group inline-flex w-auto min-w-0 items-start justify-start gap-1 whitespace-normal"
                     >
                       <span className="leading-snug">{cat.name}</span>
                       <span className="relative inline-flex h-4 w-4 shrink-0 translate-y-0.5">
                         <ArrowUpRightMini
                           className={cn(
-                            "absolute inset-0 transition-opacity duration-150 ease-in-out opacity-100 group-hover:opacity-0",
+                            "absolute inset-0 opacity-100 transition-opacity duration-150 ease-in-out group-hover:opacity-0",
                             iconColor
                           )}
                         />
                         <ArrowRightMini
                           className={cn(
-                            "absolute inset-0 transition-opacity duration-150 ease-in-out opacity-0 group-hover:opacity-100",
+                            "absolute inset-0 opacity-0 transition-opacity duration-150 ease-in-out group-hover:opacity-100",
                             iconColor
                           )}
                         />
@@ -133,13 +133,13 @@ export default function ShopCategoriesAccordion({
                     {Array.isArray(cat.category_children) &&
                       cat.category_children.length > 0 && (
                         <ul
-                          className={cn("mt-1 ml-3 space-y-1", childListText)}
+                          className={cn("ml-3 mt-1 space-y-1", childListText)}
                         >
                           {cat.category_children.map((child) => (
                             <li key={child.id}>
                               <LocalizedClientLink
                                 href={`/categories/${child.handle}`}
-                                className="group inline-flex min-w-0 items-start justify-start gap-1 w-auto whitespace-normal"
+                                className="group inline-flex w-auto min-w-0 items-start justify-start gap-1 whitespace-normal"
                               >
                                 <span className="leading-snug">
                                   {child.name}
@@ -147,13 +147,13 @@ export default function ShopCategoriesAccordion({
                                 <span className="relative inline-flex h-4 w-4 shrink-0 translate-y-0.5">
                                   <ArrowUpRightMini
                                     className={cn(
-                                      "absolute inset-0 transition-opacity duration-150 ease-in-out opacity-100 group-hover:opacity-0",
+                                      "absolute inset-0 opacity-100 transition-opacity duration-150 ease-in-out group-hover:opacity-0",
                                       iconColor
                                     )}
                                   />
                                   <ArrowRightMini
                                     className={cn(
-                                      "absolute inset-0 transition-opacity duration-150 ease-in-out opacity-0 group-hover:opacity-100",
+                                      "absolute inset-0 opacity-0 transition-opacity duration-150 ease-in-out group-hover:opacity-100",
                                       iconColor
                                     )}
                                   />
@@ -180,7 +180,7 @@ export default function ShopCategoriesAccordion({
                 "flex flex-1 items-center justify-between gap-2 py-2 text-left font-semibold outline-none transition-all",
                 triggerSizing,
                 triggerText,
-                "focus-visible:ring-2 rounded-md",
+                "rounded-md focus-visible:ring-2",
                 focusRing
               )}
             >
@@ -200,19 +200,19 @@ export default function ShopCategoriesAccordion({
                   <li key={age.value}>
                     <LocalizedClientLink
                       href={`/store?age=${encodeURIComponent(age.value)}`}
-                      className="group inline-flex min-w-0 items-start justify-start gap-1 w-auto whitespace-normal"
+                      className="group inline-flex w-auto min-w-0 items-start justify-start gap-1 whitespace-normal"
                     >
                       <span className="leading-snug">{age.label}</span>
                       <span className="relative inline-flex h-4 w-4 shrink-0 translate-y-0.5">
                         <ArrowUpRightMini
                           className={cn(
-                            "absolute inset-0 transition-opacity duration-150 ease-in-out opacity-100 group-hover:opacity-0",
+                            "absolute inset-0 opacity-100 transition-opacity duration-150 ease-in-out group-hover:opacity-0",
                             iconColor
                           )}
                         />
                         <ArrowRightMini
                           className={cn(
-                            "absolute inset-0 transition-opacity duration-150 ease-in-out opacity-0 group-hover:opacity-100",
+                            "absolute inset-0 opacity-0 transition-opacity duration-150 ease-in-out group-hover:opacity-100",
                             iconColor
                           )}
                         />

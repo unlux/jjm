@@ -1,5 +1,5 @@
-import React from "react"
 import { Comic_Neue } from "next/font/google"
+import React from "react"
 
 const comicNeue = Comic_Neue({ subsets: ["latin"], weight: ["400"] })
 
@@ -19,19 +19,17 @@ export const InfoCard = ({
   children,
 }: InfoCardProps) => (
   <div
-    className={`p-6 rounded-3xl shadow-md hover:shadow-xl
-                hover:scale-[1.02] hover:rotate-[0.5deg]
-                transition-transform duration-300 ease-out ${bg}`}
+    className={`rounded-3xl p-6 shadow-md transition-transform duration-300 ease-out hover:rotate-[0.5deg] hover:scale-[1.02] hover:shadow-xl ${bg}`}
   >
-    <div className="flex items-center mb-4">
+    <div className="mb-4 flex items-center">
       <div
-        className={`flex items-center justify-center w-10 h-10 rounded-full bg-${color}-100 text-${color}-600 shadow-sm mr-3`}
+        className={`flex h-10 w-10 items-center justify-center rounded-full bg-${color}-100 text-${color}-600 mr-3 shadow-sm`}
       >
         {icon}
       </div>
       <h3 className={`text-lg font-semibold text-${color}-700`}>{title}</h3>
     </div>
-    <div className={`text-gray-700 leading-relaxed ${comicNeue.className}`}>
+    <div className={`leading-relaxed text-gray-700 ${comicNeue.className}`}>
       {children}
     </div>
   </div>

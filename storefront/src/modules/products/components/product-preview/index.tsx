@@ -1,9 +1,11 @@
-import { Text } from "@medusajs/ui"
 import { listProducts } from "@lib/data/products"
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
+import { Text } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+
 import ProductClickLink from "@/modules/products/components/ProductClickLink"
+
 import Thumbnail from "../thumbnail"
 import PreviewPrice from "./price"
 
@@ -54,9 +56,9 @@ export default async function ProductPreview({
               : undefined
           }
         />
-        <div className="flex txt-compact-medium mt-4 justify-between">
+        <div className="txt-compact-medium mt-4 flex justify-between">
           <Text
-            className="text-ui-fg-subtle text-sm sm:text-base"
+            className="text-sm text-ui-fg-subtle sm:text-base"
             data-testid="product-title"
           >
             {product.title}

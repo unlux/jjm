@@ -1,5 +1,5 @@
-import { HttpTypes } from "@medusajs/types"
 import { listProducts } from "@lib/data/products"
+import { HttpTypes } from "@medusajs/types"
 import ProductPreview from "@modules/products/components/product-preview"
 
 export default async function PopularProducts({
@@ -28,15 +28,15 @@ export default async function PopularProducts({
       <div className="bg-slate-50 md:py-10">
         <div className="content-container py-10 sm:py-12">
           <div className="flex flex-col items-center text-center">
-            <h2 className="text-4xl md:text-5xl font-bold text-center text-[#111827] mb-4 font-baloo tracking-tight">
+            <h2 className="font-baloo mb-4 text-center text-4xl font-bold tracking-tight text-[#111827] md:text-5xl">
               Popular in Store
             </h2>
-            <p className="text-lg md:text-xl text-center text-gray-600 mb-12 font-fredoka max-w-2xl mx-auto">
+            <p className="font-fredoka mx-auto mb-12 max-w-2xl text-center text-lg text-gray-600 md:text-xl">
               Discover our most loved toys that bring smiles to children of all
               ages
             </p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4">
             {products.map((p) => (
               <ProductPreview
                 key={p.id}

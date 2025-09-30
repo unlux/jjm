@@ -1,8 +1,9 @@
 "use client"
 
-import LocalizedClientLink from "@/modules/common/components/localized-client-link"
-import { track } from "@/lib/analytics"
 import { HttpTypes } from "@medusajs/types"
+
+import { track } from "@/lib/analytics"
+import LocalizedClientLink from "@/modules/common/components/localized-client-link"
 
 export default function ProductClickLink({
   product,

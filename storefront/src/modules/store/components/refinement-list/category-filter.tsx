@@ -1,7 +1,7 @@
 "use client"
 
-import { useMemo } from "react"
 import { HttpTypes } from "@medusajs/types"
+import { useMemo } from "react"
 
 export default function CategoryFilter({
   setQueryParams,
@@ -36,14 +36,14 @@ export default function CategoryFilter({
   const hasActiveFilters = Boolean(selectedCategoryId || selectedAge)
 
   return (
-    <div className="flex flex-col gap-6 w-full">
-      <div className="flex justify-between items-center pr-2">
-        <span className="font-semibold text-ui-fg-base text-base sm:text-lg">
+    <div className="flex w-full flex-col gap-6">
+      <div className="flex items-center justify-between pr-2">
+        <span className="text-base font-semibold text-ui-fg-base sm:text-lg">
           Filters
         </span>
         {hasActiveFilters && clearAll && (
           <button
-            className="txt-compact-small text-ui-fg-interactive hover:text-ui-fg-interactive-hover rounded-md px-2 py-1 ring-1 ring-ui-border-base"
+            className="txt-compact-small rounded-md px-2 py-1 text-ui-fg-interactive ring-1 ring-ui-border-base hover:text-ui-fg-interactive-hover"
             onClick={clearAll}
           >
             Clear all
@@ -53,19 +53,19 @@ export default function CategoryFilter({
 
       {topLevel.length > 0 && (
         <div>
-          <h4 className="txt-compact-small-plus text-ui-fg-muted mb-2">
+          <h4 className="txt-compact-small-plus mb-2 text-ui-fg-muted">
             Categories
           </h4>
-          <div className="flex flex-col gap-2 max-h-64 overflow-y-auto pr-1">
+          <div className="flex max-h-64 flex-col gap-2 overflow-y-auto pr-1">
             {topLevel.map((c) => {
               const selected = selectedCategoryId === c.id
               return (
                 <div key={c.id} className="flex items-center justify-between">
                   <button
-                    className={`group flex w-full items-center justify-between rounded-lg px-3 py-2 text-left transition ring-1 ${
+                    className={`group flex w-full items-center justify-between rounded-lg px-3 py-2 text-left ring-1 transition ${
                       selected
                         ? "bg-blue-50 text-ui-fg-base ring-blue-200"
-                        : "bg-ui-bg-base/0 text-ui-fg-subtle hover:text-ui-fg-base hover:bg-ui-bg-subtle ring-ui-border-base"
+                        : "bg-ui-bg-base/0 text-ui-fg-subtle ring-ui-border-base hover:bg-ui-bg-subtle hover:text-ui-fg-base"
                     }`}
                     aria-pressed={selected}
                     onClick={() => {
@@ -89,7 +89,7 @@ export default function CategoryFilter({
                   </button>
                   {selected && clearCategory && (
                     <button
-                      className="ml-2 inline-flex h-7 w-7 items-center justify-center rounded-md text-ui-fg-muted hover:text-ui-fg-base hover:bg-ui-bg-subtle"
+                      className="ml-2 inline-flex h-7 w-7 items-center justify-center rounded-md text-ui-fg-muted hover:bg-ui-bg-subtle hover:text-ui-fg-base"
                       onClick={clearCategory}
                       aria-label="Clear category"
                       title="Clear"
@@ -105,17 +105,17 @@ export default function CategoryFilter({
       )}
 
       <div className="border-t border-ui-border-base pt-4">
-        <h4 className="txt-compact-small-plus text-ui-fg-muted mb-2">
+        <h4 className="txt-compact-small-plus mb-2 text-ui-fg-muted">
           Age Groups
         </h4>
         <div className="grid grid-cols-2 gap-2">
           {ageGroups.map((a) => (
             <button
               key={a.value}
-              className={`py-2 px-2 border rounded-md transition-all duration-200 ease-out transform ${
+              className={`transform rounded-md border px-2 py-2 transition-all duration-200 ease-out ${
                 selectedAge === a.value
-                  ? "bg-blue-50 text-ui-fg-base border-blue-200 ring-1 ring-blue-200 scale-[1.01]"
-                  : "text-ui-fg-subtle border-ui-border-base hover:text-ui-fg-base hover:scale-[1.01]"
+                  ? "scale-[1.01] border-blue-200 bg-blue-50 text-ui-fg-base ring-1 ring-blue-200"
+                  : "border-ui-border-base text-ui-fg-subtle hover:scale-[1.01] hover:text-ui-fg-base"
               }`}
               aria-pressed={selectedAge === a.value}
               onClick={() => {

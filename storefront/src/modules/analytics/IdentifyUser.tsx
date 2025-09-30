@@ -1,8 +1,8 @@
 "use client"
 
-import { use, useEffect } from "react"
 import { HttpTypes } from "@medusajs/types"
 import posthog from "posthog-js"
+import { use, useEffect } from "react"
 
 export default function IdentifyUser({
   customer,
