@@ -3,6 +3,7 @@ import {
   validateAndTransformBody,
 } from "@medusajs/framework/http";
 import { SearchSchema } from "./store/products/search/route";
+import { RequestHandler } from "express";
 import multer from "multer";
 
 const upload = multer({
@@ -22,7 +23,7 @@ export default defineMiddlewares({
     {
       matcher: "/admin/media",
       method: ["POST"],
-      middlewares: [upload.array("file", 1)],
+      middlewares: [upload.array("file", 1) as unknown as RequestHandler],
     },
   ],
 });
